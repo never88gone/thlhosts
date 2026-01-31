@@ -1,0 +1,21 @@
+workspace 'THLHOSTS'
+
+def common_pods
+  use_frameworks!
+  pod 'Masonry'
+  pod 'Swifter', :git => 'https://github.com/yichengchen/swifter'
+  pod 'SnapKit'
+end
+
+target 'THLHOSTSApp' do
+  platform :ios, '14.0'
+  project 'THLHOSTSApp/THLHOSTSApp.xcodeproj'
+  common_pods
+end
+
+# Future targets will be added here
+# target 'THLHOSTS_tvOS' do
+#   platform :tvos, '14.0'
+#   common_pods
+# end
+

@@ -1,0 +1,32 @@
+PODS:
+  - Masonry (1.1.0)
+  - SnapKit (5.7.1)
+  - Swifter (1.5.0)
+
+DEPENDENCIES:
+  - Masonry
+  - SnapKit
+  - Swifter (from `https://github.com/yichengchen/swifter`)
+
+SPEC REPOS:
+  trunk:
+    - Masonry
+    - SnapKit
+
+EXTERNAL SOURCES:
+  Swifter:
+    :git: https://github.com/yichengchen/swifter
+
+CHECKOUT OPTIONS:
+  Swifter:
+    :commit: 4850fa96759cbfb81f4178bf7ba9d58afe55d7fd
+    :git: https://github.com/yichengchen/swifter
+
+SPEC CHECKSUMS:
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
+  Swifter: aa3514bbb8df8980c118f7bb1b80f2da24e39c2b
+
+PODFILE CHECKSUM: 3309e21bbfd9c91f1fb8d097c9d68be6e171a57c
+
+COCOAPODS: 1.16.2

@@ -1,0 +1,104 @@
+/* General */
+"取消" = "Cancel";
+"确定" = "OK";
+"提示" = "Tips";
+"错误" = "Error";
+"加载中" = "Loading...";
+
+/* SMB / File Browser */
+"输入SMB地址" = "Enter SMB Address";
+"连接" = "Connect";
+"连接失败" = "Connection Failed";
+"请输入用户名" = "Enter Username";
+"请输入密码" = "Enter Password";
+"匿名登录" = "Anonymous Login";
+"地址不能为空" = "Address cannot be empty";
+
+/* Player */
+"播放失败" = "Playback Failed";
+"无法解析视频地址" = "Cannot resolve video URL";
+"即将播放" = "Play Next";
+"选集" = "Episodes";
+
+/* Sidebar */
+"Search" = "Search";
+"Home" = "Home";
+"Live TV" = "Live TV";
+"Settings" = "Settings";
+"No Live Source" = "No Live Source";
+
+/* Home */
+"Continue Watching" = "Continue Watching";
+"Favorites" = "Favorites";
+"Recommended" = "Recommended";
+
+/* SMB Browser */
+"Browse" = "Browse";
+"Services" = "Services";
+"Servers" = "Servers";
+"TV Box" = "TV Box";
+"选择操作" = "Options";
+"删除" = "Delete";
+
+/* Search */
+"Search all sources..." = "Search all sources...";
+"Search Results" = "Search Results";
+"Recent Searches" = "Recent Searches";
+
+/* Settings */
+"Clear Cache" = "Clear Cache";
+"Reload Data Sources" = "Reload Data Sources";
+"About" = "About";
+"Cache Cleared" = "Cache Cleared";
+"Image and API caches have been cleared." = "Image and API caches have been cleared.";
+"Reloaded" = "Reloaded";
+"Data sources reloaded." = "Data sources reloaded.";
+"HSBSmb Framework v1.0" = "HSBSmb Framework v1.0";
+
+/* DataSource */
+"Data Sources" = "Data Sources";
+"Aggregation Status" = "Aggregation Status";
+"Merged VOD Sites" = "Merged VOD Sites";
+"Merged Live Sources" = "Merged Live Sources";
+"Source List (All Enabled)" = "Source List (All Enabled)";
+"Total Sites" = "Total Sites";
+"Total Lives" = "Total Lives";
+"Wallpaper" = "Wallpaper";
+"No Configuration Loaded" = "No Configuration Loaded";
+"Type" = "Type";
+"API" = "API";
+"Add New Source" = "Add New Source";
+"Add Source" = "Add Source";
+"Enter TVBox Config URL (JSON)" = "Enter TVBox Config URL (JSON)";
+"Add" = "Add";
+"Cancel" = "Cancel";
+"Save" = "Save";
+"Close" = "Close";
+"Connect" = "Connect";
+
+/* Live */
+"Error" = "Error";
+"Failed to load live" = "Failed to load live";
+
+/* Tabs */
+"Source" = "Source";
+"SMB" = "SMB";
+
+/* SMBClient / SMBTV */
+"Display Name" = "Display Name";
+"Server" = "Server";
+"Port" = "Port";
+"Username" = "Username";
+"Password" = "Password";
+"Login" = "Login";
+"Login Failed" = "Login Failed";
+"Connect to Server" = "Connect to Server";
+"Root" = "Root";
+"Not Supported" = "Not Supported";
+"File format not supported" = "File format '%@' is not supported yet.";
+
+/* Hosts */
+"hosts_tab_title" = "Hosts";
+"add_hosts_button" = "Add Hosts";
+"scan_upload_title" = "Scan to Upload Hosts";
+"upload_success_fmt" = "File %@ Received!";

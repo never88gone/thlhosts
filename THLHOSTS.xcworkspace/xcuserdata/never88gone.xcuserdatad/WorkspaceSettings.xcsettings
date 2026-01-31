@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BuildLocationStyle</key>
+	<string>CustomLocation</string>
+	<key>CustomBuildIntermediatesPath</key>
+	<string>/Volumes/MacintoshData/Work/MY/项目/Product/hsbtvbrowser/hsbtvbrowser/WebKit/WebKitBuild</string>
+	<key>CustomBuildLocationType</key>
+	<string>Absolute</string>
+	<key>CustomBuildProductsPath</key>
+	<string>/Volumes/MacintoshData/Work/MY/项目/Product/hsbtvbrowser/hsbtvbrowser/WebKit/WebKitBuild</string>
+	<key>DerivedDataCustomLocation</key>
+	<string>/Volumes/MacintoshData/Work/MY/项目/Product/hsbtvbrowser/hsbtvbrowser/WebKit/WebKitBuild</string>
+	<key>DerivedDataLocationStyle</key>
+	<string>AbsolutePath</string>
+	<key>ShowSharedSchemesAutomaticallyEnabled</key>
+	<true/>
+</dict>
+</plist>
