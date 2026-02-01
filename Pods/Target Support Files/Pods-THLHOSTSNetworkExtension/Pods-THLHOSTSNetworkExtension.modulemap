@@ -1,0 +1,6 @@
+framework module Pods_THLHOSTSNetworkExtension {
+  umbrella header "Pods-THLHOSTSNetworkExtension-umbrella.h"
+
+  export *
+  module * { export * }
+}

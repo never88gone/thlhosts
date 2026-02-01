@@ -7,21 +7,46 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		035F1DD15B648544E237F4AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9675E1FE20857AEF00A4A84A /* UIKit.framework */; };
+		0FA452343E85D407473AFB0F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 382CA82D2D59D81A00CD627E /* AVFoundation.framework */; };
+		127D20BAD0BA37DA78227400 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162C2F2DA0EA001F800C /* Assets.xcassets */; };
+		17C43C6EDED8EAA50AD5785E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9675E1FB20855F6500A4A84A /* Foundation.framework */; };
+		2DF005FF79D9D24B36BE2747 /* .appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 85D776112E188077CCE2EAA2 /* .appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2ED912A6FE045196CB83E406 /* Pods_THLHOSTSApp_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B163284E299A5B5F70A32549 /* Pods_THLHOSTSApp_iOS.framework */; };
 		382CA82E2D59D81A00CD627E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 382CA82D2D59D81A00CD627E /* AVFoundation.framework */; };
 		38C116372F2DA0EA001F800C /* Luanch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162F2F2DA0EA001F800C /* Luanch.storyboard */; };
-		38C116382F2DA0EA001F800C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162E2F2DA0EA001F800C /* Info.plist */; };
-		38C116392F2DA0EA001F800C /* homedefault.json in Resources */ = {isa = PBXBuildFile; fileRef = 38C116292F2DA0EA001F800C /* homedefault.json */; };
 		38C1163A2F2DA0EA001F800C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162C2F2DA0EA001F800C /* Assets.xcassets */; };
 		38C1163B2F2DA0EA001F800C /* Pods-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */; };
 		38C1163C2F2DA0EA001F800C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C116302F2DA0EA001F800C /* main.m */; };
 		38C1163D2F2DA0EA001F800C /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C116322F2DA0EA001F800C /* SceneDelegate.m */; };
 		38C1163E2F2DA0EA001F800C /* HostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C1162D2F2DA0EA001F800C /* HostsViewController.swift */; };
 		38C1163F2F2DA0EA001F800C /* TVHostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C116352F2DA0EA001F800C /* TVHostsViewController.swift */; };
-		38DA4A042CFD629E00E0A837 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 38DA4A022CFD629E00E0A837 /* InfoPlist.strings */; };
+		41CFD85F40829CB611B9AD18 /* HostsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8908A2BEE2FA27707D7EE707 /* HostsManager.swift */; };
+		488CE6BB44544A0A23601941 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C116302F2DA0EA001F800C /* main.m */; };
+		66CDD39175D81056075AC0C8 /* Pods_THLHOSTSApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A0DBD7CD5120CB3F0ED3339 /* Pods_THLHOSTSApp.framework */; };
+		7B69CC57A112AE7105FA590F /* Luanch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162F2F2DA0EA001F800C /* Luanch.storyboard */; };
+		7E70EB51FC90411E91E46A49 /* Pods_THLHOSTSApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A0DBD7CD5120CB3F0ED3339 /* Pods_THLHOSTSApp.framework */; };
+		8DF128152E85035C663FCB5A /* HostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C1162D2F2DA0EA001F800C /* HostsViewController.swift */; };
 		9675E1FC20855F6500A4A84A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9675E1FB20855F6500A4A84A /* Foundation.framework */; };
 		9675E1FF20857AEF00A4A84A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9675E1FE20857AEF00A4A84A /* UIKit.framework */; };
-		F1D5FF4F3B8EC22AB622C756 /* Pods_HSBSmbApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BEFEDE404D79D6765727A8A /* Pods_HSBSmbApp.framework */; };
+		A0D3EC453EAA9D89C222D412 /* Pods-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */; };
+		AFEC64F845B1DEBCD504A39D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCF9AF3F84CF90EFEEB6063E /* Foundation.framework */; };
+		C9E1329B4C23A6F9325BE169 /* TVHostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C116352F2DA0EA001F800C /* TVHostsViewController.swift */; };
+		D074EA310808E8EC33FD6069 /* HostsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8908A2BEE2FA27707D7EE707 /* HostsManager.swift */; };
+		D56D3A3116C056B9E4159D66 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C116322F2DA0EA001F800C /* SceneDelegate.m */; };
+		D8F7EB6D2492E6039BAE8B82 /* Pods_THLHOSTSNetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB3A45A4C24D03AB9398215 /* Pods_THLHOSTSNetworkExtension.framework */; };
+		EC82E83C26A656190CD83F7D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0B7EB5F373374F55971E27 /* Foundation.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		81BCDD5CF6593CD51A55A7C9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B002B85A1BAE420500C744AF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1468A3F9A868B54C83E93BFF;
+			remoteInfo = THLHOSTSNetworkExtension;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		384E1A3B2E767E1C00B41380 /* Embed Frameworks */ = {
@@ -34,11 +59,33 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		39D3583E35CADD5F42774ED9 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				2DF005FF79D9D24B36BE2747 /* .appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B1188C80047522FD5988E7E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0425ED73C7E4A5D061537AC1 /* Pods-THLHOSTSApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THLHOSTSApp.debug.xcconfig"; path = "Target Support Files/Pods-THLHOSTSApp/Pods-THLHOSTSApp.debug.xcconfig"; sourceTree = "<group>"; };
+		0C771D8D786932DA15C802D4 /* Pods-THLHOSTSApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THLHOSTSApp.release.xcconfig"; path = "Target Support Files/Pods-THLHOSTSApp/Pods-THLHOSTSApp.release.xcconfig"; sourceTree = "<group>"; };
+		28E63D697FF54EA468CAF797 /* .app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = .app; sourceTree = BUILT_PRODUCTS_DIR; };
 		382CA82D2D59D81A00CD627E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		38C116292F2DA0EA001F800C /* homedefault.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = homedefault.json; sourceTree = "<group>"; };
 		38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
 		38C1162C2F2DA0EA001F800C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		38C1162D2F2DA0EA001F800C /* HostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostsViewController.swift; sourceTree = "<group>"; };
@@ -52,13 +99,43 @@
 		38C116352F2DA0EA001F800C /* TVHostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVHostsViewController.swift; sourceTree = "<group>"; };
 		38DA4A032CFD629E00E0A837 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		38DA4A052CFD62A400E0A837 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5BEFEDE404D79D6765727A8A /* Pods_HSBSmbApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HSBSmbApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D0B7EB5F373374F55971E27 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		65EFB7A7AE70DE84ECD5FF00 /* Pods-THLHOSTSNetworkExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THLHOSTSNetworkExtension.release.xcconfig"; path = "Target Support Files/Pods-THLHOSTSNetworkExtension/Pods-THLHOSTSNetworkExtension.release.xcconfig"; sourceTree = "<group>"; };
+		6D843F9A14103D416A3A2FAA /* Pods-THLHOSTSApp_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THLHOSTSApp_iOS.release.xcconfig"; path = "Target Support Files/Pods-THLHOSTSApp_iOS/Pods-THLHOSTSApp_iOS.release.xcconfig"; sourceTree = "<group>"; };
+		85D776112E188077CCE2EAA2 /* .appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = .appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		861433B4567D70D0A7461CC1 /* Pods-THLHOSTSApp_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THLHOSTSApp_iOS.debug.xcconfig"; path = "Target Support Files/Pods-THLHOSTSApp_iOS/Pods-THLHOSTSApp_iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		8908A2BEE2FA27707D7EE707 /* HostsManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HostsManager.swift; sourceTree = "<group>"; };
 		9675E1FB20855F6500A4A84A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9675E1FE20857AEF00A4A84A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		9A0DBD7CD5120CB3F0ED3339 /* Pods_THLHOSTSApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_THLHOSTSApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B002B8621BAE420500C744AF /* THLHOSTSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = THLHOSTSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B163284E299A5B5F70A32549 /* Pods_THLHOSTSApp_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_THLHOSTSApp_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCF9AF3F84CF90EFEEB6063E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		C13145612FCF6B6E9E71A7F2 /* Pods-THLHOSTSNetworkExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THLHOSTSNetworkExtension.debug.xcconfig"; path = "Target Support Files/Pods-THLHOSTSNetworkExtension/Pods-THLHOSTSNetworkExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		CFB3A45A4C24D03AB9398215 /* Pods_THLHOSTSNetworkExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_THLHOSTSNetworkExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		299FC6853146846184DE4337 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFEC64F845B1DEBCD504A39D /* Foundation.framework in Frameworks */,
+				2ED912A6FE045196CB83E406 /* Pods_THLHOSTSApp_iOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63982CDF755B6FBB9FDA980C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				035F1DD15B648544E237F4AA /* UIKit.framework in Frameworks */,
+				17C43C6EDED8EAA50AD5785E /* Foundation.framework in Frameworks */,
+				0FA452343E85D407473AFB0F /* AVFoundation.framework in Frameworks */,
+				66CDD39175D81056075AC0C8 /* Pods_THLHOSTSApp.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B002B85F1BAE420500C744AF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -66,17 +143,33 @@
 				9675E1FF20857AEF00A4A84A /* UIKit.framework in Frameworks */,
 				9675E1FC20855F6500A4A84A /* Foundation.framework in Frameworks */,
 				382CA82E2D59D81A00CD627E /* AVFoundation.framework in Frameworks */,
-				F1D5FF4F3B8EC22AB622C756 /* Pods_HSBSmbApp.framework in Frameworks */,
+				7E70EB51FC90411E91E46A49 /* Pods_THLHOSTSApp.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BAC63CF44AB56C6E84714838 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC82E83C26A656190CD83F7D /* Foundation.framework in Frameworks */,
+				D8F7EB6D2492E6039BAE8B82 /* Pods_THLHOSTSNetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0084E894922F1CFD086A19C8 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				BCF9AF3F84CF90EFEEB6063E /* Foundation.framework */,
+			);
+			name = tvOS;
+			sourceTree = "<group>";
+		};
 		38C1162B2F2DA0EA001F800C /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				38C116292F2DA0EA001F800C /* homedefault.json */,
 				38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */,
 			);
 			path = Data;
@@ -100,13 +193,39 @@
 			path = THLHOSTSApp;
 			sourceTree = "<group>";
 		};
+		435CF7C4135B8C4C47B9BB0E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6D843F9A14103D416A3A2FAA /* Pods-THLHOSTSApp_iOS.release.xcconfig */,
+				861433B4567D70D0A7461CC1 /* Pods-THLHOSTSApp_iOS.debug.xcconfig */,
+				65EFB7A7AE70DE84ECD5FF00 /* Pods-THLHOSTSNetworkExtension.release.xcconfig */,
+				C13145612FCF6B6E9E71A7F2 /* Pods-THLHOSTSNetworkExtension.debug.xcconfig */,
+				0425ED73C7E4A5D061537AC1 /* Pods-THLHOSTSApp.debug.xcconfig */,
+				0C771D8D786932DA15C802D4 /* Pods-THLHOSTSApp.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		5E0E898CB06F982861448E1D /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				5D0B7EB5F373374F55971E27 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
 		9675E1FA20855F6500A4A84A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				382CA82D2D59D81A00CD627E /* AVFoundation.framework */,
 				9675E1FE20857AEF00A4A84A /* UIKit.framework */,
 				9675E1FB20855F6500A4A84A /* Foundation.framework */,
-				5BEFEDE404D79D6765727A8A /* Pods_HSBSmbApp.framework */,
+				9A0DBD7CD5120CB3F0ED3339 /* Pods_THLHOSTSApp.framework */,
+				0084E894922F1CFD086A19C8 /* tvOS */,
+				5E0E898CB06F982861448E1D /* iOS */,
+				B163284E299A5B5F70A32549 /* Pods_THLHOSTSApp_iOS.framework */,
+				CFB3A45A4C24D03AB9398215 /* Pods_THLHOSTSNetworkExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -118,6 +237,8 @@
 				38DA4A022CFD629E00E0A837 /* InfoPlist.strings */,
 				B002B8631BAE420500C744AF /* Products */,
 				9675E1FA20855F6500A4A84A /* Frameworks */,
+				435CF7C4135B8C4C47B9BB0E /* Pods */,
+				F32CE8DA21D04DC428D32D02 /* NetworkExtension */,
 			);
 			sourceTree = "<group>";
 		};
@@ -125,25 +246,83 @@
 			isa = PBXGroup;
 			children = (
 				B002B8621BAE420500C744AF /* THLHOSTSApp.app */,
+				28E63D697FF54EA468CAF797 /* .app */,
+				85D776112E188077CCE2EAA2 /* .appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F32CE8DA21D04DC428D32D02 /* NetworkExtension */ = {
+			isa = PBXGroup;
+			children = (
+				8908A2BEE2FA27707D7EE707 /* HostsManager.swift */,
+			);
+			name = NetworkExtension;
+			path = NetworkExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1468A3F9A868B54C83E93BFF /* THLHOSTSNetworkExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3517EAFD6823643E6205A195 /* Build configuration list for PBXNativeTarget "THLHOSTSNetworkExtension" */;
+			buildPhases = (
+				C3B67987C1F522A49AA8104E /* [CP] Check Pods Manifest.lock */,
+				CF268875FAACFAC76C07A572 /* Sources */,
+				BAC63CF44AB56C6E84714838 /* Frameworks */,
+				91499D5A5A550DC603B034B3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = THLHOSTSNetworkExtension;
+			productName = THLHOSTSNetworkExtension;
+			productReference = 85D776112E188077CCE2EAA2 /* .appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		896B88212E422FC17DBB4500 /* THLHOSTSApp_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BA410D08753411A3362C6B46 /* Build configuration list for PBXNativeTarget "THLHOSTSApp_iOS" */;
+			buildPhases = (
+				40A18ECFB5E21ACA4E76FB0B /* [CP] Check Pods Manifest.lock */,
+				26ADD6E62CB3F3E3C86EA990 /* Sources */,
+				299FC6853146846184DE4337 /* Frameworks */,
+				B9CE53E1A1D6F014490AF582 /* Resources */,
+				CD0B094872FC3C1F2F465402 /* ShellScript */,
+				20655518BAAAB1EDA4FA9927 /* ShellScript */,
+				F8462D5040917EAA720D7E9E /* Sources */,
+				63982CDF755B6FBB9FDA980C /* Frameworks */,
+				7AD4593EB8E15511D1E1E6EA /* Resources */,
+				08F79A8BB7151456C8F590BB /* ShellScript */,
+				EC1B402EB960B3C8AED9267B /* ShellScript */,
+				8B1188C80047522FD5988E7E /* CopyFiles */,
+				39D3583E35CADD5F42774ED9 /* Embed App Extensions */,
+				F0B156A28D493F0252E8A008 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FD3C6D5772FFE5E0A74AD9C6 /* PBXTargetDependency */,
+			);
+			name = THLHOSTSApp_iOS;
+			productName = THLHOSTSApp_iOS;
+			productReference = 28E63D697FF54EA468CAF797 /* .app */;
+			productType = "com.apple.product-type.application";
+		};
 		B002B8611BAE420500C744AF /* THLHOSTSApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B002B8761BAE420500C744AF /* Build configuration list for PBXNativeTarget "THLHOSTSApp" */;
 			buildPhases = (
-				2908C92CA5115957DAFBA5A3 /* [CP] Check Pods Manifest.lock */,
+				3D5209B01E2CCCDC079B9242 /* [CP] Check Pods Manifest.lock */,
 				38E422962D0AEB910075BBC2 /* Modity buildNumber */,
 				B002B85E1BAE420500C744AF /* Sources */,
 				B002B85F1BAE420500C744AF /* Frameworks */,
 				B002B8601BAE420500C744AF /* Resources */,
 				9693F8451BF5A99E00077BAB /* ShellScript */,
-				4BE65DE426CA9FD0D648CBCC /* [CP] Embed Pods Frameworks */,
 				384E1A3B2E767E1C00B41380 /* Embed Frameworks */,
+				1E563A298F07CFBB03C4A167 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -186,28 +365,51 @@
 			projectRoot = "";
 			targets = (
 				B002B8611BAE420500C744AF /* THLHOSTSApp */,
+				896B88212E422FC17DBB4500 /* THLHOSTSApp_iOS */,
+				1468A3F9A868B54C83E93BFF /* THLHOSTSNetworkExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7AD4593EB8E15511D1E1E6EA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B69CC57A112AE7105FA590F /* Luanch.storyboard in Resources */,
+				127D20BAD0BA37DA78227400 /* Assets.xcassets in Resources */,
+				A0D3EC453EAA9D89C222D412 /* Pods-acknowledgements.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91499D5A5A550DC603B034B3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B002B8601BAE420500C744AF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				38C116372F2DA0EA001F800C /* Luanch.storyboard in Resources */,
-				38C116382F2DA0EA001F800C /* Info.plist in Resources */,
-				38C116392F2DA0EA001F800C /* homedefault.json in Resources */,
 				38C1163A2F2DA0EA001F800C /* Assets.xcassets in Resources */,
 				38C1163B2F2DA0EA001F800C /* Pods-acknowledgements.plist in Resources */,
-				38DA4A042CFD629E00E0A837 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B9CE53E1A1D6F014490AF582 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2908C92CA5115957DAFBA5A3 /* [CP] Check Pods Manifest.lock */ = {
+		08F79A8BB7151456C8F590BB /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -215,19 +417,53 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
 			);
-			name = "[CP] Check Pods Manifest.lock";
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HSBSmbApp-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
+		};
+		1E563A298F07CFBB03C4A167 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-THLHOSTSApp/Pods-THLHOSTSApp-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Masonry-tvOS/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit-tvOS/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Swifter-tvOS/Swifter.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Swifter.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-THLHOSTSApp/Pods-THLHOSTSApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		20655518BAAAB1EDA4FA9927 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
 		};
 		38E422962D0AEB910075BBC2 /* Modity buildNumber */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -247,26 +483,48 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#!/bin/bash\nif [ $CONFIGURATION == Release ]; then\necho \"Bumping build number...\"\nbuildNumber=$(date +%Y%m%d%H%M%S)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\nelse\necho $CONFIGURATION \" build - Not bumping build number.\"\nfi\n";
 		};
-		4BE65DE426CA9FD0D648CBCC /* [CP] Embed Pods Frameworks */ = {
+		3D5209B01E2CCCDC079B9242 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HSBSmbApp/Pods-HSBSmbApp-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
-				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-				"${BUILT_PRODUCTS_DIR}/Swifter/Swifter.framework",
+			inputFileListPaths = (
 			);
-			name = "[CP] Embed Pods Frameworks";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Swifter.framework",
+				"$(DERIVED_FILE_DIR)/Pods-THLHOSTSApp-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HSBSmbApp/Pods-HSBSmbApp-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		40A18ECFB5E21ACA4E76FB0B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-THLHOSTSApp_iOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9693F8451BF5A99E00077BAB /* ShellScript */ = {
@@ -282,9 +540,95 @@
 			shellPath = /bin/sh;
 			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
 		};
+		C3B67987C1F522A49AA8104E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-THLHOSTSNetworkExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CD0B094872FC3C1F2F465402 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
+		};
+		EC1B402EB960B3C8AED9267B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
+		};
+		F0B156A28D493F0252E8A008 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-THLHOSTSApp_iOS/Pods-THLHOSTSApp_iOS-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Masonry-iOS/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit-iOS/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Swifter-iOS/Swifter.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Swifter.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-THLHOSTSApp_iOS/Pods-THLHOSTSApp_iOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		26ADD6E62CB3F3E3C86EA990 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41CFD85F40829CB611B9AD18 /* HostsManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B002B85E1BAE420500C744AF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -293,10 +637,38 @@
 				38C1163D2F2DA0EA001F800C /* SceneDelegate.m in Sources */,
 				38C1163E2F2DA0EA001F800C /* HostsViewController.swift in Sources */,
 				38C1163F2F2DA0EA001F800C /* TVHostsViewController.swift in Sources */,
+				D074EA310808E8EC33FD6069 /* HostsManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF268875FAACFAC76C07A572 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8462D5040917EAA720D7E9E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				488CE6BB44544A0A23601941 /* main.m in Sources */,
+				D56D3A3116C056B9E4159D66 /* SceneDelegate.m in Sources */,
+				8DF128152E85035C663FCB5A /* HostsViewController.swift in Sources */,
+				C9E1329B4C23A6F9325BE169 /* TVHostsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FD3C6D5772FFE5E0A74AD9C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = THLHOSTSNetworkExtension;
+			target = 1468A3F9A868B54C83E93BFF /* THLHOSTSNetworkExtension */;
+			targetProxy = 81BCDD5CF6593CD51A55A7C9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		38DA4A022CFD629E00E0A837 /* InfoPlist.strings */ = {
@@ -311,6 +683,50 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		4D8C94C23CC2A20ABD083C23 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C13145612FCF6B6E9E71A7F2 /* Pods-THLHOSTSNetworkExtension.debug.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = NetworkExtension/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nevergone.huluge.tvbox.extension;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvsimulator appletvos macosx";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
+			};
+			name = Debug;
+		};
+		81D2230A86AB75AE9BDE53ED /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 65EFB7A7AE70DE84ECD5FF00 /* Pods-THLHOSTSNetworkExtension.release.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = NetworkExtension/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nevergone.huluge.tvbox.extension;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvsimulator appletvos macosx";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8EAB107D73E844FCD13E5F04 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 861433B4567D70D0A7461CC1 /* Pods-THLHOSTSApp_iOS.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				INFOPLIST_FILE = THLHOSTSApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = .ios;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
+		};
 		B002B8741BAE420500C744AF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -419,13 +835,14 @@
 		};
 		B002B8771BAE420500C744AF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0425ED73C7E4A5D061537AC1 /* Pods-THLHOSTSApp.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = HSBBrowserApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = THLHOSTSApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development: zhao xiangfeng (37GMBVP6GL)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "Apple Development: zhao xiangfeng (37GMBVP6GL)";
 				CODE_SIGN_STYLE = Manual;
@@ -446,7 +863,7 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Masonry-tvOS/Masonry.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage-tvOS/SDWebImage.framework/Headers\"",
 				);
-				INFOPLIST_FILE = HSBBrowserApp/Info.plist;
+				INFOPLIST_FILE = THLHOSTSApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -486,13 +903,14 @@
 		};
 		B002B8781BAE420500C744AF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0C771D8D786932DA15C802D4 /* Pods-THLHOSTSApp.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = HSBBrowserApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = THLHOSTSApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: zhao xiangfeng (876385K952)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "Apple Distribution: zhao xiangfeng (876385K952)";
 				CODE_SIGN_STYLE = Manual;
@@ -513,7 +931,7 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Masonry-tvOS/Masonry.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage-tvOS/SDWebImage.framework/Headers\"",
 				);
-				INFOPLIST_FILE = HSBBrowserApp/Info.plist;
+				INFOPLIST_FILE = THLHOSTSApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -550,9 +968,36 @@
 			};
 			name = Release;
 		};
+		C7E33E2673A40F8B20563CB3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6D843F9A14103D416A3A2FAA /* Pods-THLHOSTSApp_iOS.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				INFOPLIST_FILE = THLHOSTSApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = .ios;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3517EAFD6823643E6205A195 /* Build configuration list for PBXNativeTarget "THLHOSTSNetworkExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81D2230A86AB75AE9BDE53ED /* Release */,
+				4D8C94C23CC2A20ABD083C23 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B002B85D1BAE420500C744AF /* Build configuration list for PBXProject "THLHOSTSApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -567,6 +1012,15 @@
 			buildConfigurations = (
 				B002B8771BAE420500C744AF /* Debug */,
 				B002B8781BAE420500C744AF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BA410D08753411A3362C6B46 /* Build configuration list for PBXNativeTarget "THLHOSTSApp_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C7E33E2673A40F8B20563CB3 /* Release */,
+				8EAB107D73E844FCD13E5F04 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
