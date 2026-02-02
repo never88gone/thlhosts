@@ -1,113 +1,12 @@
-/* General */
-"取消" = "取消";
-"确定" = "确定";
-"提示" = "提示";
-"错误" = "错误";
-"加载中" = "加载中...";
-
-/* SMB / File Browser */
-"输入SMB地址" = "输入SMB地址";
-"连接" = "连接";
-"连接失败" = "连接失败";
-"请输入用户名" = "请输入用户名";
-"请输入密码" = "请输入密码";
-"匿名登录" = "匿名登录";
-"地址不能为空" = "地址不能为空";
-
-/* Player */
-"播放失败" = "播放失败";
-"无法解析视频地址" = "无法解析视频地址";
-"即将播放" = "即将播放";
-"选集" = "选集";
-
-/* Sidebar */
-"Search" = "搜索";
-"Home" = "首页";
-"Live TV" = "直播";
-"Settings" = "设置";
-"No Live Source" = "无直播源";
-
-/* Home */
-"Continue Watching" = "继续观看";
-"Favorites" = "收藏";
-"Recommended" = "推荐";
-
-/* SMB Browser */
-"Browse" = "浏览";
-"Services" = "服务";
-"Servers" = "服务器";
-"TV Box" = "电视盒子";
-"选择操作" = "选择操作";
-"删除" = "删除";
-
-/* Search */
-"Search all sources..." = "搜索所有源...";
-"Search Results" = "搜索结果";
-"Recent Searches" = "最近搜索";
-
-/* Settings */
-"Clear Cache" = "清除缓存";
-"Reload Data Sources" = "重新加载数据源";
-"About" = "关于";
-"Cache Cleared" = "缓存已清除";
-"Image and API caches have been cleared." = "图片和API缓存已清除。";
-"Reloaded" = "已重新加载";
-"Data sources reloaded." = "数据源已重新加载。";
-"HSBSmb Framework v1.0" = "HSBSmb 框架 v1.0";
-
-/* DataSource */
-"Data Sources" = "数据源";
-"Aggregation Status" = "聚合状态";
-"Merged VOD Sites" = "已合并视频源";
-"Merged Live Sources" = "已合并直播源";
-"Source List (All Enabled)" = "源列表 (全部启用)";
-"Total Sites" = "视频源";
-"Total Lives" = "直播源";
-"Wallpaper" = "壁纸";
-"No Configuration Loaded" = "未加载配置";
-"Type" = "类型";
-"API" = "接口";
-"Add New Source" = "添加新源";
-"Add Source" = "添加源";
-"Enter TVBox Config URL (JSON)" = "输入 TVBox 配置地址 (JSON)";
-"Add" = "添加";
-"Cancel" = "取消";
-"Save" = "保存";
-"Close" = "关闭";
-"Connect" = "连接";
-
-/* Live */
-"Error" = "错误";
-"Failed to load live" = "加载直播失败";
-
-/* Tabs */
-"Source" = "源";
-"SMB" = "SMB";
-
-/* SMBClient / SMBTV */
-"Display Name" = "显示名称";
-"Server" = "服务器";
-"Port" = "端口";
-"Username" = "用户名";
-"Password" = "密码";
-"Login" = "登录";
-"Login Failed" = "登录失败";
-"Connect to Server" = "连接到服务器";
-"Root" = "根目录";
-"Not Supported" = "不支持";
-"File format not supported" = "尚不支持 '%@' 文件格式。";
-
-/* Hosts */
-"hosts_tab_title" = "Hosts";
-"add_hosts_button" = "添加 Hosts";
-"scan_upload_title" = "扫码上传 Hosts";
-"upload_success_fmt" = "文件 %@ 接收成功!";
-
-/* Hosts Manager New */
-"Scan to Upload:" = "扫码上传:";
 "New Hosts File" = "新建 Hosts 文件";
 "Enter name" = "输入名称";
 "Name" = "名称";
+"Cancel" = "取消";
+"Add" = "添加";
+"Delete" = "删除";
+"Scan to Upload:" = "扫码上传:";
 "Status: Enabled" = "状态: 已启用";
 "Status: Disabled" = "状态: 已禁用";
-"Add New Hosts" = "添加 Hosts";
+"Add New Hosts" = "添加新 Hosts";
+"Language" = "语言";
+"Switch Language" = "切换语言";

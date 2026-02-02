@@ -23,10 +23,13 @@
 		3873EC962F3086EE00FE696C /* HostsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873EC8E2F3086EE00FE696C /* HostsManager.swift */; };
 		3873EC982F3086EE00FE696C /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873EC902F3086EE00FE696C /* PacketTunnelProvider.swift */; };
 		3873EC992F3086EE00FE696C /* HostsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873EC8E2F3086EE00FE696C /* HostsManager.swift */; };
-		3873ECA22F30885400FE696C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3873ECA02F30885400FE696C /* Localizable.strings */; };
-		3873ECA32F30885400FE696C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3873EC9D2F30885400FE696C /* InfoPlist.strings */; };
-		3873ECA42F30885400FE696C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3873ECA02F30885400FE696C /* Localizable.strings */; };
-		3873ECA52F30885400FE696C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3873EC9D2F30885400FE696C /* InfoPlist.strings */; };
+		3873ECB42F30A94A00FE696C /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ECAC2F30A94A00FE696C /* PacketTunnelProvider.swift */; };
+		3873ECB52F30A94A00FE696C /* HSBHostsDNSProxyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ECAE2F30A94A00FE696C /* HSBHostsDNSProxyProvider.swift */; };
+		3873ECB62F30A94A00FE696C /* HSBHostsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ECAF2F30A94A00FE696C /* HSBHostsManager.swift */; };
+		3873ECB72F30A94A00FE696C /* HSBHostsPacketTunnelProvider_Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ECB02F30A94A00FE696C /* HSBHostsPacketTunnelProvider_Template.swift */; };
+		3873ECB92F30A94A00FE696C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3873ECA82F30A94A00FE696C /* Localizable.strings */; };
+		3873ECBA2F30A94A00FE696C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3873ECA82F30A94A00FE696C /* Localizable.strings */; };
+		3873ECBE2F30A94A00FE696C /* HSBHostsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ECAF2F30A94A00FE696C /* HSBHostsManager.swift */; };
 		38C116372F2DA0EA001F800C /* Luanch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162F2F2DA0EA001F800C /* Luanch.storyboard */; };
 		38C1163A2F2DA0EA001F800C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162C2F2DA0EA001F800C /* Assets.xcassets */; };
 		38C1163B2F2DA0EA001F800C /* Pods-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */; };
@@ -39,6 +42,7 @@
 		9675E1FC20855F6500A4A84A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9675E1FB20855F6500A4A84A /* Foundation.framework */; };
 		9675E1FF20857AEF00A4A84A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9675E1FE20857AEF00A4A84A /* UIKit.framework */; };
 		A0D3EC453EAA9D89C222D412 /* Pods-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */; };
+		AA0000000000000HSBLANGBD /* HSBHostsLanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000HSBLANGMAN /* HSBHostsLanguageManager.swift */; };
 		C9E1329B4C23A6F9325BE169 /* TVHostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C116352F2DA0EA001F800C /* TVHostsViewController.swift */; };
 		D56D3A3116C056B9E4159D66 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C116322F2DA0EA001F800C /* SceneDelegate.m */; };
 		D8F7EB6D2492E6039BAE8B82 /* Pods_THLHOSTSNetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB3A45A4C24D03AB9398215 /* Pods_THLHOSTSNetworkExtension.framework */; };
@@ -90,8 +94,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		AA0000000000000000HSBREF /* HSBHostsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HSBHostsViewController.swift; path = Tabs/HSBHostsViewController.swift; sourceTree = "<group>"; };
-		AA0000000000000000HSBMGRREF /* HSBHostsManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HSBHostsManager.swift; path = Utils/HSBHostsManager.swift; sourceTree = "<group>"; };
 		0425ED73C7E4A5D061537AC1 /* Pods-THLHOSTSApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THLHOSTSApp.debug.xcconfig"; path = "Target Support Files/Pods-THLHOSTSApp/Pods-THLHOSTSApp.debug.xcconfig"; sourceTree = "<group>"; };
 		0C771D8D786932DA15C802D4 /* Pods-THLHOSTSApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THLHOSTSApp.release.xcconfig"; path = "Target Support Files/Pods-THLHOSTSApp/Pods-THLHOSTSApp.release.xcconfig"; sourceTree = "<group>"; };
 		28E63D697FF54EA468CAF797 /* THLHOSTSApp_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = THLHOSTSApp_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,10 +104,12 @@
 		3873EC8E2F3086EE00FE696C /* HostsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostsManager.swift; sourceTree = "<group>"; };
 		3873EC8F2F3086EE00FE696C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3873EC902F3086EE00FE696C /* PacketTunnelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketTunnelProvider.swift; sourceTree = "<group>"; };
-		3873EC9B2F30885400FE696C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		3873EC9C2F30885400FE696C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		3873EC9E2F30885400FE696C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		3873EC9F2F30885400FE696C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3873ECA62F30A94A00FE696C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		3873ECA72F30A94A00FE696C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3873ECAC2F30A94A00FE696C /* PacketTunnelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketTunnelProvider.swift; sourceTree = "<group>"; };
+		3873ECAE2F30A94A00FE696C /* HSBHostsDNSProxyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSBHostsDNSProxyProvider.swift; sourceTree = "<group>"; };
+		3873ECAF2F30A94A00FE696C /* HSBHostsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSBHostsManager.swift; sourceTree = "<group>"; };
+		3873ECB02F30A94A00FE696C /* HSBHostsPacketTunnelProvider_Template.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSBHostsPacketTunnelProvider_Template.swift; sourceTree = "<group>"; };
 		38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
 		38C1162C2F2DA0EA001F800C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		38C1162E2F2DA0EA001F800C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -126,6 +130,7 @@
 		9675E1FB20855F6500A4A84A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9675E1FE20857AEF00A4A84A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9A0DBD7CD5120CB3F0ED3339 /* Pods_THLHOSTSApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_THLHOSTSApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA00000000000000HSBLANGMAN /* HSBHostsLanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSBHostsLanguageManager.swift; sourceTree = "<group>"; };
 		B002B8621BAE420500C744AF /* THLHOSTSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = THLHOSTSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B163284E299A5B5F70A32549 /* Pods_THLHOSTSApp_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_THLHOSTSApp_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCF9AF3F84CF90EFEEB6063E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -140,7 +145,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				035F1DD15B648544E237F4AA /* UIKit.framework in Frameworks */,
-				AA0000000000000000NETEXTBLD /* NetworkExtension.framework in Frameworks */,
 				17C43C6EDED8EAA50AD5785E /* Foundation.framework in Frameworks */,
 				0FA452343E85D407473AFB0F /* AVFoundation.framework in Frameworks */,
 				896B88222E422FC17DBB4501 /* Pods_THLHOSTSApp_iOS.framework in Frameworks */,
@@ -204,13 +208,32 @@
 			path = NetworkExtension;
 			sourceTree = "<group>";
 		};
-		3873ECA12F30885400FE696C /* Resouces */ = {
+		3873ECA92F30A94A00FE696C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3873EC9D2F30885400FE696C /* InfoPlist.strings */,
-				3873ECA02F30885400FE696C /* Localizable.strings */,
+				3873ECA82F30A94A00FE696C /* Localizable.strings */,
 			);
-			path = Resouces;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		3873ECAD2F30A94A00FE696C /* ExtensionTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				3873ECAC2F30A94A00FE696C /* PacketTunnelProvider.swift */,
+			);
+			path = ExtensionTemplate;
+			sourceTree = "<group>";
+		};
+		3873ECB22F30A94A00FE696C /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				3873ECAD2F30A94A00FE696C /* ExtensionTemplate */,
+				3873ECAE2F30A94A00FE696C /* HSBHostsDNSProxyProvider.swift */,
+				3873ECAF2F30A94A00FE696C /* HSBHostsManager.swift */,
+				3873ECB02F30A94A00FE696C /* HSBHostsPacketTunnelProvider_Template.swift */,
+				AA00000000000000HSBLANGMAN /* HSBHostsLanguageManager.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		38C1162B2F2DA0EA001F800C /* Data */ = {
@@ -224,7 +247,8 @@
 		38C116362F2DA0EA001F800C /* THLHOSTSApp */ = {
 			isa = PBXGroup;
 			children = (
-				3873ECA12F30885400FE696C /* Resouces */,
+				3873ECA92F30A94A00FE696C /* Resources */,
+				3873ECB22F30A94A00FE696C /* Utils */,
 				3873EC912F3086EE00FE696C /* NetworkExtension */,
 				3873EC872F3086AD00FE696C /* Managers */,
 				3873EC892F3086AD00FE696C /* Models */,
@@ -239,8 +263,6 @@
 				38C116332F2DA0EA001F800C /* THLHOSTSApp.pch */,
 				38C116342F2DA0EA001F800C /* THLHOSTSApp-Bridging-Header.h */,
 				38C116352F2DA0EA001F800C /* TVHostsViewController.swift */,
-				AA0000000000000000HSBREF /* HSBHostsViewController.swift */,
-				AA0000000000000000HSBMGRREF /* HSBHostsManager.swift */,
 			);
 			path = THLHOSTSApp;
 			sourceTree = "<group>";
@@ -272,7 +294,6 @@
 			children = (
 				382CA82D2D59D81A00CD627E /* AVFoundation.framework */,
 				9675E1FE20857AEF00A4A84A /* UIKit.framework */,
-				AA0000000000000000NETEXTREF /* NetworkExtension.framework */,
 				9675E1FB20855F6500A4A84A /* Foundation.framework */,
 				9A0DBD7CD5120CB3F0ED3339 /* Pods_THLHOSTSApp.framework */,
 				0084E894922F1CFD086A19C8 /* tvOS */,
@@ -286,8 +307,6 @@
 		B002B8591BAE420500C744AF = {
 			isa = PBXGroup;
 			children = (
-				AA0000000000000000HSBREF /* HSBHostsViewController.swift */,
-				AA0000000000000000HSBMGRREF /* HSBHostsManager.swift */,
 				3873EC852F30562F00FE696C /* THLHOSTSApp_iOS.entitlements */,
 				38C116362F2DA0EA001F800C /* THLHOSTSApp */,
 				38DA4A022CFD629E00E0A837 /* InfoPlist.strings */,
@@ -302,7 +321,7 @@
 			children = (
 				B002B8621BAE420500C744AF /* THLHOSTSApp.app */,
 				28E63D697FF54EA468CAF797 /* THLHOSTSApp_iOS.app */,
-				85D776112E188077CCE2EAA2 /* .appex */,
+				85D776112E188077CCE2EAA2 /* THLHOSTSNetworkExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -422,9 +441,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEADBEEF0000000000000002 /* LaunchScreen.storyboard in Resources */,
+				3873ECB92F30A94A00FE696C /* Localizable.strings in Resources */,
 				127D20BAD0BA37DA78227400 /* Assets.xcassets in Resources */,
-				3873ECA22F30885400FE696C /* Localizable.strings in Resources */,
-				3873ECA32F30885400FE696C /* InfoPlist.strings in Resources */,
 				A0D3EC453EAA9D89C222D412 /* Pods-acknowledgements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -441,9 +459,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				38C116372F2DA0EA001F800C /* Luanch.storyboard in Resources */,
+				3873ECBA2F30A94A00FE696C /* Localizable.strings in Resources */,
 				38C1163A2F2DA0EA001F800C /* Assets.xcassets in Resources */,
-				3873ECA42F30885400FE696C /* Localizable.strings in Resources */,
-				3873ECA52F30885400FE696C /* InfoPlist.strings in Resources */,
 				38C1163B2F2DA0EA001F800C /* Pods-acknowledgements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -599,6 +616,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA0000000000000HSBLANGBD /* HSBHostsLanguageManager.swift in Sources */,
+				3873ECBE2F30A94A00FE696C /* HSBHostsManager.swift in Sources */,
 				38C1163C2F2DA0EA001F800C /* main.m in Sources */,
 				3873EC952F3086EE00FE696C /* PacketTunnelProvider.swift in Sources */,
 				3873EC962F3086EE00FE696C /* HostsManager.swift in Sources */,
@@ -622,8 +641,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA0000000000000000HSBBLD /* HSBHostsViewController.swift in Sources */,
-				AA0000000000000000HSBMGRBLD /* HSBHostsManager.swift in Sources */,
+				3873ECB42F30A94A00FE696C /* PacketTunnelProvider.swift in Sources */,
+				3873ECB52F30A94A00FE696C /* HSBHostsDNSProxyProvider.swift in Sources */,
+				3873ECB62F30A94A00FE696C /* HSBHostsManager.swift in Sources */,
+				3873ECB72F30A94A00FE696C /* HSBHostsPacketTunnelProvider_Template.swift in Sources */,
 				488CE6BB44544A0A23601941 /* main.m in Sources */,
 				3873EC932F3086EE00FE696C /* PacketTunnelProvider.swift in Sources */,
 				3873EC942F3086EE00FE696C /* HostsManager.swift in Sources */,
@@ -646,20 +667,11 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		3873EC9D2F30885400FE696C /* InfoPlist.strings */ = {
+		3873ECA82F30A94A00FE696C /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				3873EC9B2F30885400FE696C /* zh-Hans */,
-				3873EC9C2F30885400FE696C /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		3873ECA02F30885400FE696C /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3873EC9E2F30885400FE696C /* zh-Hans */,
-				3873EC9F2F30885400FE696C /* en */,
+				3873ECA62F30A94A00FE696C /* zh-Hans */,
+				3873ECA72F30A94A00FE696C /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -683,8 +695,8 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				DEVELOPMENT_TEAM = 876385K952;
 				INFOPLIST_FILE = THLHOSTSApp/NetworkExtension/Info.plist;
-				PRODUCT_NAME = THLHOSTSNetworkExtension;
 				PRODUCT_BUNDLE_IDENTIFIER = com.never88gone.thlhosts.extension;
+				PRODUCT_NAME = THLHOSTSNetworkExtension;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvsimulator appletvos macosx";
 				SWIFT_VERSION = 4.2;
@@ -699,8 +711,8 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				DEVELOPMENT_TEAM = 876385K952;
 				INFOPLIST_FILE = THLHOSTSApp/NetworkExtension/Info.plist;
-				PRODUCT_NAME = THLHOSTSNetworkExtension;
 				PRODUCT_BUNDLE_IDENTIFIER = com.never88gone.thlhosts.extension;
+				PRODUCT_NAME = THLHOSTSNetworkExtension;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvsimulator appletvos macosx";
 				SWIFT_VERSION = 4.2;

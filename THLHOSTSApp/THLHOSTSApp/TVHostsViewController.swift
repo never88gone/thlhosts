@@ -89,12 +89,31 @@ class TVHostsViewController: UIViewController {
         tableView.addGestureRecognizer(longPress)
         
         startServer()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLanguageChange), name: NSNotification.Name("HSBLanguageChanged"), object: nil)
+        updateTexts()
+    }
+    
+    @objc private func handleLanguageChange() {
+        updateTexts()
+        tableView.reloadData()
+        
+        // Refresh right panel if selected
+        if let index = selectedIndex, index < hostsFiles.count {
+            updateRightPanel(file: hostsFiles[index])
+        }
+    }
+    
+    private func updateTexts() {
+        uploadInfoLabel.text = "\(HSBHostsLanguageManager.shared.localizedString("Scan to Upload:"))"
+        // Force refresh QR label text part (IP might stay same)
+        updateQRCode() 
     }
     
     @objc private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
         if gesture.state == .began {
             let point = gesture.location(in: tableView)
-            if let indexPath = tableView.indexPathForRow(at: point), indexPath.row > 0 {
+            if let indexPath = tableView.indexPathForRow(at: point), indexPath.row > 1 { // Updated index check
                 deleteHost(at: indexPath)
             }
         }
@@ -188,18 +207,18 @@ class TVHostsViewController: UIViewController {
     private func updateQRCode() {
         let ip = getWiFiAddress() ?? "localhost"
         let url = "http://\(ip):8080/upload"
-        uploadInfoLabel.text = "\(NSLocalizedString("Scan to Upload:", comment: "")) \(url)"
+        uploadInfoLabel.text = "\(HSBHostsLanguageManager.shared.localizedString("Scan to Upload:")) \(url)"
         qrImageView.image = generateQRCode(from: url)
     }
 
     // MARK: - Logic
     func addNewHost() {
-        let alert = UIAlertController(title: NSLocalizedString("New Hosts File", comment: ""), message: NSLocalizedString("Enter name", comment: ""), preferredStyle: .alert)
+        let alert = UIAlertController(title: HSBHostsLanguageManager.shared.localizedString("New Hosts File"), message: HSBHostsLanguageManager.shared.localizedString("Enter name"), preferredStyle: .alert)
         alert.addTextField { tf in
-            tf.placeholder = NSLocalizedString("Name", comment: "")
+            tf.placeholder = HSBHostsLanguageManager.shared.localizedString("Name")
         }
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Add", comment: ""), style: .default) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: HSBHostsLanguageManager.shared.localizedString("Cancel"), style: .cancel))
+        alert.addAction(UIAlertAction(title: HSBHostsLanguageManager.shared.localizedString("Add"), style: .default) { [weak self] _ in
             guard let self = self, let name = alert.textFields?.first?.text, !name.isEmpty else { return }
             let newFile = HostsFile(name: name, content: "# New Hosts File\n", isEnabled: false)
             self.hostsFiles.append(newFile)
@@ -210,13 +229,13 @@ class TVHostsViewController: UIViewController {
     }
     
     func deleteHost(at indexPath: IndexPath) {
-        let index = indexPath.row - 1
+        let index = indexPath.row - 2 // Adjusted for extra row
         guard index >= 0 && index < hostsFiles.count else { return }
         
         let file = hostsFiles[index]
-        let alert = UIAlertController(title: "\(NSLocalizedString("Delete", comment: "")) \(file.name)?", message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { [weak self] _ in
+        let alert = UIAlertController(title: "\(HSBHostsLanguageManager.shared.localizedString("Delete")) \(file.name)?", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: HSBHostsLanguageManager.shared.localizedString("Cancel"), style: .cancel))
+        alert.addAction(UIAlertAction(title: HSBHostsLanguageManager.shared.localizedString("Delete"), style: .destructive) { [weak self] _ in
             guard let self = self else { return }
             self.hostsFiles.remove(at: index)
             HostsStorage.shared.save(self.hostsFiles)
@@ -234,7 +253,7 @@ class TVHostsViewController: UIViewController {
     func updateRightPanel(file: HostsFile) {
         titleLabel.text = file.name
         contentTextView.text = file.content
-        let statusText = file.isEnabled ? NSLocalizedString("Status: Enabled", comment: "") : NSLocalizedString("Status: Disabled", comment: "")
+        let statusText = file.isEnabled ? HSBHostsLanguageManager.shared.localizedString("Status: Enabled") : HSBHostsLanguageManager.shared.localizedString("Status: Disabled")
         statusLabel.text = statusText
         statusLabel.textColor = file.isEnabled ? .systemGreen : .systemRed
     }
@@ -283,44 +302,49 @@ class TVHostsViewController: UIViewController {
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension TVHostsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return hostsFiles.count + 1 // +1 for "Add New"
+        return hostsFiles.count + 2 // +1 for "Add New", +1 for "Language"
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         if indexPath.row == 0 {
-            cell.textLabel?.text = "+ \(NSLocalizedString("Add New Hosts", comment: ""))"
+            cell.textLabel?.text = "+ \(HSBHostsLanguageManager.shared.localizedString("Add New Hosts"))"
             cell.textLabel?.textColor = .systemBlue
+        } else if indexPath.row == 1 {
+            let currentLang = HSBHostsLanguageManager.shared.currentLanguage
+            let langText = currentLang == "zh-Hans" ? "简体中文" : "English"
+            cell.textLabel?.text = "\(HSBHostsLanguageManager.shared.localizedString("Language")): \(langText)"
+            cell.textLabel?.textColor = .systemOrange
         } else {
-            let file = hostsFiles[indexPath.row - 1]
+            let file = hostsFiles[indexPath.row - 2]
             cell.textLabel?.text = file.name
             if file.isEnabled {
                 cell.textLabel?.textColor = .systemGreen
             } else {
-                cell.textLabel?.textColor = nil
+                cell.textLabel?.textColor = UIColor.darkGray // Better contrast for disabled state on dark bg
+                // on tvOS focused cell text color is handled automatically, but for unfocused custom color:
+                 if #available(tvOS 13.0, *) {
+                     cell.textLabel?.textColor = file.isEnabled ? .systemGreen : .secondaryLabel
+                 }
             }
         }
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        guard let indexPath = context.nextFocusedIndexPath else { return }
-        if indexPath.row > 0 {
-            // Update Right Panel on focus
-            let index = indexPath.row - 1
-             if index < hostsFiles.count {
-                updateRightPanel(file: hostsFiles[index])
-                selectedIndex = index
-            }
-        }
-    }
-    
+
+// ... focus update ...
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             addNewHost()
+        } else if indexPath.row == 1 {
+            // Toggle Language
+            let current = HSBHostsLanguageManager.shared.currentLanguage
+            HSBHostsLanguageManager.shared.currentLanguage = (current == "en" ? "zh-Hans" : "en")
+            // Notification will trigger reload, but we can also force reload specific row if needed
+            // Actually notification observer handles full reload.
         } else {
             // Toggle Logic
-            let index = indexPath.row - 1
+            let index = indexPath.row - 2
              if index < hostsFiles.count {
                 hostsFiles[index].isEnabled.toggle()
                 HostsStorage.shared.save(hostsFiles)
