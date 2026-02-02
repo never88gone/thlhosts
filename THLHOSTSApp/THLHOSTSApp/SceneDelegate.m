@@ -7,7 +7,14 @@
 
 #import "SceneDelegate.h"
 #import <UIKit/UIKit.h>
-#import "HSBSmbApp-Swift.h"
+
+#import <TargetConditionals.h>
+
+#if TARGET_OS_TV
+#import "THLHOSTSApp-Swift.h"
+#else
+#import "THLHOSTSApp_iOS-Swift.h"
+#endif
 
 @implementation SceneDelegate
 
@@ -20,7 +27,11 @@
   UIWindowScene *windowScene = (UIWindowScene *)scene;
 
   self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
+#if TARGET_OS_TV
+  self.window.backgroundColor = [UIColor whiteColor];
+#else
   self.window.backgroundColor = [UIColor systemBackgroundColor];
+#endif
   
   // Initialize Swift ViewController via Factory
   UIViewController *rootVC = [HostsViewController makeRootViewController];

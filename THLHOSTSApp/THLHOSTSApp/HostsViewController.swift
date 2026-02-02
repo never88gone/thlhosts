@@ -1,11 +1,13 @@
 
 import UIKit
 import SnapKit
+#if !os(tvOS)
 import NetworkExtension
+#endif
 
-@objc class HostsViewController: UIViewController {
+@objc public class HostsViewController: UIViewController {
     
-    @objc static func makeRootViewController() -> UIViewController {
+    @objc public static func makeRootViewController() -> UIViewController {
         #if os(tvOS)
         return TVHostsViewController()
         #else
@@ -39,14 +41,18 @@ import NetworkExtension
         return button
     }()
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupActions()
     }
     
     private func setupUI() {
+        #if os(iOS)
         view.backgroundColor = .systemBackground
+        #else
+        view.backgroundColor = .white
+        #endif
         
         view.addSubview(titleLabel)
         view.addSubview(statusLabel)
@@ -82,6 +88,7 @@ import NetworkExtension
     }
 
     private func startVPN() {
+        #if !os(tvOS)
         NETunnelProviderManager.loadAllFromPreferences { [weak self] managers, error in
             guard let self = self else { return }
             if let error = error {
@@ -122,9 +129,13 @@ import NetworkExtension
                 }
             }
         }
+        #else
+        print("VPN Not Supported on tvOS")
+        #endif
     }
     
     private func stopVPN() {
+        #if !os(tvOS)
         NETunnelProviderManager.loadAllFromPreferences { [weak self] managers, _ in
             guard let manager = managers?.first else { return }
             manager.connection.stopVPNTunnel()
@@ -132,6 +143,7 @@ import NetworkExtension
                 self?.updateStatus(connected: false)
             }
         }
+        #endif
     }
     
     private func updateStatus(connected: Bool) {
