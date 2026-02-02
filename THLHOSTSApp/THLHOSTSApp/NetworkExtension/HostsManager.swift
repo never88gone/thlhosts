@@ -19,11 +19,27 @@ class HostsManager {
         // Load from UserDefaults or Shared Container
     }
     
-    func startServer() {
+    var onHostsUploaded: ((String) -> Void)?
+    
+    func startServer(port: in_port_t = 8080) {
+        // Setup Route
+        server["/upload"] = { [weak self] request in
+            guard let self = self else { return .internalServerError(nil) }
+            if let body = String(bytes: request.body, encoding: .utf8) {
+                print("Received upload content: \(body.prefix(50))...")
+                DispatchQueue.main.async {
+                    self.onHostsUploaded?(body)
+                }
+                return .ok(.text("Uploaded Successfully"))
+            }
+            return .badRequest(.text("Invalid body"))
+        }
+        
+        server["/hello"] = { .ok(.htmlBody("You asked for \($0)")) }
+        
         do {
-            server["/hello"] = { .ok(.htmlBody("You asked for \($0)")) }
-            try server.start(8080)
-            print("Server started on port 8080")
+            try server.start(port)
+            print("Server started on port \(port)")
         } catch {
             print("Server start error: \(error)")
         }

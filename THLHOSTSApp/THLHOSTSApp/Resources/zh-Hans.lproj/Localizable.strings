@@ -102,3 +102,12 @@
 "add_hosts_button" = "添加 Hosts";
 "scan_upload_title" = "扫码上传 Hosts";
 "upload_success_fmt" = "文件 %@ 接收成功!";
+
+/* Hosts Manager New */
+"Scan to Upload:" = "扫码上传:";
+"New Hosts File" = "新建 Hosts 文件";
+"Enter name" = "输入名称";
+"Name" = "名称";
+"Status: Enabled" = "状态: 已启用";
+"Status: Disabled" = "状态: 已禁用";
+"Add New Hosts" = "添加 Hosts";

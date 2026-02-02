@@ -34,7 +34,24 @@
 #endif
   
   // Initialize Swift ViewController via Factory
-  UIViewController *rootVC = [HostsViewController makeRootViewController];
+  UIViewController *rootVC;
+#if TARGET_OS_TV
+  rootVC = [[TVHostsViewController alloc] init];
+#else
+  // Dynamic instantiation to bypass header bridging issues
+  Class hostsVCClass = NSClassFromString(@"THLHOSTSApp_iOS.HSBHostsViewController");
+  if (!hostsVCClass) {
+      hostsVCClass = NSClassFromString(@"HSBHostsViewController");
+  }
+  
+  if (hostsVCClass) {
+      rootVC = [[hostsVCClass alloc] init];
+  } else {
+      rootVC = [[UIViewController alloc] init];
+      rootVC.view.backgroundColor = [UIColor redColor];
+  }
+#endif
+  
   UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:rootVC];
   self.window.rootViewController = nav;
   [self.window makeKeyAndVisible];

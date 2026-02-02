@@ -102,3 +102,12 @@
 "add_hosts_button" = "Add Hosts";
 "scan_upload_title" = "Scan to Upload Hosts";
 "upload_success_fmt" = "File %@ Received!";
+
+/* Hosts Manager New */
+"Scan to Upload:" = "Scan to Upload:";
+"New Hosts File" = "New Hosts File";
+"Enter name" = "Enter name";
+"Name" = "Name";
+"Status: Enabled" = "Status: Enabled";
+"Status: Disabled" = "Status: Disabled";
+"Add New Hosts" = "Add New Hosts";
