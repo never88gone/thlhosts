@@ -3,6 +3,9 @@ import SnapKit
 
 class HostsDetailViewController: UIViewController {
 
+    // Background Effects
+    private let glassBackground = HSBLiquidGlassView()
+    
     // MARK: - UI Elements
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -22,7 +25,8 @@ class HostsDetailViewController: UIViewController {
     private let contentTextView: UITextView = {
         let tv = UITextView()
         tv.font = UIFont.monospacedSystemFont(ofSize: 20, weight: .regular)
-        tv.backgroundColor = UIColor(white: 0.2, alpha: 1.0)
+        // Semi-transparent background to blend with glass
+        tv.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
         tv.textColor = .white
         tv.isUserInteractionEnabled = true
         tv.panGestureRecognizer.allowedTouchTypes = [NSNumber(value: UITouch.TouchType.indirect.rawValue)]
@@ -93,7 +97,13 @@ class HostsDetailViewController: UIViewController {
     
     // MARK: - Setup
     private func setupUI() {
-        view.backgroundColor = .black // Match parent dark theme
+        view.backgroundColor = .clear
+        
+        // Add Glass Background
+        view.addSubview(glassBackground)
+        glassBackground.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         
         view.addSubview(titleLabel)
         view.addSubview(statusLabel)

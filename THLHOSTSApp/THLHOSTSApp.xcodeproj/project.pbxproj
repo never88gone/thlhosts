@@ -17,23 +17,21 @@
 		3873EC8B2F3086AD00FE696C /* HostsFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873EC882F3086AD00FE696C /* HostsFile.swift */; };
 		3873EC8C2F3086AD00FE696C /* HostsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873EC862F3086AD00FE696C /* HostsStorage.swift */; };
 		3873EC8D2F3086AD00FE696C /* HostsFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873EC882F3086AD00FE696C /* HostsFile.swift */; };
-		3873EC932F3086EE00FE696C /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873EC902F3086EE00FE696C /* PacketTunnelProvider.swift */; };
 		3873EC942F3086EE00FE696C /* HostsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873EC8E2F3086EE00FE696C /* HostsManager.swift */; };
 		3873EC952F3086EE00FE696C /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873EC902F3086EE00FE696C /* PacketTunnelProvider.swift */; };
 		3873EC962F3086EE00FE696C /* HostsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873EC8E2F3086EE00FE696C /* HostsManager.swift */; };
 		3873EC982F3086EE00FE696C /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873EC902F3086EE00FE696C /* PacketTunnelProvider.swift */; };
 		3873EC992F3086EE00FE696C /* HostsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873EC8E2F3086EE00FE696C /* HostsManager.swift */; };
-		3873ECB42F30A94A00FE696C /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ECAC2F30A94A00FE696C /* PacketTunnelProvider.swift */; };
 		3873ECB52F30A94A00FE696C /* HSBHostsDNSProxyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ECAE2F30A94A00FE696C /* HSBHostsDNSProxyProvider.swift */; };
 		3873ECB62F30A94A00FE696C /* HSBHostsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ECAF2F30A94A00FE696C /* HSBHostsManager.swift */; };
 		3873ECB72F30A94A00FE696C /* HSBHostsPacketTunnelProvider_Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ECB02F30A94A00FE696C /* HSBHostsPacketTunnelProvider_Template.swift */; };
 		3873ECB92F30A94A00FE696C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3873ECA82F30A94A00FE696C /* Localizable.strings */; };
 		3873ECBA2F30A94A00FE696C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3873ECA82F30A94A00FE696C /* Localizable.strings */; };
 		3873ECBE2F30A94A00FE696C /* HSBHostsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ECAF2F30A94A00FE696C /* HSBHostsManager.swift */; };
-		38C116372F2DA0EA001F800C /* Luanch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162F2F2DA0EA001F800C /* Luanch.storyboard */; };
-		38C1163A2F2DA0EA001F800C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162C2F2DA0EA001F800C /* Assets.xcassets */; };
 		3873ECDA2F30D94A00FE696D /* HostsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ECDC2F30D94A00FE696D /* HostsDetailViewController.swift */; };
 		3873ECDB2F30D94A00FE696D /* HostsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ECDC2F30D94A00FE696D /* HostsDetailViewController.swift */; };
+		38C116372F2DA0EA001F800C /* Luanch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162F2F2DA0EA001F800C /* Luanch.storyboard */; };
+		38C1163A2F2DA0EA001F800C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162C2F2DA0EA001F800C /* Assets.xcassets */; };
 		38C1163B2F2DA0EA001F800C /* Pods-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */; };
 		38C1163C2F2DA0EA001F800C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C116302F2DA0EA001F800C /* main.m */; };
 		38C1163D2F2DA0EA001F800C /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C116322F2DA0EA001F800C /* SceneDelegate.m */; };
@@ -44,14 +42,15 @@
 		9675E1FC20855F6500A4A84A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9675E1FB20855F6500A4A84A /* Foundation.framework */; };
 		9675E1FF20857AEF00A4A84A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9675E1FE20857AEF00A4A84A /* UIKit.framework */; };
 		A0D3EC453EAA9D89C222D412 /* Pods-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */; };
-		AA0000000000000HSBLANGIOS /* HSBHostsLanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000HSBLANGMAN /* HSBHostsLanguageManager.swift */; };
-		AA0000000000000HSBLANGBD /* HSBHostsLanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000HSBLANGMAN /* HSBHostsLanguageManager.swift */; };
+		AA000000000000000VISFXTV /* HSBVisualEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000VISFXREF /* HSBVisualEffects.swift */; };
+		AA00000000000000VISFXIOS /* HSBVisualEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000VISFXREF /* HSBVisualEffects.swift */; };
 		AA0000000000000HOSTSETIOS /* HostsSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ECBF2F30A94A00FE696D /* HostsSettingsViewController.swift */; };
-		AA0000000000000HOSTSETBF /* HostsSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ECBF2F30A94A00FE696D /* HostsSettingsViewController.swift */; };
+		AA0000000000000HSBLANGBD /* HSBHostsLanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000HSBLANGMAN /* HSBHostsLanguageManager.swift */; };
+		AA0000000000000HSBLANGIOS /* HSBHostsLanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000HSBLANGMAN /* HSBHostsLanguageManager.swift */; };
 		C9E1329B4C23A6F9325BE169 /* HostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C116352F2DA0EA001F800C /* HostsViewController.swift */; };
 		D56D3A3116C056B9E4159D66 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C116322F2DA0EA001F800C /* SceneDelegate.m */; };
 		D8F7EB6D2492E6039BAE8B82 /* Pods_THLHOSTSNetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB3A45A4C24D03AB9398215 /* Pods_THLHOSTSNetworkExtension.framework */; };
-		DEADBEEF0000000000000002 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DEADBEEF0000000000000001 /* LaunchScreen.storyboard */; };
+		DEADBEEF0000000000000002 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		EC82E83C26A656190CD83F7D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0B7EB5F373374F55971E27 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -115,7 +114,9 @@
 		3873ECAE2F30A94A00FE696C /* HSBHostsDNSProxyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSBHostsDNSProxyProvider.swift; sourceTree = "<group>"; };
 		3873ECAF2F30A94A00FE696C /* HSBHostsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSBHostsManager.swift; sourceTree = "<group>"; };
 		3873ECB02F30A94A00FE696C /* HSBHostsPacketTunnelProvider_Template.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSBHostsPacketTunnelProvider_Template.swift; sourceTree = "<group>"; };
-		38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
+		3873ECBF2F30A94A00FE696D /* HostsSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostsSettingsViewController.swift; sourceTree = "<group>"; };
+		3873ECDC2F30D94A00FE696D /* HostsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostsDetailViewController.swift; sourceTree = "<group>"; };
+		38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
 		38C1162C2F2DA0EA001F800C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		38C1162E2F2DA0EA001F800C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		38C1162F2F2DA0EA001F800C /* Luanch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Luanch.storyboard; sourceTree = "<group>"; };
@@ -136,14 +137,12 @@
 		9675E1FE20857AEF00A4A84A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9A0DBD7CD5120CB3F0ED3339 /* Pods_THLHOSTSApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_THLHOSTSApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA00000000000000HSBLANGMAN /* HSBHostsLanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSBHostsLanguageManager.swift; sourceTree = "<group>"; };
-		3873ECBF2F30A94A00FE696D /* HostsSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostsSettingsViewController.swift; sourceTree = "<group>"; };
+		AA00000000000000VISFXREF /* HSBVisualEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSBVisualEffects.swift; sourceTree = "<group>"; };
 		B002B8621BAE420500C744AF /* THLHOSTSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = THLHOSTSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B163284E299A5B5F70A32549 /* Pods_THLHOSTSApp_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_THLHOSTSApp_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCF9AF3F84CF90EFEEB6063E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		C13145612FCF6B6E9E71A7F2 /* Pods-THLHOSTSNetworkExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THLHOSTSNetworkExtension.debug.xcconfig"; path = "Target Support Files/Pods-THLHOSTSNetworkExtension/Pods-THLHOSTSNetworkExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		CFB3A45A4C24D03AB9398215 /* Pods_THLHOSTSNetworkExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_THLHOSTSNetworkExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3873ECDC2F30D94A00FE696D /* HostsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostsDetailViewController.swift; sourceTree = "<group>"; };
-		38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "Pods-acknowledgements.plist"; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,6 +239,7 @@
 				3873ECB02F30A94A00FE696C /* HSBHostsPacketTunnelProvider_Template.swift */,
 				AA00000000000000HSBLANGMAN /* HSBHostsLanguageManager.swift */,
 				3873ECBF2F30A94A00FE696D /* HostsSettingsViewController.swift */,
+				AA00000000000000VISFXREF /* HSBVisualEffects.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -264,7 +264,6 @@
 				38C1162C2F2DA0EA001F800C /* Assets.xcassets */,
 				38C1162E2F2DA0EA001F800C /* Info.plist */,
 				38C1162F2F2DA0EA001F800C /* Luanch.storyboard */,
-				DEADBEEF0000000000000001 /* LaunchScreen.storyboard */,
 				38C116302F2DA0EA001F800C /* main.m */,
 				38C116312F2DA0EA001F800C /* SceneDelegate.h */,
 				38C116322F2DA0EA001F800C /* SceneDelegate.m */,
@@ -449,7 +448,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DEADBEEF0000000000000002 /* LaunchScreen.storyboard in Resources */,
+				DEADBEEF0000000000000002 /* (null) in Resources */,
 				3873ECB92F30A94A00FE696C /* Localizable.strings in Resources */,
 				127D20BAD0BA37DA78227400 /* Assets.xcassets in Resources */,
 				A0D3EC453EAA9D89C222D412 /* Pods-acknowledgements.plist in Resources */,
@@ -625,7 +624,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-
+				AA000000000000000VISFXTV /* HSBVisualEffects.swift in Sources */,
 				AA0000000000000HSBLANGBD /* HSBHostsLanguageManager.swift in Sources */,
 				3873ECBE2F30A94A00FE696C /* HSBHostsManager.swift in Sources */,
 				38C1163C2F2DA0EA001F800C /* main.m in Sources */,
@@ -652,12 +651,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-
 				3873ECB52F30A94A00FE696C /* HSBHostsDNSProxyProvider.swift in Sources */,
 				3873ECB62F30A94A00FE696C /* HSBHostsManager.swift in Sources */,
 				3873ECB72F30A94A00FE696C /* HSBHostsPacketTunnelProvider_Template.swift in Sources */,
 				488CE6BB44544A0A23601941 /* main.m in Sources */,
-
 				3873EC942F3086EE00FE696C /* HostsManager.swift in Sources */,
 				D56D3A3116C056B9E4159D66 /* SceneDelegate.m in Sources */,
 				3873EC8C2F3086AD00FE696C /* HostsStorage.swift in Sources */,
@@ -666,6 +663,7 @@
 				C9E1329B4C23A6F9325BE169 /* HostsViewController.swift in Sources */,
 				AA0000000000000HSBLANGIOS /* HSBHostsLanguageManager.swift in Sources */,
 				AA0000000000000HOSTSETIOS /* HostsSettingsViewController.swift in Sources */,
+				AA00000000000000VISFXIOS /* HSBVisualEffects.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

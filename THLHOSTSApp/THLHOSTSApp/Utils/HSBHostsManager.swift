@@ -14,7 +14,7 @@ import NetworkExtension
     // VPN Manager
     private var vpnManager: NETunnelProviderManager?
     private let kTunnelBundleSuffix = ".HSBHostsExtension"
-    private let kAppGroupIdentifier = "group.com.hsb.tvbrowser" // 修改为你的 App Group ID
+    private let kAppGroupIdentifier = "com.never88gone.thlhosts" // 修改为你的 App Group ID
     
     // VPN Status
     @Published public var isVPNEnabled: Bool = false

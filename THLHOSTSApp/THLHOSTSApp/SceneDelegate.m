@@ -32,9 +32,14 @@
 
   self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
 #if TARGET_OS_TV
-  self.window.backgroundColor = [UIColor whiteColor];
+  self.window.backgroundColor = [UIColor blackColor];
 #else
-  self.window.backgroundColor = [UIColor systemBackgroundColor];
+  if (@available(iOS 13.0, *)) {
+      self.window.backgroundColor = [UIColor systemBackgroundColor]; // Or black if you want forced dark mode
+      self.window.backgroundColor = [UIColor blackColor]; 
+  } else {
+      self.window.backgroundColor = [UIColor blackColor];
+  }
 #endif
   
   // Initialize Swift ViewController
