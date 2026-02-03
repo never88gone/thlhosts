@@ -11,7 +11,11 @@
 #import <TargetConditionals.h>
 
 #if TARGET_OS_TV
+#if __has_include("THLHOSTSApp-Swift.h")
 #import "THLHOSTSApp-Swift.h"
+#elif __has_include("THLHOSTSApp_iOS-Swift.h")
+#import "THLHOSTSApp_iOS-Swift.h"
+#endif
 #else
 #import "THLHOSTSApp_iOS-Swift.h"
 #endif
@@ -33,24 +37,9 @@
   self.window.backgroundColor = [UIColor systemBackgroundColor];
 #endif
   
-  // Initialize Swift ViewController via Factory
-  UIViewController *rootVC;
-#if TARGET_OS_TV
-  rootVC = [[TVHostsViewController alloc] init];
-#else
-  // Dynamic instantiation to bypass header bridging issues
-  Class hostsVCClass = NSClassFromString(@"THLHOSTSApp_iOS.HSBHostsViewController");
-  if (!hostsVCClass) {
-      hostsVCClass = NSClassFromString(@"HSBHostsViewController");
-  }
-  
-  if (hostsVCClass) {
-      rootVC = [[hostsVCClass alloc] init];
-  } else {
-      rootVC = [[UIViewController alloc] init];
-      rootVC.view.backgroundColor = [UIColor redColor];
-  }
-#endif
+  // Initialize Swift ViewController
+  // Initialize Swift ViewController via Factory to avoid header issues
+  UIViewController *rootVC = [[HSBHostsManager shared] makeRootViewController];
   
   UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:rootVC];
   self.window.rootViewController = nav;

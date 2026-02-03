@@ -434,4 +434,9 @@ import NetworkExtension
         }
         return ipv4Address
     }
+    // MARK: - UI Factory
+    
+    @objc public func makeRootViewController() -> UIViewController {
+        return HostsViewController()
+    }
 }
