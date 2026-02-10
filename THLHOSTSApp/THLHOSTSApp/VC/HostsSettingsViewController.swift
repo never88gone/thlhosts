@@ -9,12 +9,25 @@ class HostsSettingsViewController: UIViewController {
         ("zh-Hans", "简体中文")
     ]
     
+    private let sections = ["Language", "Tools"]
+    
     // Background Effects
     private let glassBackground = HSBLiquidGlassView()
     
     // MARK: - UI Elements
     private let tableView: UITableView = {
-        let tv = UITableView(frame: .zero, style: .grouped)
+        let style: UITableView.Style
+        #if os(iOS)
+        if #available(iOS 13.0, *) {
+            style = .insetGrouped
+        } else {
+            style = .grouped
+        }
+        #else
+        style = .grouped
+        #endif
+        
+        let tv = UITableView(frame: .zero, style: style)
         tv.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tv.backgroundColor = .clear // Transparent
         return tv
@@ -40,7 +53,7 @@ class HostsSettingsViewController: UIViewController {
     }
     
     private func updateTexts() {
-        title = HSBHostsLanguageManager.shared.localizedString("Language")
+        title = HSBHostsLanguageManager.shared.localizedString("Settings")
     }
     
     // MARK: - Setup
@@ -69,19 +82,28 @@ class HostsSettingsViewController: UIViewController {
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension HostsSettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return languages.count
+        if section == 0 {
+            return languages.count
+        } else {
+            return 1 // Logs
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return HSBHostsLanguageManager.shared.localizedString("Language")
+        } else {
+            return HSBHostsLanguageManager.shared.localizedString("Tools")
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let (code, name) = languages[indexPath.row]
-        
         cell.backgroundColor = .clear
-        cell.textLabel?.text = name
         
         // Fix Color for Focus/Theme
         if #available(tvOS 13.0, *), #available(iOS 13.0, *) {
@@ -90,12 +112,20 @@ extension HostsSettingsViewController: UITableViewDataSource, UITableViewDelegat
             cell.textLabel?.textColor = .black
         }
         
-        // Checkmark for current language
-        let current = HSBHostsLanguageManager.shared.currentLanguage
-        if current == code {
-            cell.accessoryType = .checkmark
+        if indexPath.section == 0 {
+            let (code, name) = languages[indexPath.row]
+            cell.textLabel?.text = name
+            
+            // Checkmark for current language
+            let current = HSBHostsLanguageManager.shared.currentLanguage
+            if current == code {
+                cell.accessoryType = .checkmark
+            } else {
+                cell.accessoryType = .none
+            }
         } else {
-            cell.accessoryType = .none
+            cell.textLabel?.text = HSBHostsLanguageManager.shared.localizedString("View Logs")
+            cell.accessoryType = .disclosureIndicator
         }
         
         return cell
@@ -104,12 +134,22 @@ extension HostsSettingsViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let (code, _) = languages[indexPath.row]
-        let current = HSBHostsLanguageManager.shared.currentLanguage
-        
-        if current != code {
-            HSBHostsLanguageManager.shared.currentLanguage = code
-            tableView.reloadData()
+        if indexPath.section == 0 {
+            let (code, _) = languages[indexPath.row]
+            let current = HSBHostsLanguageManager.shared.currentLanguage
+            
+            if current != code {
+                HSBHostsLanguageManager.shared.currentLanguage = code
+                tableView.reloadData()
+            }
+        } else {
+            // Logs
+            let logVC = LogViewerViewController()
+            #if os(iOS)
+            navigationController?.pushViewController(logVC, animated: true) ?? present(UINavigationController(rootViewController: logVC), animated: true)
+            #else
+            present(logVC, animated: true)
+            #endif
         }
     }
 }

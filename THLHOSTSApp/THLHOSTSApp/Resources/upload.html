@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Hosts File</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f2f2f7;
+            color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+        h1 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: #007aff;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #c7c7cc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #007aff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #005bb5;
+        }
+        .footer {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #8e8e93;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Hosts</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <label for="name">List Name (Optional)</label>
+            <input type="text" id="name" name="name" placeholder="e.g. adblock-list">
+            
+            <label for="file">Select .txt File</label>
+            <input type="file" id="file" name="file" accept=".txt" required>
+            
+            <button type="submit">Upload</button>
+        </form>
+        <div class="footer">
+            Start HTTP Server in app to upload.
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get('name');
+            if (name) {
+                const nameInput = document.getElementById('name');
+                nameInput.value = name;
+                nameInput.readOnly = true;
+                // Add a visual cue that it is locked
+                nameInput.style.backgroundColor = "#eef";
+                document.querySelector('h1').innerText = "Upload to " + name;
+            }
+        });
+    </script>
+</body>
+</html>

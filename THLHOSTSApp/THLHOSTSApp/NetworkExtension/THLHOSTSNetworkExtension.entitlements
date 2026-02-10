@@ -3,15 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>com.apple.developer.networking.networkextension</key>
-	<array/>
-	<key>com.apple.security.app-sandbox</key>
-	<true/>
-	<key>com.apple.security.device.camera</key>
-	<true/>
-	<key>com.apple.security.network.client</key>
-	<true/>
-	<key>com.apple.security.network.server</key>
-	<true/>
+	<array>
+		<string>packet-tunnel-provider</string>
+	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>
 		<string>com.never88gone.thlhosts</string>

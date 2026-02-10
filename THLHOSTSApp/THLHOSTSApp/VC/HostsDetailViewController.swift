@@ -7,11 +7,20 @@ class HostsDetailViewController: UIViewController {
     private let glassBackground = HSBLiquidGlassView()
     
     // MARK: - UI Elements
+    private let scrollView: UIScrollView = {
+        let sv = UIScrollView()
+        sv.showsVerticalScrollIndicator = true
+        return sv
+    }()
+    
+    private let contentView = UIView()
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 40, weight: .bold)
         label.textAlignment = .center
         label.textColor = .white
+        label.numberOfLines = 0
         return label
     }()
     
@@ -19,6 +28,7 @@ class HostsDetailViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 24, weight: .medium)
         label.textAlignment = .center
+        label.numberOfLines = 0
         return label
     }()
     
@@ -29,9 +39,13 @@ class HostsDetailViewController: UIViewController {
         tv.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
         tv.textColor = .white
         tv.isUserInteractionEnabled = true
+        tv.layer.cornerRadius = 10
+        
+        #if os(tvOS)
+        tv.isSelectable = true
         tv.panGestureRecognizer.allowedTouchTypes = [NSNumber(value: UITouch.TouchType.indirect.rawValue)]
-        #if !os(tvOS)
-        tv.isEditable = false // Read-only for now
+        #else
+        tv.isEditable = false
         #endif
         return tv
     }()
@@ -41,6 +55,7 @@ class HostsDetailViewController: UIViewController {
         label.text = NSLocalizedString("Scan to Upload:", comment: "")
         label.textColor = .lightGray
         label.textAlignment = .center
+        label.numberOfLines = 0
         return label
     }()
     
@@ -49,6 +64,7 @@ class HostsDetailViewController: UIViewController {
         iv.backgroundColor = .white
         iv.layer.cornerRadius = 10
         iv.layer.masksToBounds = true
+        iv.contentMode = .scaleAspectFit
         return iv
     }()
     
@@ -86,16 +102,30 @@ class HostsDetailViewController: UIViewController {
         titleLabel.text = ""
         contentTextView.text = ""
         statusLabel.text = ""
+        // Keep QR code instruction vague or clear
+        updateQRCode()
     }
     
-    func updateQRCode() {
+    // Show empty state (for Add New)
+    func showEmptyState() {
+        titleLabel.text = ""
+        contentTextView.text = ""
+        statusLabel.text = ""
+        uploadInfoLabel.text = ""
+        qrImageView.image = nil
+    }
+    
+    func updateQRCode(name: String? = nil) {
         let ip = getWiFiAddress() ?? "localhost"
-        let url = "http://\(ip):8080/upload"
+        var url = "http://\(ip):8080/"
+        
+        if let name = name, let encodedName = name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            url += "?name=\(encodedName)"
+        }
+        
         uploadInfoLabel.text = "\(HSBHostsLanguageManager.shared.localizedString("Scan to Upload:")) \(url)"
         qrImageView.image = generateQRCode(from: url)
     }
-    
-    // MARK: - Setup
     private func setupUI() {
         view.backgroundColor = .clear
         
@@ -105,40 +135,69 @@ class HostsDetailViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         
-        view.addSubview(titleLabel)
-        view.addSubview(statusLabel)
-        view.addSubview(contentTextView)
-        view.addSubview(uploadInfoLabel)
-        view.addSubview(qrImageView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(statusLabel)
+        contentView.addSubview(contentTextView)
+        contentView.addSubview(uploadInfoLabel)
+        contentView.addSubview(qrImageView)
     }
     
     private func setupLayout() {
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+        
+        let isTV = traitCollection.userInterfaceIdiom == .tv
+        let margin = isTV ? 40 : 20
+        
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(40)
+            make.top.equalToSuperview().offset(margin)
+            make.left.right.equalToSuperview().inset(margin)
             make.centerX.equalToSuperview()
-            make.left.right.equalToSuperview().inset(20)
         }
         
         statusLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(10)
+            make.left.right.equalToSuperview().inset(margin)
+            make.centerX.equalToSuperview()
+        }
+        
+        // Content Text View height
+        contentTextView.snp.makeConstraints { make in
+            make.top.equalTo(statusLabel.snp.bottom).offset(20)
+            make.left.right.equalToSuperview().inset(margin)
+            make.height.equalTo(300).priority(.medium) // Default height, scalable
+            make.height.greaterThanOrEqualTo(200)
+        }
+        
+        uploadInfoLabel.snp.makeConstraints { make in
+            make.top.equalTo(contentTextView.snp.bottom).offset(30)
+            make.left.right.equalToSuperview().inset(margin)
             make.centerX.equalToSuperview()
         }
         
         qrImageView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-60)
+            make.top.equalTo(uploadInfoLabel.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
-            make.width.height.equalTo(200)
+            make.width.height.equalTo(isTV ? 300 : 200)
+            make.bottom.equalToSuperview().offset(-margin)
         }
-        
-        uploadInfoLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(qrImageView.snp.top).offset(-20)
-            make.centerX.equalToSuperview()
-        }
-        
-        contentTextView.snp.makeConstraints { make in
-            make.top.equalTo(statusLabel.snp.bottom).offset(30)
-            make.left.right.equalToSuperview().inset(40)
-            make.bottom.equalTo(uploadInfoLabel.snp.top).offset(-30)
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.userInterfaceIdiom != traitCollection.userInterfaceIdiom {
+            // Re-setup layout if idiom changes (rare but possible on iPad/Mac catalyst maybe)
+            // Ideally just updating constraints or fonts would be better
+            setupLayout()
         }
     }
     

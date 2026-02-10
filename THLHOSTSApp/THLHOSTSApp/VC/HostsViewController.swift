@@ -2,8 +2,9 @@ import UIKit
 import SnapKit
 import Swifter
 import NetworkExtension
+import UniformTypeIdentifiers
 
-class HostsViewController: UIViewController {
+class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     // MARK: - Properties
     private var hostsFiles: [HostsFile] = []
@@ -22,7 +23,7 @@ class HostsViewController: UIViewController {
     // Left: List
     private let tableView: UITableView = {
         let tv = UITableView()
-        tv.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tv.register(HostsListCell.self, forCellReuseIdentifier: "cell")
         tv.backgroundColor = .clear // Transparent for glass effect
         return tv
     }()
@@ -31,6 +32,14 @@ class HostsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupResponsiveLayout()
+        
+        // Load Data
+        hostsFiles = HostsStorage.shared.load()
+        tableView.reloadData()
+        
+        // Start Server
+        startServer()
     }
 
     // MARK: - Setup
@@ -49,7 +58,16 @@ class HostsViewController: UIViewController {
         
         leftContainer.addSubview(tableView)
         
-        // ... (Child VC setup remains)
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        // Add Detail Child VC
+        addChild(splitDetailVC)
+        rightContainer.addSubview(splitDetailVC.view)
+        splitDetailVC.view.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        splitDetailVC.didMove(toParent: self)
         
         // Settings Button
         let settingsButton = UIButton(type: .system)
@@ -93,6 +111,7 @@ class HostsViewController: UIViewController {
                 make.width.equalToSuperview().multipliedBy(0.4).priority(.medium)
             }
             
+            // Ensure right container is visible and layout correct
             rightContainer.isHidden = false
             rightContainer.snp.remakeConstraints { make in
                 make.left.equalTo(leftContainer.snp.right)
@@ -114,6 +133,19 @@ class HostsViewController: UIViewController {
                 make.edges.equalToSuperview()
             }
         }
+        
+        // Refresh detail view if needed
+        if isSplitView() {
+             if let selectedIndex = selectedIndex, selectedIndex < hostsFiles.count {
+                 splitDetailVC.configure(with: hostsFiles[selectedIndex])
+             } else {
+                 if let index = hostsFiles.firstIndex(where: { $0.name == "Uploaded" }) {
+                     splitDetailVC.configure(with: hostsFiles[index])
+                 } else {
+                     splitDetailVC.clear()
+                 }
+             }
+        }
     }
     
     private func isSplitView() -> Bool {
@@ -126,8 +158,8 @@ class HostsViewController: UIViewController {
     
     // MARK: - Server
     private func startServer() {
-        HostsManager.shared.onHostsUploaded = { [weak self] content in
-            self?.handleUploadedContent(content)
+        HostsManager.shared.onHostsUploaded = { [weak self] name, content in
+            self?.handleUploadedContent(name: name, content: content)
         }
         HostsManager.shared.startServer(port: 8080)
         
@@ -135,18 +167,18 @@ class HostsViewController: UIViewController {
         splitDetailVC.updateQRCode()
     }
     
-    private func handleUploadedContent(_ content: String) {
-        if let index = hostsFiles.firstIndex(where: { $0.name == "Uploaded" }) {
+    private func handleUploadedContent(name: String, content: String) {
+        if let index = hostsFiles.firstIndex(where: { $0.name == name }) {
             hostsFiles[index].content = content
         } else {
-            let newFile = HostsFile(name: "Uploaded", content: content, isEnabled: false)
+            let newFile = HostsFile(name: name, content: content, isEnabled: false)
             hostsFiles.append(newFile)
             HostsStorage.shared.save(hostsFiles)
         }
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
-            if self.isSplitView(), let index = self.hostsFiles.firstIndex(where: { $0.name == "Uploaded" }) {
+            if self.isSplitView(), let index = self.hostsFiles.firstIndex(where: { $0.name == name }) {
                 self.splitDetailVC.configure(with: self.hostsFiles[index])
             }
         }
@@ -154,6 +186,32 @@ class HostsViewController: UIViewController {
 
     // MARK: - Logic
     func addNewHost() {
+        #if os(iOS)
+        // iOS: Select local file or Create New
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: HSBHostsLanguageManager.shared.localizedString("Import from File"), style: .default) { [weak self] _ in
+            self?.openDocumentPicker()
+        })
+        alert.addAction(UIAlertAction(title: HSBHostsLanguageManager.shared.localizedString("Create New"), style: .default) { [weak self] _ in
+            self?.showCreateNameAlert()
+        })
+        alert.addAction(UIAlertAction(title: HSBHostsLanguageManager.shared.localizedString("Cancel"), style: .cancel))
+        
+        // iPad Popover support
+        if let popover = alert.popoverPresentationController {
+            popover.sourceView = self.view
+            popover.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popover.permittedArrowDirections = []
+        }
+        
+        present(alert, animated: true)
+        #else
+        // tvOS: Manual Create (Scan code is passive)
+        showCreateNameAlert()
+        #endif
+    }
+    
+    private func showCreateNameAlert() {
         let alert = UIAlertController(title: HSBHostsLanguageManager.shared.localizedString("New Hosts File"), message: HSBHostsLanguageManager.shared.localizedString("Enter name"), preferredStyle: .alert)
         alert.addTextField { tf in
             tf.placeholder = HSBHostsLanguageManager.shared.localizedString("Name")
@@ -168,6 +226,16 @@ class HostsViewController: UIViewController {
         })
         present(alert, animated: true)
     }
+    
+    #if os(iOS)
+    private func openDocumentPicker() {
+        let types: [UTType] = [.text, .data]
+        let picker = UIDocumentPickerViewController(forOpeningContentTypes: types, asCopy: true)
+        picker.delegate = self
+        picker.allowsMultipleSelection = false
+        present(picker, animated: true)
+    }
+    #endif
     
     func deleteHost(at indexPath: IndexPath) {
         let index = indexPath.row - 1
@@ -190,39 +258,52 @@ class HostsViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    // ...
-
     // MARK: - UITableViewDataSource, UITableViewDelegate
-    // ... 
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return hostsFiles.count + 1
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = .clear // Transparent cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! HostsListCell
         
         if indexPath.row == 0 {
-            cell.textLabel?.text = "+ \(HSBHostsLanguageManager.shared.localizedString("Add New Hosts"))"
-            // Use system colors that adapt to focus
-             if #available(tvOS 13.0, *), #available(iOS 13.0, *) {
-                 cell.textLabel?.textColor = .systemBlue
-             } else {
-                 cell.textLabel?.textColor = .blue
-             }
+            cell.configure(text: "+ \(HSBHostsLanguageManager.shared.localizedString("Add New Hosts"))", isAddButton: true)
         } else {
             let file = hostsFiles[indexPath.row - 1]
-            cell.textLabel?.text = file.name
-            
-            // Fix "White on White": Use standard label colors which handle focus automatically on tvOS
-             if #available(tvOS 13.0, *), #available(iOS 13.0, *) {
-                 cell.textLabel?.textColor = file.isEnabled ? .systemGreen : .label
-             } else {
-                 cell.textLabel?.textColor = file.isEnabled ? .green : .darkGray
-             }
+            cell.configure(text: file.name, isEnabled: file.isEnabled)
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        #if os(tvOS)
+        return 100
+        #else
+        return 60
+        #endif
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.row > 0
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            deleteHost(at: indexPath)
+        }
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
+            if isSplitView() {
+                // Clear detail view when "Add New" is selected
+                splitDetailVC.showEmptyState()
+            }
             addNewHost()
         } else {
             let index = indexPath.row - 1
@@ -233,19 +314,87 @@ class HostsViewController: UIViewController {
                     // Split Logic: View + Toggle (Legacy)
                     selectedIndex = index
                     splitDetailVC.configure(with: file)
+                    // Update QR Code with file name
+                    splitDetailVC.updateQRCode(name: file.name)
                     
                     hostsFiles[index].isEnabled.toggle()
                     HostsStorage.shared.save(hostsFiles)
+                    // Re-configure to update status
                     splitDetailVC.configure(with: hostsFiles[index])
                     tableView.reloadRows(at: [indexPath], with: .automatic)
                 } else {
                     // Stack Logic: Nav to Detail
                     let detail = HostsDetailViewController()
                     detail.configure(with: file)
+                    detail.updateQRCode(name: file.name)
                     navigationController?.pushViewController(detail, animated: true)
+                }
+            }
+        }
+    }
+    
+    // MARK: - Focus (tvOS)
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        super.didUpdateFocus(in: context, with: coordinator)
+        
+        guard let nextView = context.nextFocusedView,
+              let cell = nextView as? UITableViewCell,
+              let indexPath = tableView.indexPath(for: cell) else { return }
+        
+        if indexPath.row == 0 {
+             if isSplitView() { splitDetailVC.showEmptyState() }
+        } else {
+            let index = indexPath.row - 1
+            if index < hostsFiles.count {
+                let file = hostsFiles[index]
+                if isSplitView() {
+                     splitDetailVC.configure(with: file)
+                     splitDetailVC.updateQRCode(name: file.name)
                 }
             }
         }
     }
 }
 
+// MARK: - UIDocumentPickerDelegate (iOS Only)
+#if os(iOS)
+extension HostsViewController: UIDocumentPickerDelegate {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let url = urls.first else { return }
+        
+        // Access security scoped resource
+        guard url.startAccessingSecurityScopedResource() else { return }
+        defer { url.stopAccessingSecurityScopedResource() }
+        
+        do {
+            let content = try String(contentsOf: url, encoding: .utf8)
+            let filename = url.lastPathComponent
+            
+            // Add to hosts files
+            // Check if exists
+            let name = filename
+            if let index = hostsFiles.firstIndex(where: { $0.name == name }) {
+                // Update
+                hostsFiles[index].content = content
+            } else {
+                // Create
+                let newFile = HostsFile(name: name, content: content, isEnabled: false)
+                hostsFiles.append(newFile)
+            }
+            HostsStorage.shared.save(hostsFiles)
+            tableView.reloadData()
+            
+            // Show confirmation
+            let alert = UIAlertController(title: HSBHostsLanguageManager.shared.localizedString("Success"), message: "\(name) imported.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+            
+        } catch {
+            HSBLogger.shared.log("Import failed: \(error)", level: .error)
+            let alert = UIAlertController(title: "Error", message: "Failed to read file: \(error.localizedDescription)", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
+    }
+}
+#endif

@@ -13,7 +13,7 @@ import NetworkExtension
     
     // VPN Manager
     private var vpnManager: NETunnelProviderManager?
-    private let kTunnelBundleSuffix = ".HSBHostsExtension"
+    private let kTunnelBundleSuffix = ".extension"
     private let kAppGroupIdentifier = "com.never88gone.thlhosts" // 修改为你的 App Group ID
     
     // VPN Status
