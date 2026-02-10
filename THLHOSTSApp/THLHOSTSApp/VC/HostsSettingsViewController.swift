@@ -9,10 +9,14 @@ class HostsSettingsViewController: UIViewController {
         ("zh-Hans", "简体中文")
     ]
     
+    // Background Effects
+    private let glassBackground = HSBLiquidGlassView()
+    
     // MARK: - UI Elements
     private let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .grouped)
         tv.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tv.backgroundColor = .clear // Transparent
         return tv
     }()
     
@@ -41,10 +45,12 @@ class HostsSettingsViewController: UIViewController {
     
     // MARK: - Setup
     private func setupUI() {
-        if #available(iOS 13.0, tvOS 13.0, *) {
-            view.backgroundColor = .systemBackground
-        } else {
-            view.backgroundColor = .white
+        view.backgroundColor = .clear
+        
+        // Add Glass Background
+        view.addSubview(glassBackground)
+        glassBackground.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
         
         tableView.dataSource = self
@@ -74,7 +80,15 @@ extension HostsSettingsViewController: UITableViewDataSource, UITableViewDelegat
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let (code, name) = languages[indexPath.row]
         
+        cell.backgroundColor = .clear
         cell.textLabel?.text = name
+        
+        // Fix Color for Focus/Theme
+        if #available(tvOS 13.0, *), #available(iOS 13.0, *) {
+            cell.textLabel?.textColor = .label
+        } else {
+            cell.textLabel?.textColor = .black
+        }
         
         // Checkmark for current language
         let current = HSBHostsLanguageManager.shared.currentLanguage
