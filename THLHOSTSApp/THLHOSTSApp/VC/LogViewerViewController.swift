@@ -3,13 +3,21 @@ import SnapKit
 
 class LogViewerViewController: UIViewController {
     
+    // [ZH] 背景特效
+    private let glassBackground = HSBLiquidGlassView()
+
     private let textView: UITextView = {
         let tv = UITextView()
         #if os(iOS)
         tv.isEditable = false
+        tv.font = .monospacedSystemFont(ofSize: 14, weight: .regular) // Increased to 14 for better readability
+        #elseif os(tvOS)
+        tv.isUserInteractionEnabled = true
+        tv.panGestureRecognizer.allowedTouchTypes = [NSNumber(value: UITouch.TouchType.indirect.rawValue)]
+        tv.font = .monospacedSystemFont(ofSize: 30, weight: .regular)
         #endif
-        tv.font = .monospacedSystemFont(ofSize: 12, weight: .regular)
-        tv.backgroundColor = .black
+        // Transparent background for Glassmorphism
+        tv.backgroundColor = UIColor(white: 0, alpha: 0.3)
         tv.textColor = .green
         return tv
     }()
@@ -17,7 +25,7 @@ class LogViewerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Logs"
-        view.backgroundColor = .black
+        view.backgroundColor = .clear // Clear for glass background
         
         setupUI()
         updateLogs()
@@ -29,6 +37,7 @@ class LogViewerViewController: UIViewController {
         #endif
         
         // Add Close/Clear buttons depending on presentation style
+        // [ZH] 根据展示方式添加关闭/清除按钮
         if navigationController?.viewControllers.first == self {
              navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(dismissSelf))
         } else {
@@ -48,12 +57,19 @@ class LogViewerViewController: UIViewController {
     }
     
     private func setupUI() {
+        // Add Glass Background
+        view.addSubview(glassBackground)
+        glassBackground.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
         view.addSubview(textView)
         textView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
     
+    // [ZH] 更新日志显示
     @objc private func updateLogs() {
         let logs = HSBLogger.shared.logs.joined(separator: "\n")
         DispatchQueue.main.async {
@@ -65,16 +81,19 @@ class LogViewerViewController: UIViewController {
         }
     }
     
+    // [ZH] 清除日志
     @objc private func clearLogs() {
         HSBLogger.shared.clear()
     }
     
+    // [ZH] 分享日志
     @objc private func shareLogs() {
         #if os(iOS)
         let logs = HSBLogger.shared.logs.joined(separator: "\n")
         let activityVC = UIActivityViewController(activityItems: [logs], applicationActivities: nil)
         
         // iPad support
+        // [ZH] iPad 支持
         if let popover = activityVC.popoverPresentationController {
              popover.barButtonItem = navigationItem.rightBarButtonItem
         }

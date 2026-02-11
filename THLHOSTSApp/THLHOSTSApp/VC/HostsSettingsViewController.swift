@@ -4,6 +4,7 @@ import SnapKit
 class HostsSettingsViewController: UIViewController {
 
     // MARK: - Properties
+    // [ZH] 属性
     private let languages = [
         ("en", "English"),
         ("zh-Hans", "简体中文")
@@ -15,14 +16,11 @@ class HostsSettingsViewController: UIViewController {
     private let glassBackground = HSBLiquidGlassView()
     
     // MARK: - UI Elements
+    // [ZH] UI 元素
     private let tableView: UITableView = {
         let style: UITableView.Style
         #if os(iOS)
-        if #available(iOS 13.0, *) {
-            style = .insetGrouped
-        } else {
-            style = .grouped
-        }
+        style = .insetGrouped
         #else
         style = .grouped
         #endif
@@ -34,6 +32,7 @@ class HostsSettingsViewController: UIViewController {
     }()
     
     // MARK: - Lifecycle
+    // [ZH] 生命周期
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -57,6 +56,7 @@ class HostsSettingsViewController: UIViewController {
     }
     
     // MARK: - Setup
+    // [ZH] 设置 UI
     private func setupUI() {
         view.backgroundColor = .clear
         
@@ -80,6 +80,7 @@ class HostsSettingsViewController: UIViewController {
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
+// [ZH] TableView 数据源与代理
 extension HostsSettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -106,17 +107,18 @@ extension HostsSettingsViewController: UITableViewDataSource, UITableViewDelegat
         cell.backgroundColor = .clear
         
         // Fix Color for Focus/Theme
-        if #available(tvOS 13.0, *), #available(iOS 13.0, *) {
-            cell.textLabel?.textColor = .label
-        } else {
-            cell.textLabel?.textColor = .black
-        }
+        // [ZH] 修正焦点/主题颜色
+        cell.textLabel?.textColor = .white
+        let selectedBackgroundView = UIView()
+        selectedBackgroundView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+        cell.selectedBackgroundView = selectedBackgroundView
         
         if indexPath.section == 0 {
             let (code, name) = languages[indexPath.row]
             cell.textLabel?.text = name
             
             // Checkmark for current language
+            // [ZH] 当前语言的勾选标记
             let current = HSBHostsLanguageManager.shared.currentLanguage
             if current == code {
                 cell.accessoryType = .checkmark

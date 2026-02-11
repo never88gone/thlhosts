@@ -11,9 +11,11 @@ class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     private var selectedIndex: Int?
     
     // Detail VC for Split Layout (iPad/TV)
+    // [ZH] 分屏布局详情控制器 (iPad/TV)
     private let splitDetailVC = HostsDetailViewController()
     
     // MARK: - UI Elements
+    // [ZH] UI 元素
     private let leftContainer = UIView()
     private let rightContainer = UIView()
     
@@ -29,22 +31,27 @@ class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }()
     
     // MARK: - Lifecycle
+    // [ZH] 生命周期
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupResponsiveLayout()
         
         // Load Data
+        // [ZH] 加载数据
         hostsFiles = HostsStorage.shared.load()
         tableView.reloadData()
         
         // Start Server
+        // [ZH] 启动服务器
         startServer()
     }
 
     // MARK: - Setup
+    // [ZH] 设置 UI
     private func setupUI() {
         // Clear background to show whatever is behind or default
+        // [ZH] 清除背景以显示背后的内容或默认背景
         view.backgroundColor = .clear
         
         // Add Glass Background
@@ -71,11 +78,9 @@ class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         // Settings Button
         let settingsButton = UIButton(type: .system)
-        if #available(tvOS 13.0, *), #available(iOS 13.0, *) {
-             settingsButton.setImage(UIImage(systemName: "gear"), for: .normal)
-        } else {
-             settingsButton.setTitle("⚙️", for: .normal)
-        }
+        // Use larger config
+        let config = UIImage.SymbolConfiguration(pointSize: 40, weight: .bold)
+        settingsButton.setImage(UIImage(systemName: "gearshape.fill", withConfiguration: config), for: .normal)
         // Use system tint color (which adapts to focus) or a specific color that works on glass
         settingsButton.tintColor = .white
         settingsButton.addTarget(self, action: #selector(didTapSettings), for: .primaryActionTriggered)
@@ -150,13 +155,16 @@ class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func isSplitView() -> Bool {
         #if os(tvOS)
+        // [ZH] tvOS 始终使用分屏
         return true
         #else
+        // [ZH] iPad 横屏或其他宽屏设备使用分屏
         return traitCollection.horizontalSizeClass == .regular
         #endif
     }
     
     // MARK: - Server
+    // [ZH] 服务器相关
     private func startServer() {
         HostsManager.shared.onHostsUploaded = { [weak self] name, content in
             self?.handleUploadedContent(name: name, content: content)
@@ -164,6 +172,7 @@ class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         HostsManager.shared.startServer(port: 8080)
         
         // Initial Detail Update
+        // [ZH] 初始详情更新
         splitDetailVC.updateQRCode()
     }
     
@@ -185,6 +194,7 @@ class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     // MARK: - Logic
+    // [ZH] 业务逻辑
     func addNewHost() {
         #if os(iOS)
         // iOS: Select local file or Create New

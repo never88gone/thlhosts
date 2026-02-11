@@ -4,9 +4,11 @@ import SnapKit
 class HostsDetailViewController: UIViewController {
 
     // Background Effects
+    // [ZH] 背景特效
     private let glassBackground = HSBLiquidGlassView()
     
     // MARK: - UI Elements
+    // [ZH] UI 元素
     private let scrollView: UIScrollView = {
         let sv = UIScrollView()
         sv.showsVerticalScrollIndicator = true
@@ -69,6 +71,7 @@ class HostsDetailViewController: UIViewController {
     }()
     
     // MARK: - Lifecycle
+    // [ZH] 生命周期
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -76,6 +79,7 @@ class HostsDetailViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleLanguageChange), name: NSNotification.Name("HSBLanguageChanged"), object: nil)
         updateQRCode() // Initial load
+        // [ZH] 初始加载
     }
     
     deinit {
@@ -90,7 +94,14 @@ class HostsDetailViewController: UIViewController {
     }
     
     // MARK: - Public API
+    // [ZH] 公共接口
     func configure(with file: HostsFile) {
+        titleLabel.isHidden = false
+        contentTextView.isHidden = false
+        statusLabel.isHidden = false
+        uploadInfoLabel.isHidden = false
+        qrImageView.isHidden = false
+        
         titleLabel.text = file.name
         contentTextView.text = file.content
         let statusText = file.isEnabled ? HSBHostsLanguageManager.shared.localizedString("Status: Enabled") : HSBHostsLanguageManager.shared.localizedString("Status: Disabled")
@@ -99,20 +110,17 @@ class HostsDetailViewController: UIViewController {
     }
     
     func clear() {
-        titleLabel.text = ""
-        contentTextView.text = ""
-        statusLabel.text = ""
-        // Keep QR code instruction vague or clear
-        updateQRCode()
+        showEmptyState()
     }
     
     // Show empty state (for Add New)
+    // [ZH] 显示空状态 (用于"添加新Hosts")
     func showEmptyState() {
-        titleLabel.text = ""
-        contentTextView.text = ""
-        statusLabel.text = ""
-        uploadInfoLabel.text = ""
-        qrImageView.image = nil
+        titleLabel.isHidden = true
+        contentTextView.isHidden = true
+        statusLabel.isHidden = true
+        uploadInfoLabel.isHidden = true
+        qrImageView.isHidden = true
     }
     
     func updateQRCode(name: String? = nil) {
@@ -125,6 +133,13 @@ class HostsDetailViewController: UIViewController {
         
         uploadInfoLabel.text = "\(HSBHostsLanguageManager.shared.localizedString("Scan to Upload:")) \(url)"
         qrImageView.image = generateQRCode(from: url)
+        
+        // Ensure visibility if configured
+        // [ZH] 如果已配置，确保可见性
+        if !titleLabel.isHidden {
+            uploadInfoLabel.isHidden = false
+            qrImageView.isHidden = false
+        }
     }
     private func setupUI() {
         view.backgroundColor = .clear
@@ -171,10 +186,12 @@ class HostsDetailViewController: UIViewController {
         }
         
         // Content Text View height
+        // [ZH] 内容文本视图高度
         contentTextView.snp.makeConstraints { make in
             make.top.equalTo(statusLabel.snp.bottom).offset(20)
             make.left.right.equalToSuperview().inset(margin)
             make.height.equalTo(300).priority(.medium) // Default height, scalable
+            // [ZH] 默认高度，可缩放
             make.height.greaterThanOrEqualTo(200)
         }
         
@@ -202,6 +219,7 @@ class HostsDetailViewController: UIViewController {
     }
     
     // MARK: - Utils
+    // [ZH] 工具方法
     private func getWiFiAddress() -> String? {
         var address: String?
         var ifaddr: UnsafeMutablePointer<ifaddrs>?
