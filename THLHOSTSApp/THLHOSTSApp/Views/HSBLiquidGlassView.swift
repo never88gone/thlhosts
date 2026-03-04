@@ -50,15 +50,16 @@ import UIKit
     // MARK: - Setup
     
     private func setupView() {
-        backgroundColor = .clear
-        layer.cornerRadius = 20
-        layer.masksToBounds = true
-        layer.borderWidth = 1.0
-        layer.borderColor = UIColor(white: 1.0, alpha: 0.2).cgColor
+        backgroundColor = .appBackground
+        
+        // Remove border and radius since it's meant to be full screen in this context
+        // or keep subtle styling
         
         // Add Blur
         blurView.frame = bounds
         blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        // Reduce alpha so background color shows through
+        blurView.alpha = 0.5
         addSubview(blurView)
         
         // Add Gradient Overlay

@@ -17,15 +17,15 @@ class LogViewerViewController: UIViewController {
         tv.font = .monospacedSystemFont(ofSize: 30, weight: .regular)
         #endif
         // Transparent background for Glassmorphism
-        tv.backgroundColor = UIColor(white: 0, alpha: 0.3)
-        tv.textColor = .green
+        tv.backgroundColor = UIColor.appPrimary.withAlphaComponent(0.6)
+        tv.textColor = .appCTA
         return tv
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Logs"
-        view.backgroundColor = .clear // Clear for glass background
+        view.backgroundColor = .appBackground 
         
         setupUI()
         updateLogs()
@@ -67,6 +67,15 @@ class LogViewerViewController: UIViewController {
         textView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleThemeChange), name: .themeChanged, object: nil)
+    }
+    
+    @objc private func handleThemeChange() {
+        view.backgroundColor = .appBackground
+        textView.backgroundColor = UIColor.appPrimary.withAlphaComponent(0.6)
+        textView.textColor = .appCTA
+        glassBackground.backgroundColor = .appBackground
     }
     
     // [ZH] 更新日志显示

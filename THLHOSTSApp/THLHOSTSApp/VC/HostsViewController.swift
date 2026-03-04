@@ -22,11 +22,27 @@ class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     // Background Effects
     private let glassBackground = HSBLiquidGlassView()
     
+    // Settings Button
+    private lazy var settingsButton: SettingsIconButton = {
+        let btn = SettingsIconButton()
+        btn.tintColor = .appText
+        btn.backgroundColor = .clear
+        #if os(tvOS)
+        btn.isHidden = true
+        #endif
+        btn.addTarget(self, action: #selector(didTapSettings), for: .primaryActionTriggered)
+        btn.addTarget(self, action: #selector(didTapSettings), for: .touchUpInside)
+        return btn
+    }()
+    
     // Left: List
     private let tableView: UITableView = {
         let tv = UITableView()
         tv.register(HostsListCell.self, forCellReuseIdentifier: "cell")
-        tv.backgroundColor = .clear // Transparent for glass effect
+        tv.backgroundColor = .clear 
+        #if !os(tvOS)
+        tv.separatorColor = .appSecondary
+        #endif
         return tv
     }()
     
@@ -42,6 +58,8 @@ class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         hostsFiles = HostsStorage.shared.load()
         tableView.reloadData()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleThemeChange), name: .themeChanged, object: nil)
+        
         // Start Server
         // [ZH] 启动服务器
         startServer()
@@ -50,9 +68,9 @@ class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     // MARK: - Setup
     // [ZH] 设置 UI
     private func setupUI() {
-        // Clear background to show whatever is behind or default
-        // [ZH] 清除背景以显示背后的内容或默认背景
-        view.backgroundColor = .clear
+        // Use App Background
+        // [ZH] 使用应用主题背景色
+        view.backgroundColor = .appBackground
         
         // Add Glass Background
         view.addSubview(glassBackground)
@@ -77,21 +95,22 @@ class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         splitDetailVC.didMove(toParent: self)
         
         // Settings Button
-        let settingsButton = UIButton(type: .system)
-        // Use larger config
-        let config = UIImage.SymbolConfiguration(pointSize: 40, weight: .bold)
-        settingsButton.setImage(UIImage(systemName: "gearshape.fill", withConfiguration: config), for: .normal)
-        // Use system tint color (which adapts to focus) or a specific color that works on glass
-        settingsButton.tintColor = .white
-        settingsButton.addTarget(self, action: #selector(didTapSettings), for: .primaryActionTriggered)
-        settingsButton.addTarget(self, action: #selector(didTapSettings), for: .touchUpInside)
-        
         view.addSubview(settingsButton)
         settingsButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
             make.right.equalTo(view.safeAreaLayoutGuide.snp.right).offset(-20)
             make.width.height.equalTo(60)
         }
+    }
+    
+    @objc private func handleThemeChange() {
+        view.backgroundColor = .appBackground
+        #if !os(tvOS)
+        tableView.separatorColor = .appSecondary
+        #endif
+        settingsButton.tintColor = .appText
+        glassBackground.backgroundColor = .appBackground
+        tableView.reloadData()
     }
     
     @objc private func didTapSettings() {
@@ -112,7 +131,11 @@ class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             // Split Layout
             leftContainer.snp.remakeConstraints { make in
                 make.left.top.bottom.equalToSuperview()
+                #if os(tvOS)
                 make.width.equalTo(500).priority(.high)
+                #else
+                make.width.equalTo(DeviceHelper.isPadOrMac ? 320 : 500).priority(.high)
+                #endif
                 make.width.equalToSuperview().multipliedBy(0.4).priority(.medium)
             }
             
@@ -158,7 +181,10 @@ class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         // [ZH] tvOS 始终使用分屏
         return true
         #else
-        // [ZH] iPad 横屏或其他宽屏设备使用分屏
+        // [ZH] iPad/Mac 或其他宽屏设备使用分屏
+        if DeviceHelper.isPadOrMac {
+            return true
+        }
         return traitCollection.horizontalSizeClass == .regular
         #endif
     }
@@ -256,6 +282,11 @@ class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         alert.addAction(UIAlertAction(title: HSBHostsLanguageManager.shared.localizedString("Cancel"), style: .cancel))
         alert.addAction(UIAlertAction(title: HSBHostsLanguageManager.shared.localizedString("Delete"), style: .destructive) { [weak self] _ in
             guard let self = self else { return }
+            
+            if HSBHostsManager.shared.activeHost == file.name {
+                HSBHostsManager.shared.activeHost = nil
+            }
+            
             self.hostsFiles.remove(at: index)
             HostsStorage.shared.save(self.hostsFiles)
             self.tableView.reloadData()
@@ -327,13 +358,50 @@ class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     // Update QR Code with file name
                     splitDetailVC.updateQRCode(name: file.name)
                     
+                    // Disable all others if this one will be enabled
+                    let willEnable = !hostsFiles[index].isEnabled
+                    var changedIndexPaths: [IndexPath] = [indexPath]
+                    if willEnable {
+                        for i in 0..<hostsFiles.count {
+                            if i != index {
+                                hostsFiles[i].isEnabled = false
+                                changedIndexPaths.append(IndexPath(row: i + 1, section: 0))
+                            }
+                        }
+                    }
+                    
                     hostsFiles[index].isEnabled.toggle()
                     HostsStorage.shared.save(hostsFiles)
+                    
+                    if hostsFiles[index].isEnabled {
+                        HSBHostsManager.shared.activeHost = hostsFiles[index].name
+                    } else {
+                        HSBHostsManager.shared.activeHost = nil
+                    }
+                    
                     // Re-configure to update status
                     splitDetailVC.configure(with: hostsFiles[index])
-                    tableView.reloadRows(at: [indexPath], with: .automatic)
+                    // Only reload changed rows to preserve tvOS focus position
+                    tableView.reloadRows(at: changedIndexPaths, with: .none)
                 } else {
                     // Stack Logic: Nav to Detail
+                    let willEnable = !hostsFiles[index].isEnabled
+                    if willEnable {
+                        for i in 0..<hostsFiles.count {
+                            if i != index {
+                                hostsFiles[i].isEnabled = false
+                            }
+                        }
+                    }
+                    hostsFiles[index].isEnabled.toggle()
+                    HostsStorage.shared.save(hostsFiles)
+                    
+                    if hostsFiles[index].isEnabled {
+                        HSBHostsManager.shared.activeHost = hostsFiles[index].name
+                    } else {
+                        HSBHostsManager.shared.activeHost = nil
+                    }
+                    
                     let detail = HostsDetailViewController()
                     detail.configure(with: file)
                     detail.updateQRCode(name: file.name)
@@ -352,9 +420,15 @@ class HostsViewController: UIViewController, UITableViewDelegate, UITableViewDat
               let indexPath = tableView.indexPath(for: cell) else { return }
         
         if indexPath.row == 0 {
+             #if os(tvOS)
+             settingsButton.isHidden = false
+             #endif
              if isSplitView() { splitDetailVC.showEmptyState() }
         } else {
-            let index = indexPath.row - 1
+             #if os(tvOS)
+             settingsButton.isHidden = true
+             #endif
+             let index = indexPath.row - 1
             if index < hostsFiles.count {
                 let file = hostsFiles[index]
                 if isSplitView() {

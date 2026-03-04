@@ -50,17 +50,23 @@
 		38C1163B2F2DA0EA001F800C /* Pods-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */; };
 		38C1163C2F2DA0EA001F800C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C116302F2DA0EA001F800C /* main.m */; };
 		38C1163D2F2DA0EA001F800C /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C116322F2DA0EA001F800C /* SceneDelegate.m */; };
+		4402FEDD502D789F2E4B6612 /* SettingsIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BB6DE2EB5ED5E64A85A4F9 /* SettingsIconButton.swift */; };
 		488CE6BB44544A0A23601941 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C116302F2DA0EA001F800C /* main.m */; };
+		52A208A7AE4124C4A86B1A65 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA30FE92F03191D32CAFE2D8 /* ThemeManager.swift */; };
+		6E66AAA3B63F41F2545123EF /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFBABEADACC19FA16204BDF /* AppColors.swift */; };
 		7E70EB51FC90411E91E46A49 /* Pods_THLHOSTSApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A0DBD7CD5120CB3F0ED3339 /* Pods_THLHOSTSApp.framework */; };
+		804B9A4EC385B38115E68122 /* DeviceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF752F695CF809FE6D675BD /* DeviceHelper.swift */; };
 		896B88222E422FC17DBB4501 /* Pods_THLHOSTSApp_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B163284E299A5B5F70A32549 /* Pods_THLHOSTSApp_iOS.framework */; };
 		9675E1FC20855F6500A4A84A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9675E1FB20855F6500A4A84A /* Foundation.framework */; };
 		9675E1FF20857AEF00A4A84A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9675E1FE20857AEF00A4A84A /* UIKit.framework */; };
 		A0D3EC453EAA9D89C222D412 /* Pods-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */; };
 		AA0000000000000HSBLANGBD /* HSBHostsLanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000HSBLANGMAN /* HSBHostsLanguageManager.swift */; };
 		AA0000000000000HSBLANGIOS /* HSBHostsLanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000HSBLANGMAN /* HSBHostsLanguageManager.swift */; };
+		AF5C9E501CA018C46A17DAE6 /* SettingsIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BB6DE2EB5ED5E64A85A4F9 /* SettingsIconButton.swift */; };
 		D56D3A3116C056B9E4159D66 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C116322F2DA0EA001F800C /* SceneDelegate.m */; };
 		D8F7EB6D2492E6039BAE8B82 /* Pods_THLHOSTSNetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB3A45A4C24D03AB9398215 /* Pods_THLHOSTSNetworkExtension.framework */; };
-		DEADBEEF0000000000000002 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		DEADBEEF0000000000000002 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		DEB0BA2D9669687C486D4D41 /* SettingsIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BB6DE2EB5ED5E64A85A4F9 /* SettingsIconButton.swift */; };
 		EC82E83C26A656190CD83F7D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0B7EB5F373374F55971E27 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -146,6 +152,7 @@
 		38DA4A032CFD629E00E0A837 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		38DA4A052CFD62A400E0A837 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5D0B7EB5F373374F55971E27 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		62BB6DE2EB5ED5E64A85A4F9 /* SettingsIconButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsIconButton.swift; sourceTree = "<group>"; };
 		65EFB7A7AE70DE84ECD5FF00 /* Pods-THLHOSTSNetworkExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THLHOSTSNetworkExtension.release.xcconfig"; path = "Target Support Files/Pods-THLHOSTSNetworkExtension/Pods-THLHOSTSNetworkExtension.release.xcconfig"; sourceTree = "<group>"; };
 		6D843F9A14103D416A3A2FAA /* Pods-THLHOSTSApp_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THLHOSTSApp_iOS.release.xcconfig"; path = "Target Support Files/Pods-THLHOSTSApp_iOS/Pods-THLHOSTSApp_iOS.release.xcconfig"; sourceTree = "<group>"; };
 		85D776112E188077CCE2EAA2 /* THLHOSTSNetworkExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = THLHOSTSNetworkExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -158,7 +165,10 @@
 		B163284E299A5B5F70A32549 /* Pods_THLHOSTSApp_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_THLHOSTSApp_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCF9AF3F84CF90EFEEB6063E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		C13145612FCF6B6E9E71A7F2 /* Pods-THLHOSTSNetworkExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THLHOSTSNetworkExtension.debug.xcconfig"; path = "Target Support Files/Pods-THLHOSTSNetworkExtension/Pods-THLHOSTSNetworkExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		CDFBABEADACC19FA16204BDF /* AppColors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		CFB3A45A4C24D03AB9398215 /* Pods_THLHOSTSNetworkExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_THLHOSTSNetworkExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA30FE92F03191D32CAFE2D8 /* ThemeManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		FFF752F695CF809FE6D675BD /* DeviceHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeviceHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -256,6 +266,9 @@
 				3873ECAF2F30A94A00FE696C /* HSBHostsManager.swift */,
 				3873ECB02F30A94A00FE696C /* HSBHostsPacketTunnelProvider_Template.swift */,
 				AA00000000000000HSBLANGMAN /* HSBHostsLanguageManager.swift */,
+				CDFBABEADACC19FA16204BDF /* AppColors.swift */,
+				FFF752F695CF809FE6D675BD /* DeviceHelper.swift */,
+				DA30FE92F03191D32CAFE2D8 /* ThemeManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -276,6 +289,7 @@
 			children = (
 				3873ED182F3B12B300FE696C /* HostsListCell.swift */,
 				3873ED192F3B12B300FE696C /* HSBLiquidGlassView.swift */,
+				62BB6DE2EB5ED5E64A85A4F9 /* SettingsIconButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -486,7 +500,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DEADBEEF0000000000000002 /* (null) in Resources */,
+				DEADBEEF0000000000000002 /* BuildFile in Resources */,
 				3873ECB92F30A94A00FE696C /* Localizable.strings in Resources */,
 				127D20BAD0BA37DA78227400 /* Assets.xcassets in Resources */,
 				3873ED162F3B05DD00FE696C /* upload.html in Resources */,
@@ -680,6 +694,10 @@
 				38C1163D2F2DA0EA001F800C /* SceneDelegate.m in Sources */,
 				3873EC8A2F3086AD00FE696C /* HostsStorage.swift in Sources */,
 				3873EC8B2F3086AD00FE696C /* HostsFile.swift in Sources */,
+				6E66AAA3B63F41F2545123EF /* AppColors.swift in Sources */,
+				804B9A4EC385B38115E68122 /* DeviceHelper.swift in Sources */,
+				52A208A7AE4124C4A86B1A65 /* ThemeManager.swift in Sources */,
+				DEB0BA2D9669687C486D4D41 /* SettingsIconButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -689,6 +707,7 @@
 			files = (
 				3873EC982F3086EE00FE696C /* PacketTunnelProvider.swift in Sources */,
 				3873EC992F3086EE00FE696C /* HostsManager.swift in Sources */,
+				4402FEDD502D789F2E4B6612 /* SettingsIconButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -712,6 +731,7 @@
 				3873EC8C2F3086AD00FE696C /* HostsStorage.swift in Sources */,
 				3873EC8D2F3086AD00FE696C /* HostsFile.swift in Sources */,
 				AA0000000000000HSBLANGIOS /* HSBHostsLanguageManager.swift in Sources */,
+				AF5C9E501CA018C46A17DAE6 /* SettingsIconButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

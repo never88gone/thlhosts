@@ -15,26 +15,60 @@ class HostsListCell: UITableViewCell {
     }
     
     // MARK: - Setup
+    private var isAddButton: Bool = false
+    private var isEnabledHost: Bool = false
+
     private func setupView() {
         backgroundColor = .clear
         textLabel?.adjustsFontSizeToFitWidth = true
+        #if os(tvOS)
+        textLabel?.font = UIFont.systemFont(ofSize: 31, weight: .medium) // [ZH] tvOS 最小 31pt
+        #else
+        if DeviceHelper.isPadOrMac {
+            textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        } else {
+            textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        }
+        #endif
     }
     
     // MARK: - Configuration
     func configure(text: String, isAddButton: Bool = false, isEnabled: Bool = false) {
         textLabel?.text = text
-        
+        self.isAddButton = isAddButton
+        self.isEnabledHost = isEnabled
+        updateAppearance(isFocused: isFocused)
+    }
+
+    private func updateAppearance(isFocused: Bool) {
         if isAddButton {
             // Add Button Style
-            if #available(tvOS 13.0, *), #available(iOS 13.0, *) {
-                textLabel?.textColor = .systemBlue
+            #if os(tvOS)
+            if isFocused {
+                backgroundColor = .appText
+                textLabel?.textColor = .appBackground
             } else {
-                textLabel?.textColor = .blue
+                backgroundColor = .clear
+                textLabel?.textColor = .systemBlue
             }
+            #else
+            textLabel?.textColor = .systemBlue
+            backgroundColor = .clear
+            #endif
         } else {
             // Normal Item Style
-            // Always use light color because background is glass (dark)
-            textLabel?.textColor = isEnabled ? .systemGreen : .white
+            #if os(tvOS)
+            if isFocused {
+                backgroundColor = .appText
+                textLabel?.textColor = .appBackground
+            } else {
+                backgroundColor = .clear
+                textLabel?.textColor = isEnabledHost ? .appCTA : .appText
+            }
+            #else
+            textLabel?.textColor = isEnabledHost ? .appCTA : .appText
+            backgroundColor = .clear
+            #endif
         }
     }
     
@@ -45,28 +79,12 @@ class HostsListCell: UITableViewCell {
         if context.nextFocusedView == self {
             coordinator.addCoordinatedAnimations({
                 self.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
-                self.backgroundColor = UIColor.white.withAlphaComponent(0.2)
-                // Keep text color visible
-                if let text = self.textLabel?.text, !text.contains("+") { // Not add button
-                     // Force white or keep green/red? Using white for focus is safer
-                     self.textLabel?.textColor = .black // High contrast on white-ish background
-                     self.backgroundColor = .white
-                }
+                self.updateAppearance(isFocused: true)
             }, completion: nil)
         } else if context.previouslyFocusedView == self {
             coordinator.addCoordinatedAnimations({
                 self.transform = .identity
-                self.backgroundColor = .clear
-                // Restore color
-                let isEnabled = self.textLabel?.textColor == .systemGreen // Rough check, better to store state
-                // Re-configure based on assumed state is risky without data access, 
-                // but usually cell reuse handles it. 
-                // Simpler: Just rely on configure being called or use a simpler focus style.
-                // Let's just reset to white for non-enabled, we need to know enabling state though.
-                // For now, let's just default to white if it was black.
-                if self.textLabel?.textColor == .black {
-                     self.textLabel?.textColor = .white
-                }
+                self.updateAppearance(isFocused: false)
             }, completion: nil)
         }
     }
@@ -74,7 +92,7 @@ class HostsListCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         if selected {
-            contentView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+            contentView.backgroundColor = UIColor.appSecondary.withAlphaComponent(0.6)
         } else {
             contentView.backgroundColor = .clear
         }

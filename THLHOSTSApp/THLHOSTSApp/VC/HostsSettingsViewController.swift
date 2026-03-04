@@ -10,7 +10,8 @@ class HostsSettingsViewController: UIViewController {
         ("zh-Hans", "简体中文")
     ]
     
-    private let sections = ["Language", "Tools"]
+    private let sections = ["Language", "Theme", "Tools"]
+    private let themes = AppTheme.allCases
     
     // Background Effects
     private let glassBackground = HSBLiquidGlassView()
@@ -19,10 +20,10 @@ class HostsSettingsViewController: UIViewController {
     // [ZH] UI 元素
     private let tableView: UITableView = {
         let style: UITableView.Style
-        #if os(iOS)
-        style = .insetGrouped
-        #else
+        #if os(tvOS)
         style = .grouped
+        #else
+        style = .insetGrouped
         #endif
         
         let tv = UITableView(frame: .zero, style: style)
@@ -39,6 +40,7 @@ class HostsSettingsViewController: UIViewController {
         setupLayout()
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleLanguageChange), name: NSNotification.Name("HSBLanguageChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleThemeChange), name: .themeChanged, object: nil)
         updateTexts()
     }
     
@@ -48,6 +50,11 @@ class HostsSettingsViewController: UIViewController {
     
     @objc private func handleLanguageChange() {
         updateTexts()
+        tableView.reloadData()
+    }
+    
+    @objc private func handleThemeChange() {
+        view.backgroundColor = .appBackground
         tableView.reloadData()
     }
     
@@ -83,12 +90,14 @@ class HostsSettingsViewController: UIViewController {
 // [ZH] TableView 数据源与代理
 extension HostsSettingsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return languages.count
+        } else if section == 1 {
+            return themes.count
         } else {
             return 1 // Logs
         }
@@ -97,6 +106,8 @@ extension HostsSettingsViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return HSBHostsLanguageManager.shared.localizedString("Language")
+        } else if section == 1 {
+            return HSBHostsLanguageManager.shared.localizedString("Theme")
         } else {
             return HSBHostsLanguageManager.shared.localizedString("Tools")
         }
@@ -104,30 +115,60 @@ extension HostsSettingsViewController: UITableViewDataSource, UITableViewDelegat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = .clear
         
-        // Fix Color for Focus/Theme
-        // [ZH] 修正焦点/主题颜色
-        cell.textLabel?.textColor = .white
-        let selectedBackgroundView = UIView()
-        selectedBackgroundView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
-        cell.selectedBackgroundView = selectedBackgroundView
+        var content = cell.defaultContentConfiguration()
         
         if indexPath.section == 0 {
             let (code, name) = languages[indexPath.row]
-            cell.textLabel?.text = name
+            content.text = name
             
             // Checkmark for current language
-            // [ZH] 当前语言的勾选标记
             let current = HSBHostsLanguageManager.shared.currentLanguage
             if current == code {
                 cell.accessoryType = .checkmark
             } else {
                 cell.accessoryType = .none
             }
+        } else if indexPath.section == 1 {
+            let theme = themes[indexPath.row]
+            content.text = theme.localizedName
+            
+            if ThemeManager.shared.currentTheme == theme {
+                cell.accessoryType = .checkmark
+            } else {
+                cell.accessoryType = .none
+            }
         } else {
-            cell.textLabel?.text = HSBHostsLanguageManager.shared.localizedString("View Logs")
+            content.text = HSBHostsLanguageManager.shared.localizedString("View Logs")
             cell.accessoryType = .disclosureIndicator
+        }
+        
+        // Font
+        #if os(tvOS)
+        content.textProperties.font = UIFont.systemFont(ofSize: 31, weight: .medium) // [ZH] tvOS 设置字体
+        #endif
+        
+        cell.contentConfiguration = content
+        
+        // Configuration Update Handler for Contrast
+        // [ZH] 自动对比度适配
+        cell.configurationUpdateHandler = { cell, state in
+            guard var content = cell.contentConfiguration as? UIListContentConfiguration else { return }
+            
+            if state.isFocused || state.isSelected {
+                content.textProperties.color = .appBackground
+            } else {
+                content.textProperties.color = .appText
+            }
+            cell.contentConfiguration = content
+            
+            var background = UIBackgroundConfiguration.listGroupedCell()
+            if state.isFocused || state.isSelected {
+                background.backgroundColor = .appText
+            } else {
+                background.backgroundColor = .appPrimary
+            }
+            cell.backgroundConfiguration = background
         }
         
         return cell
@@ -142,6 +183,12 @@ extension HostsSettingsViewController: UITableViewDataSource, UITableViewDelegat
             
             if current != code {
                 HSBHostsLanguageManager.shared.currentLanguage = code
+                tableView.reloadData()
+            }
+        } else if indexPath.section == 1 {
+            let selectedTheme = themes[indexPath.row]
+            if ThemeManager.shared.currentTheme != selectedTheme {
+                ThemeManager.shared.currentTheme = selectedTheme
                 tableView.reloadData()
             }
         } else {

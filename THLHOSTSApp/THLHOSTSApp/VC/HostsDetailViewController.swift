@@ -19,9 +19,17 @@ class HostsDetailViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 40, weight: .bold)
+        #if os(tvOS)
+        label.font = UIFont.systemFont(ofSize: 54, weight: .bold) // [ZH] tvOS 大标题
+        #else
+        if DeviceHelper.isPadOrMac {
+            label.font = UIFont.systemFont(ofSize: 40, weight: .bold)
+        } else {
+            label.font = UIFont.systemFont(ofSize: 30, weight: .bold)
+        }
+        #endif
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = .appText
         label.numberOfLines = 0
         return label
     }()
@@ -36,10 +44,18 @@ class HostsDetailViewController: UIViewController {
     
     private let contentTextView: UITextView = {
         let tv = UITextView()
-        tv.font = UIFont.monospacedSystemFont(ofSize: 20, weight: .regular)
+        #if os(tvOS)
+        tv.font = UIFont.monospacedSystemFont(ofSize: 31, weight: .regular) // [ZH] tvOS 正文 31pt+
+        #else
+        if DeviceHelper.isPadOrMac {
+            tv.font = UIFont.monospacedSystemFont(ofSize: 20, weight: .regular)
+        } else {
+            tv.font = UIFont.monospacedSystemFont(ofSize: 16, weight: .regular)
+        }
+        #endif
         // Semi-transparent background to blend with glass
-        tv.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
-        tv.textColor = .white
+        tv.backgroundColor = UIColor.appPrimary.withAlphaComponent(0.6)
+        tv.textColor = .appText
         tv.isUserInteractionEnabled = true
         tv.layer.cornerRadius = 10
         
@@ -55,7 +71,7 @@ class HostsDetailViewController: UIViewController {
     private let uploadInfoLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedString("Scan to Upload:", comment: "")
-        label.textColor = .lightGray
+        label.textColor = .appMutedText
         label.textAlignment = .center
         label.numberOfLines = 0
         return label
@@ -78,6 +94,7 @@ class HostsDetailViewController: UIViewController {
         setupLayout()
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleLanguageChange), name: NSNotification.Name("HSBLanguageChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleThemeChange), name: .themeChanged, object: nil)
         updateQRCode() // Initial load
         // [ZH] 初始加载
     }
@@ -93,6 +110,20 @@ class HostsDetailViewController: UIViewController {
         // Status label is updated via configure(with:) called by parent.
     }
     
+    @objc private func handleThemeChange() {
+        glassBackground.backgroundColor = .appBackground
+        titleLabel.textColor = .appText
+        contentTextView.backgroundColor = UIColor.appPrimary.withAlphaComponent(0.6)
+        contentTextView.textColor = .appText
+        uploadInfoLabel.textColor = .appMutedText
+        
+        // Refresh status element if visible
+        if let t = statusLabel.text {
+            let isEnabled = t.contains(HSBHostsLanguageManager.shared.localizedString("Enabled")) || t.contains("Enabled")
+            statusLabel.textColor = isEnabled ? .appCTA : .systemRed
+        }
+    }
+    
     // MARK: - Public API
     // [ZH] 公共接口
     func configure(with file: HostsFile) {
@@ -106,7 +137,7 @@ class HostsDetailViewController: UIViewController {
         contentTextView.text = file.content
         let statusText = file.isEnabled ? HSBHostsLanguageManager.shared.localizedString("Status: Enabled") : HSBHostsLanguageManager.shared.localizedString("Status: Disabled")
         statusLabel.text = statusText
-        statusLabel.textColor = file.isEnabled ? .systemGreen : .systemRed
+        statusLabel.textColor = file.isEnabled ? .appCTA : .systemRed
     }
     
     func clear() {
@@ -170,8 +201,8 @@ class HostsDetailViewController: UIViewController {
             make.width.equalToSuperview()
         }
         
-        let isTV = traitCollection.userInterfaceIdiom == .tv
-        let margin = isTV ? 40 : 20
+        let isTV = DeviceHelper.isTV
+        let margin = isTV ? 60 : (DeviceHelper.isPadOrMac ? 40 : 20) // [ZH] tvOS 安全区域 60pt, iPad/Mac 40pt, 手机 20pt
         
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(margin)
