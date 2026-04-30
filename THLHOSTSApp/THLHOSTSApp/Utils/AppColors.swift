@@ -5,49 +5,49 @@ extension UIColor {
     
     static var appBackground: UIColor {
         switch ThemeManager.shared.currentTheme {
-        case .developerDark:  return UIColor(hex: "#0F172A")
-        case .hackerTerminal: return UIColor(hex: "#020617")
+        case .developerDark:  return UIColor(hex: "#020617") // Deepest Midnight
+        case .hackerTerminal: return UIColor(hex: "#000000") // True Black
         case .cleanLight:     return UIColor(hex: "#F8FAFC")
         }
     }
     
     static var appPrimary: UIColor {
         switch ThemeManager.shared.currentTheme {
-        case .developerDark:  return UIColor(hex: "#1E293B")
-        case .hackerTerminal: return UIColor(hex: "#0F172A")
+        case .developerDark:  return UIColor(hex: "#0F172A") // Slate 900
+        case .hackerTerminal: return UIColor(hex: "#0A0A0A") // Near Black
         case .cleanLight:     return UIColor(hex: "#FFFFFF")
         }
     }
     
     static var appSecondary: UIColor {
         switch ThemeManager.shared.currentTheme {
-        case .developerDark:  return UIColor(hex: "#334155")
-        case .hackerTerminal: return UIColor(hex: "#1E293B")
+        case .developerDark:  return UIColor(hex: "#1E293B") // Slate 800
+        case .hackerTerminal: return UIColor(hex: "#171717") // Zinc 900
         case .cleanLight:     return UIColor(hex: "#E2E8F0")
         }
     }
     
     static var appText: UIColor {
         switch ThemeManager.shared.currentTheme {
-        case .developerDark:  return UIColor(hex: "#F8FAFC")
-        case .hackerTerminal: return UIColor(hex: "#F8FAFC") // Bright white
-        case .cleanLight:     return UIColor(hex: "#0F172A") // Dark slate
+        case .developerDark:  return UIColor(hex: "#F1F5F9") // Slate 100
+        case .hackerTerminal: return UIColor(hex: "#00FF41") // Matrix Green
+        case .cleanLight:     return UIColor(hex: "#0F172A")
         }
     }
     
     static var appCTA: UIColor {
         switch ThemeManager.shared.currentTheme {
-        case .developerDark:  return UIColor(hex: "#22C55E")
-        case .hackerTerminal: return UIColor(hex: "#00FF41") // Neon green
-        case .cleanLight:     return UIColor(hex: "#0891B2") // Cyan
+        case .developerDark:  return UIColor(hex: "#10B981") // Emerald 500
+        case .hackerTerminal: return UIColor(hex: "#00FF41") // Neon Green
+        case .cleanLight:     return UIColor(hex: "#0891B2")
         }
     }
     
     static var appMutedText: UIColor {
         switch ThemeManager.shared.currentTheme {
-        case .developerDark:  return UIColor(hex: "#94A3B8")
-        case .hackerTerminal: return UIColor(hex: "#475569")
-        case .cleanLight:     return UIColor(hex: "#64748B")
+        case .developerDark:  return UIColor(hex: "#64748B") // Slate 500
+        case .hackerTerminal: return UIColor(hex: "#404040") // Dark Gray
+        case .cleanLight:     return UIColor(hex: "#94A3B8")
         }
     }
 }
@@ -77,4 +77,14 @@ extension UIColor {
             alpha: CGFloat(a) / 255
         )
     }
+}
+import SwiftUI
+
+extension Color {
+    static var appBackground: Color { Color(uiColor: .appBackground) }
+    static var appPrimary: Color { Color(uiColor: .appPrimary) }
+    static var appSecondary: Color { Color(uiColor: .appSecondary) }
+    static var appText: Color { Color(uiColor: .appText) }
+    static var appCTA: Color { Color(uiColor: .appCTA) }
+    static var appMutedText: Color { Color(uiColor: .appMutedText) }
 }

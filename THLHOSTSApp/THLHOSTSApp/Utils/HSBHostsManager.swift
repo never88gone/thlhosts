@@ -3,6 +3,7 @@ import Foundation
 import Swifter
 import UIKit
 import NetworkExtension
+import SwiftUI
 
 @objc public class HSBHostsManager: NSObject {
     @objc public static let shared = HSBHostsManager()
@@ -357,7 +358,7 @@ import NetworkExtension
         var request = URLRequest(url: url)
         
         guard let host = url.host,
-              let ip = resolveIP(for: host) else {
+               let ip = resolveIP(for: host) else {
             return request
         }
         
@@ -437,6 +438,6 @@ import NetworkExtension
     // MARK: - UI Factory
     
     @objc public func makeRootViewController() -> UIViewController {
-        return HostsViewController()
+        return UIHostingController(rootView: MainView())
     }
 }
