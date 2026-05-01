@@ -56,10 +56,11 @@ struct HostsDetailView: View {
                     #else
                     TextEditor(text: $content)
                         .font(.system(.body, design: .monospaced))
+                        .foregroundColor(.appText)
                         .scrollContentBackground(.hidden)
                         .frame(minHeight: 350)
                         .padding(8)
-                        .background(Color.appPrimary.opacity(0.5))
+                        .background(Color.appPrimary.opacity(0.3))
                         .glassBackground(cornerRadius: 16)
                         .onChange(of: content) { newValue in
                             viewModel.updateContent(for: file, content: newValue)
@@ -67,7 +68,8 @@ struct HostsDetailView: View {
                     #endif
                 }
                 
-                // QR Code for uploading
+                #if os(tvOS)
+                // QR Code for uploading - Only needed on TV
                 VStack(spacing: 24) {
                     Label("scan_to_upload".localized, systemImage: "qrcode.viewfinder")
                         .font(.headline)
@@ -94,6 +96,7 @@ struct HostsDetailView: View {
                 }
                 .padding(.top, 20)
                 .frame(maxWidth: .infinity)
+                #endif
             }
             .padding(20)
         }

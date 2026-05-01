@@ -26,15 +26,6 @@ struct SettingsView: View {
     private var content: some View {
         Form {
             Section(header: Text("settings".localized)) {
-                Picker("theme".localized, selection: $selectedTheme) {
-                    ForEach(AppTheme.allCases, id: \.self) { theme in
-                        Text(theme.localizedName).tag(theme)
-                    }
-                }
-                .onChange(of: selectedTheme) { newValue in
-                    ThemeManager.shared.currentTheme = newValue
-                }
-                
                 Picker("language".localized, selection: $appLanguage) {
                     Text("follow_system".localized).tag("system")
                     Text("简体中文").tag("zh-Hans")
@@ -90,6 +81,10 @@ struct SettingsView: View {
         }
         .navigationTitle("settings".localized)
         #if os(iOS)
+        .scrollContentBackground(.hidden)
+        .background(Color.appBackground)
+        #endif
+        #if os(iOS)
         .sheet(isPresented: $showingLogs) {
             LogView()
         }
@@ -109,7 +104,7 @@ struct AboutDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 30) {
-                Image(systemName: " globe") // Placeholder or real AppIcon
+                Image(systemName: "globe") // Fixed: removed leading space
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 120, height: 120)

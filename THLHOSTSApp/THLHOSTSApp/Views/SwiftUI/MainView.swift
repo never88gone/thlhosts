@@ -21,6 +21,7 @@ struct MainView: View {
             #endif
         }
         .background(Color.appBackground.ignoresSafeArea())
+        .preferredColorScheme(.dark)
         #if os(iOS) || os(macOS)
         .sheet(isPresented: $showingSettings) {
             SettingsView()

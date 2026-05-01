@@ -254,6 +254,7 @@ struct HostsListView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     Text(file.name)
                         .font(.title2.bold())
+                        .foregroundColor(.appText)
                     Text(file.isEnabled ? "active".localized : "inactive".localized)
                         .font(.headline)
                         .foregroundColor(file.isEnabled ? .appCTA : .secondary)
@@ -266,7 +267,7 @@ struct HostsListView: View {
                 }
             }
             .padding(30)
-            .background(Color.appText.opacity(0.05))
+            .background(Color.white.opacity(0.1))
             .cornerRadius(16)
         }
         .buttonStyle(.plain)
@@ -276,6 +277,7 @@ struct HostsListView: View {
         VStack(spacing: 30) {
             Spacer()
             
+            #if os(tvOS)
             Image(systemName: "tray.and.arrow.up")
                 .font(.system(size: 120))
                 .foregroundColor(.appCTA.opacity(0.6))
@@ -300,6 +302,19 @@ struct HostsListView: View {
                 .background(Color.white.opacity(0.05))
                 .cornerRadius(24)
             }
+            #else
+            Image(systemName: "doc.text.magnifyingglass")
+                .font(.system(size: 80))
+                .foregroundColor(.appCTA.opacity(0.6))
+            
+            Text("no_configs".localized)
+                .font(.title.bold())
+                .foregroundColor(.appText)
+            
+            Text("click_plus_to_add".localized)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            #endif
             
             Spacer()
         }

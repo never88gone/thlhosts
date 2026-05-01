@@ -4,39 +4,23 @@ import UIKit
 extension UIColor {
     
     static var appBackground: UIColor {
-        switch ThemeManager.shared.currentTheme {
-        case .developerDark:  return UIColor(hex: "#020617") // Deepest Midnight
-        case .hackerTerminal: return UIColor(hex: "#000000") // True Black
-        case .cleanLight:     return UIColor(hex: "#F8FAFC")
-        }
+        return UIColor(hex: "#020617") // Deepest Midnight
     }
     
     static var appPrimary: UIColor {
-        switch ThemeManager.shared.currentTheme {
-        case .developerDark:  return UIColor(hex: "#0F172A") // Slate 900
-        case .hackerTerminal: return UIColor(hex: "#0A0A0A") // Near Black
-        case .cleanLight:     return UIColor(hex: "#FFFFFF")
-        }
+        return UIColor(hex: "#0F172A") // Slate 900
     }
     
     static var appSecondary: UIColor {
-        switch ThemeManager.shared.currentTheme {
-        case .developerDark:  return UIColor(hex: "#1E293B") // Slate 800
-        case .hackerTerminal: return UIColor(hex: "#171717") // Zinc 900
-        case .cleanLight:     return UIColor(hex: "#E2E8F0")
-        }
+        return UIColor(hex: "#1E293B") // Slate 800
     }
     
     static var appText: UIColor {
-        switch ThemeManager.shared.currentTheme {
-        case .developerDark:  return UIColor(hex: "#F1F5F9") // Slate 100
-        case .hackerTerminal: return UIColor(hex: "#00FF41") // Matrix Green
-        case .cleanLight:     return UIColor(hex: "#0F172A")
-        }
+        return UIColor(hex: "#F1F5F9") // Slate 100 (Bright Text)
     }
     
     static var appCTA: UIColor {
-        return UIColor(hex: "#6A8DFA") // New Primary Color
+        return UIColor(hex: "#6A8DFA") // Primary Blue
     }
     
     static var appAccent: UIColor {
@@ -44,11 +28,7 @@ extension UIColor {
     }
     
     static var appMutedText: UIColor {
-        switch ThemeManager.shared.currentTheme {
-        case .developerDark:  return UIColor(hex: "#64748B") // Slate 500
-        case .hackerTerminal: return UIColor(hex: "#404040") // Dark Gray
-        case .cleanLight:     return UIColor(hex: "#94A3B8")
-        }
+        return UIColor(hex: "#64748B") // Slate 500
     }
 }
 
