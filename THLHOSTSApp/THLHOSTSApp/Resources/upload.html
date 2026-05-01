@@ -1,100 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Hosts File</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Upload Hosts File - THL Hosts</title>
     <style>
+        :root {
+            --bg-color: #f2f2f7;
+            --card-bg: #ffffff;
+            --text-color: #000000;
+            --accent-color: #007aff;
+            --secondary-text: #666666;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #000000;
+                --card-bg: #1c1c1e;
+                --text-color: #ffffff;
+                --accent-color: #0a84ff;
+                --secondary-text: #8e8e93;
+            }
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f2f2f7;
-            color: #000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            min-height: 100vh;
+            transition: all 0.3s ease;
         }
-        .container {
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 90%;
-            max-width: 400px;
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
         }
+
+        .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
         h1 {
-            margin-top: 0;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            color: #007aff;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
         }
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+
+        p {
+            color: var(--secondary-text);
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 30px;
         }
-        input[type="text"], input[type="file"] {
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
             width: 100%;
-            padding: 0.8rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid #c7c7cc;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 1rem;
         }
-        button {
-            width: 100%;
-            padding: 1rem;
-            background-color: #007aff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: #ffffff;
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-size: 18px;
             font-weight: 600;
+            border: none;
             cursor: pointer;
-            transition: background-color 0.2s;
+            width: 100%;
+            transition: transform 0.2s ease, opacity 0.2s ease;
         }
-        button:hover {
-            background-color: #005bb5;
+
+        .btn:active {
+            transform: scale(0.98);
+            opacity: 0.9;
         }
+
         .footer {
-            margin-top: 1.5rem;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #8e8e93;
+            margin-top: 40px;
+            font-size: 14px;
+            color: var(--secondary-text);
         }
+
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .success { background: #34c75922; color: #34c759; display: block !important; }
+        .error { background: #ff3b3022; color: #ff3b30; display: block !important; }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="card">
+        <div class="icon">📄</div>
         <h1>Upload Hosts</h1>
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <label for="name">List Name (Optional)</label>
-            <input type="text" id="name" name="name" placeholder="e.g. adblock-list">
-            
-            <label for="file">Select .txt File</label>
-            <input type="file" id="file" name="file" accept=".txt" required>
-            
-            <button type="submit">Upload</button>
+        <p>Select a .hosts or .txt file to upload to your THL Hosts app.</p>
+        
+        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+            <label class="file-input-wrapper">
+                <input type="file" name="file" id="fileInput" accept=".hosts,.txt">
+                <button type="button" class="btn" onclick="document.getElementById('fileInput').click()">Choose File</button>
+            </label>
         </form>
+
+        <div id="status">
+            <div id="statusIcon"></div>
+            <div id="statusText"></div>
+            <button type="button" class="btn secondary" style="margin-top: 20px; background: var(--secondary-text);" onclick="resetUpload()">Upload Another</button>
+        </div>
+
         <div class="footer">
-            Start HTTP Server in app to upload.
+            糖葫芦 Hosts - Professional Redirection
         </div>
     </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const params = new URLSearchParams(window.location.search);
-            const name = params.get('name');
-            if (name) {
-                const nameInput = document.getElementById('name');
-                nameInput.value = name;
-                nameInput.readOnly = true;
-                // Add a visual cue that it is locked
-                nameInput.style.backgroundColor = "#eef";
-                document.querySelector('h1').innerText = "Upload to " + name;
+        const status = document.getElementById('status');
+        const statusIcon = document.getElementById('statusIcon');
+        const statusText = document.getElementById('statusText');
+        const fileInput = document.getElementById('fileInput');
+        const uploadForm = document.getElementById('uploadForm');
+
+        function resetUpload() {
+            status.style.display = 'none';
+            uploadForm.style.display = 'block';
+            fileInput.value = '';
+        }
+
+        fileInput.onchange = function() {
+            const file = this.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                uploadForm.style.display = 'none';
+                status.className = 'uploading';
+                statusIcon.innerText = '⏳';
+                statusText.innerText = 'Uploading...';
+                status.style.display = 'block';
+
+                fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Server returned ' + response.status);
+                    return response.text();
+                })
+                .then(data => {
+                    status.className = 'success';
+                    statusIcon.innerText = '✅';
+                    statusText.innerText = 'Upload Successful!';
+                })
+                .catch(error => {
+                    status.className = 'error';
+                    statusIcon.innerText = '❌';
+                    statusText.innerText = 'Upload Failed: ' + error.message;
+                });
             }
-        });
+        };
     </script>
 </body>
 </html>

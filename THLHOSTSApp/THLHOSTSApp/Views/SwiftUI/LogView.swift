@@ -5,49 +5,48 @@ struct LogView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        NavigationView {
+        VStack(spacing: 0) {
+            #if os(tvOS)
+            headerView
+            #endif
+            
             ScrollViewReader { proxy in
                 ScrollView {
                     Text(logs)
                         .font(.system(.caption, design: .monospaced))
-                        .foregroundColor(.appCTA)
+                        .foregroundColor(.primary)
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .id("bottom")
                 }
-                .background(Color.appBackground.opacity(0.95))
+                .background(Color.black.opacity(0.8))
+                .cornerRadius(12)
                 .onChange(of: logs) { _ in
                     withAnimation {
                         proxy.scrollTo("bottom", anchor: .bottom)
                     }
                 }
             }
-            .navigationTitle("System Logs")
+            
+            #if !os(tvOS)
+            .navigationTitle("system_log".localized)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Clear") {
+                    Button("clear".localized) {
                         HSBLogger.shared.clear()
                         refreshLogs()
                     }
                 }
-                
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        dismiss()
-                    }
+                    Button("done".localized) { dismiss() }
                 }
-                
-                #if os(iOS)
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        shareLogs()
-                    } label: {
-                        Image(systemName: "square.and.arrow.up")
-                    }
-                }
-                #endif
             }
+            #endif
         }
+        #if os(tvOS)
+        .padding(60)
+        .background(Color.appBackground.ignoresSafeArea())
+        #endif
         .onAppear {
             refreshLogs()
             NotificationCenter.default.addObserver(forName: HSBLogger.didUpdateLogs, object: nil, queue: .main) { _ in
@@ -56,23 +55,25 @@ struct LogView: View {
         }
     }
     
+    #if os(tvOS)
+    private var headerView: some View {
+        HStack {
+            Text("system_log".localized)
+                .font(.largeTitle.bold())
+            Spacer()
+            Button("clear".localized) {
+                HSBLogger.shared.clear()
+                refreshLogs()
+            }
+            .buttonStyle(.bordered)
+        }
+        .padding(.bottom, 20)
+    }
+    #endif
+    
     private func refreshLogs() {
         self.logs = HSBLogger.shared.logs.joined(separator: "\n")
     }
-    
-    #if os(iOS)
-    private func shareLogs() {
-        let activityVC = UIActivityViewController(activityItems: [logs], applicationActivities: nil)
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let rootVC = windowScene.windows.first?.rootViewController {
-            
-            if let popover = activityVC.popoverPresentationController {
-                popover.sourceView = rootVC.view
-            }
-            rootVC.present(activityVC, animated: true)
-        }
-    }
-    #endif
 }
 
 #Preview {

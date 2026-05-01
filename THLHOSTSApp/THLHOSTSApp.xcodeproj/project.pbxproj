@@ -37,21 +37,23 @@
 		55180A7E658328CC6BD14994 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6066225F93CC673A269CCE47 /* MainView.swift */; };
 		56B45EE09A4A793E9F7CEE43 /* HostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478EAE1909F7DE4B90C39231 /* HostsViewModel.swift */; };
 		5F3ECEADDAA736D6A7A01BBF /* HostsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C47B1AB27F6EB1F783F586D /* HostsListView.swift */; };
-		6514720178FE86E9B9D766D1 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		6514720178FE86E9B9D766D1 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		6E66AAA3B63F41F2545123EF /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFBABEADACC19FA16204BDF /* AppColors.swift */; };
-		72AC6F454F962CD77DAE59CD /* (null) in Sources */ = {isa = PBXBuildFile; };
+		72AC6F454F962CD77DAE59CD /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		7E70EB51FC90411E91E46A49 /* Pods_THLHOSTSApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A0DBD7CD5120CB3F0ED3339 /* Pods_THLHOSTSApp.framework */; };
 		804B9A4EC385B38115E68122 /* DeviceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF752F695CF809FE6D675BD /* DeviceHelper.swift */; };
 		9675E1FC20855F6500A4A84A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9675E1FB20855F6500A4A84A /* Foundation.framework */; };
 		9675E1FF20857AEF00A4A84A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9675E1FE20857AEF00A4A84A /* UIKit.framework */; };
 		9825049CA0299A3F9AB40C75 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F80F908C2C5BC59F37F5187 /* SettingsView.swift */; };
+		A3E2DA27FCE1589285B6CCBE /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493871870C62E46D94C1C254 /* L10n.swift */; };
 		AA0000000000000HSBLANGBD /* HSBHostsLanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000HSBLANGMAN /* HSBHostsLanguageManager.swift */; };
-		AD6A5F41BB6BB505D42251AE /* (null) in Sources */ = {isa = PBXBuildFile; };
+		AD6A5F41BB6BB505D42251AE /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		B33A877F22DD2D4971857846 /* GlassBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF36B7D9DB17672F1FBD29D /* GlassBackground.swift */; };
 		BF5382B843BF90EBB4377F01 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D5648BAED7A99400375951 /* SettingsView.swift */; };
-		C34E6912C360724F1548DFA0 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		C5C9D994441F985B792E6ED1 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		CC538FE39A7B2735B96FCF72 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		C34E6912C360724F1548DFA0 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		C5C9D994441F985B792E6ED1 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		CC538FE39A7B2735B96FCF72 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		D4DF6F6D334F1BC2600BD1C1 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABD0B439230B088D8433822 /* EmptyStateView.swift */; };
 		D8F7EB6D2492E6039BAE8B82 /* Pods_THLHOSTSNetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB3A45A4C24D03AB9398215 /* Pods_THLHOSTSNetworkExtension.framework */; };
 		DEB0BA2D9669687C486D4D41 /* SettingsIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BB6DE2EB5ED5E64A85A4F9 /* SettingsIconButton.swift */; };
 		EC82E83C26A656190CD83F7D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0B7EB5F373374F55971E27 /* Foundation.framework */; };
@@ -105,6 +107,7 @@
 		38DA4A032CFD629E00E0A837 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		38DA4A052CFD62A400E0A837 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		478EAE1909F7DE4B90C39231 /* HostsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HostsViewModel.swift; sourceTree = "<group>"; };
+		493871870C62E46D94C1C254 /* L10n.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
 		4C47B1AB27F6EB1F783F586D /* HostsListView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HostsListView.swift; sourceTree = "<group>"; };
 		5D0B7EB5F373374F55971E27 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		6066225F93CC673A269CCE47 /* MainView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -131,6 +134,7 @@
 		CFB3A45A4C24D03AB9398215 /* Pods_THLHOSTSNetworkExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_THLHOSTSNetworkExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C37688ED8384EAAB76DBC0 /* MainView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		DA30FE92F03191D32CAFE2D8 /* ThemeManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		EABD0B439230B088D8433822 /* EmptyStateView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		F28E4DB07608FA9A58330FED /* HostsDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HostsDetailView.swift; sourceTree = "<group>"; };
 		FBA348775BC62570F2698C40 /* HostsListView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HostsListView.swift; sourceTree = "<group>"; };
 		FFF752F695CF809FE6D675BD /* DeviceHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeviceHelper.swift; sourceTree = "<group>"; };
@@ -182,6 +186,7 @@
 				96D5648BAED7A99400375951 /* SettingsView.swift */,
 				ADF36B7D9DB17672F1FBD29D /* GlassBackground.swift */,
 				BA39190F76350BCCAA6095F8 /* LogView.swift */,
+				EABD0B439230B088D8433822 /* EmptyStateView.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -243,6 +248,7 @@
 				CDFBABEADACC19FA16204BDF /* AppColors.swift */,
 				FFF752F695CF809FE6D675BD /* DeviceHelper.swift */,
 				DA30FE92F03191D32CAFE2D8 /* ThemeManager.swift */,
+				493871870C62E46D94C1C254 /* L10n.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -593,6 +599,8 @@
 				B33A877F22DD2D4971857846 /* GlassBackground.swift in Sources */,
 				332B78FDEB28FA7817B000A9 /* HostsViewModel.swift in Sources */,
 				03993B26CB7A74A0D0F03988 /* LogView.swift in Sources */,
+				D4DF6F6D334F1BC2600BD1C1 /* EmptyStateView.swift in Sources */,
+				A3E2DA27FCE1589285B6CCBE /* L10n.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -603,12 +611,12 @@
 				3873EC982F3086EE00FE696C /* PacketTunnelProvider.swift in Sources */,
 				3873EC992F3086EE00FE696C /* HostsManager.swift in Sources */,
 				4402FEDD502D789F2E4B6612 /* SettingsIconButton.swift in Sources */,
-				CC538FE39A7B2735B96FCF72 /* (null) in Sources */,
-				72AC6F454F962CD77DAE59CD /* (null) in Sources */,
-				C5C9D994441F985B792E6ED1 /* (null) in Sources */,
-				C34E6912C360724F1548DFA0 /* (null) in Sources */,
-				AD6A5F41BB6BB505D42251AE /* (null) in Sources */,
-				6514720178FE86E9B9D766D1 /* (null) in Sources */,
+				CC538FE39A7B2735B96FCF72 /* BuildFile in Sources */,
+				72AC6F454F962CD77DAE59CD /* BuildFile in Sources */,
+				C5C9D994441F985B792E6ED1 /* BuildFile in Sources */,
+				C34E6912C360724F1548DFA0 /* BuildFile in Sources */,
+				AD6A5F41BB6BB505D42251AE /* BuildFile in Sources */,
+				6514720178FE86E9B9D766D1 /* BuildFile in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

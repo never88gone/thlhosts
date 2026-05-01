@@ -6,12 +6,37 @@ class HostsViewModel: ObservableObject {
     @Published var hostsFiles: [HostsFile] = []
     @Published var selectedFile: HostsFile?
     @Published var isVPNEnabled: Bool = false
+    @Published var serverIP: String = "localhost"
+    
+    var activeHostsFile: HostsFile? {
+        hostsFiles.first(where: { $0.isEnabled })
+    }
     
     private var cancellables = Set<AnyCancellable>()
     
     init() {
+        self.serverIP = HSBHostsManager.shared.startServer() ?? "localhost"
         loadData()
+        
+        // Subscribe to VPN status changes
+        NotificationCenter.default.publisher(for: .NEVPNStatusDidChange)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.updateVPNStatus()
+            }
+            .store(in: &cancellables)
+            
+        // Subscribe to Language changes
+        NotificationCenter.default.publisher(for: NSNotification.Name("HSBLanguageChanged"))
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.objectWillChange.send()
+                self?.loadData()
+            }
+            .store(in: &cancellables)
+            
         setupObservers()
+        updateVPNStatus()
     }
     
     func loadData() {
@@ -81,7 +106,37 @@ class HostsViewModel: ObservableObject {
         }
     }
     
+    func toggleVPN() {
+        let activeFiles = hostsFiles.filter { $0.isEnabled }
+        if activeFiles.isEmpty {
+            HSBLogger.shared.log("Cannot start service: No hosts configuration selected.", level: .warning)
+            // Optionally set a flag to show an alert in UI
+            return
+        }
+        
+        isVPNEnabled.toggle()
+        HSBHostsManager.shared.isVPNEnabled = isVPNEnabled
+    }
+    
     private func updateVPNStatus() {
         self.isVPNEnabled = HSBHostsManager.shared.isVPNEnabled
+    }
+    
+    func importFile(from url: URL) {
+        guard url.startAccessingSecurityScopedResource() else { return }
+        defer { url.stopAccessingSecurityScopedResource() }
+        
+        do {
+            let content = try String(contentsOf: url)
+            let filename = url.lastPathComponent
+            
+            // Save to disk
+            let destinationURL = HSBHostsManager.shared.hostsDirectory.appendingPathComponent(filename)
+            try content.write(to: destinationURL, atomically: true, encoding: .utf8)
+            
+            loadData()
+        } catch {
+            print("Failed to import file: \(error)")
+        }
     }
 }

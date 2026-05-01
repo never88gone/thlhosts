@@ -36,11 +36,11 @@ extension UIColor {
     }
     
     static var appCTA: UIColor {
-        switch ThemeManager.shared.currentTheme {
-        case .developerDark:  return UIColor(hex: "#10B981") // Emerald 500
-        case .hackerTerminal: return UIColor(hex: "#00FF41") // Neon Green
-        case .cleanLight:     return UIColor(hex: "#0891B2")
-        }
+        return UIColor(hex: "#6A8DFA") // New Primary Color
+    }
+    
+    static var appAccent: UIColor {
+        return UIColor(hex: "#6A8DFA").withAlphaComponent(0.8)
     }
     
     static var appMutedText: UIColor {

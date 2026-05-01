@@ -5,19 +5,34 @@ import Swifter
 class PacketTunnelProvider: NEPacketTunnelProvider {
 
     override func startTunnel(options: [String : NSObject]?, completionHandler: @escaping (Error?) -> Void) {
-        // Add code here to start the process of connecting the tunnel.
-        // For a Hosts tool, we might start a local proxy or just intercept DNS.
+        let conf = (self.protocolConfiguration as! NETunnelProviderProtocol).providerConfiguration
+        let hosts = conf?["hosts"] as? String ?? ""
+        let upstreamDNS = conf?["upstreamDNS"] as? String ?? "8.8.8.8"
+        
+        NSLog("PacketTunnelProvider: Starting with hosts length: \(hosts.count)")
         
         let settings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: "127.0.0.1")
         settings.mtu = 1500
         
-        // Intercept all traffic or specific DNS?
-        // For Hosts, we typically want to intercept DNS queries.
-        let dnsSettings = NEDNSSettings(servers: ["8.8.8.8"]) // Placeholder
-        dnsSettings.matchDomains = [""] // Match all domains
+        // DNS Settings
+        // We set the DNS to the upstream but we can also set matchDomains 
+        // to force queries through this tunnel.
+        let dnsSettings = NEDNSSettings(servers: [upstreamDNS])
+        dnsSettings.matchDomains = [""] // Intercept all DNS
         settings.dnsSettings = dnsSettings
         
+        // IPv4 Settings
+        // To intercept DNS packets (UDP 53), we usually need to route the DNS server's IP through the tunnel
+        let ipv4Settings = NEIPv4Settings(addresses: ["10.0.0.1"], subnetMasks: ["255.255.255.0"])
+        ipv4Settings.includedRoutes = [NEIPv4Route.default()]
+        settings.ipv4Settings = ipv4Settings
+        
         setTunnelNetworkSettings(settings) { error in
+            if let error = error {
+                NSLog("PacketTunnelProvider: Failed to set settings: \(error)")
+            } else {
+                NSLog("PacketTunnelProvider: Settings applied successfully")
+            }
             completionHandler(error)
         }
     }

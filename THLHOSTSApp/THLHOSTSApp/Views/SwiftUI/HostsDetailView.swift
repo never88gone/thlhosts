@@ -12,18 +12,18 @@ struct HostsDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 // Header info
-                HStack(alignment: .top) {
-                    VStack(alignment: .leading, spacing: 4) {
+                HStack(spacing: UIDevice.current.userInterfaceIdiom == .tv ? 40 : 16) {
+                    VStack(alignment: .leading, spacing: UIDevice.current.userInterfaceIdiom == .tv ? 12 : 6) {
                         Text(file.name)
-                            .font(.system(.largeTitle, design: .rounded).bold())
+                            .font(UIDevice.current.userInterfaceIdiom == .tv ? .system(size: 64, weight: .bold) : .title2.bold())
                             .foregroundColor(.appText)
                         
-                        HStack(spacing: 6) {
+                        HStack(spacing: 8) {
                             Circle()
                                 .fill(file.isEnabled ? Color.appCTA : Color.appMutedText)
-                                .frame(width: 8, height: 8)
-                            Text(file.isEnabled ? "System Active" : "Configuration Inactive")
-                                .font(.subheadline)
+                                .frame(width: UIDevice.current.userInterfaceIdiom == .tv ? 12 : 8)
+                            Text(file.isEnabled ? "system_active".localized : "system_inactive".localized)
+                                .font(UIDevice.current.userInterfaceIdiom == .tv ? .headline : .subheadline)
                                 .foregroundColor(file.isEnabled ? .appCTA : .appMutedText)
                         }
                     }
@@ -40,7 +40,7 @@ struct HostsDetailView: View {
                 
                 // Editor
                 VStack(alignment: .leading, spacing: 12) {
-                    Label("Hosts Content", systemImage: "curlybraces")
+                    Label("hosts_content".localized, systemImage: "curlybraces")
                         .font(.headline)
                         .foregroundColor(.appText)
                     
@@ -68,34 +68,31 @@ struct HostsDetailView: View {
                 }
                 
                 // QR Code for uploading
-                VStack(spacing: 16) {
-                    Label("Quick Remote Upload", systemImage: "qrcode.viewfinder")
+                VStack(spacing: 24) {
+                    Label("scan_to_upload".localized, systemImage: "qrcode.viewfinder")
                         .font(.headline)
                         .foregroundColor(.appText)
                     
-                    VStack(spacing: 16) {
-                        if let qrImage = generateQRCode(from: "http://\(serverIP):8080/?name=\(file.name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")") {
+                    VStack(spacing: 20) {
+                        if let qrImage = generateQRCode(from: "http://\(viewModel.serverIP):9971") {
                             Image(uiImage: qrImage)
                                 .interpolation(.none)
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 180, height: 180)
-                                .padding(12)
+                                .frame(width: 200, height: 200)
+                                .padding(25)
                                 .background(Color.white)
-                                .cornerRadius(12)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(Color.appCTA.opacity(0.3), lineWidth: 1)
-                                )
+                                .cornerRadius(20)
                         }
                         
-                        Text("Connect to http://\(serverIP):8080")
-                            .font(.system(.caption, design: .monospaced))
-                            .foregroundColor(.appMutedText)
+                        Text("http://\(viewModel.serverIP):9971")
+                            .font(.system(.subheadline, design: .monospaced))
+                            .foregroundColor(.appCTA)
                     }
-                    .padding(24)
-                    .glassBackground(cornerRadius: 20)
+                    .padding(32)
+                    .glassBackground(cornerRadius: 32)
                 }
+                .padding(.top, 20)
                 .frame(maxWidth: .infinity)
             }
             .padding(20)

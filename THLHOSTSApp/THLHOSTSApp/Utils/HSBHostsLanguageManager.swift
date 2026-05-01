@@ -3,14 +3,16 @@ import Foundation
 @objc public class HSBHostsLanguageManager: NSObject {
     @objc public static let shared = HSBHostsLanguageManager()
     
-    private let kUserLanguageKey = "HSBUserLanguageKey"
+    private let kUserLanguageKey = "app_language"
     
     @objc public var currentLanguage: String {
         get {
-            // Default to system language if not set, or fallback to "en"
-            if let saved = UserDefaults.standard.string(forKey: kUserLanguageKey) {
+            // Check if user has explicitly set a language
+            if let saved = UserDefaults.standard.string(forKey: kUserLanguageKey), saved != "system" {
                 return saved
             }
+            
+            // Fallback to system language
             let lang = Locale.preferredLanguages.first ?? "en"
             if lang.hasPrefix("zh") {
                 return "zh-Hans"
@@ -18,19 +20,27 @@ import Foundation
             return "en"
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: kUserLanguageKey)
-            UserDefaults.standard.synchronize()
-            NotificationCenter.default.post(name: NSNotification.Name("HSBLanguageChanged"), object: nil)
+            setLanguage(newValue)
         }
+    }
+    
+    @objc public func setLanguage(_ language: String) {
+        if language == "system" {
+            UserDefaults.standard.removeObject(forKey: kUserLanguageKey)
+        } else {
+            UserDefaults.standard.set(language, forKey: kUserLanguageKey)
+        }
+        UserDefaults.standard.synchronize()
+        NotificationCenter.default.post(name: NSNotification.Name("HSBLanguageChanged"), object: nil)
     }
     
     @objc public func localizedString(_ key: String) -> String {
         var lang = currentLanguage
-        // Handle variations of zh-Hans if needed, but for now strict match
+        // Ensure we use the mapped code for bundle lookup
+        let bundleLang = lang.contains("zh") ? "zh-Hans" : "en"
         
-        guard let path = Bundle.main.path(forResource: lang, ofType: "lproj"),
+        guard let path = Bundle.main.path(forResource: bundleLang, ofType: "lproj"),
               let bundle = Bundle(path: path) else {
-            // Fallback to Base or en if bundle not found
              if let path = Bundle.main.path(forResource: "en", ofType: "lproj"),
                 let bundle = Bundle(path: path) {
                  return bundle.localizedString(forKey: key, value: nil, table: nil)

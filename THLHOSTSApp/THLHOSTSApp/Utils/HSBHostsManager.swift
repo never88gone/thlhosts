@@ -66,7 +66,7 @@ import SwiftUI
     
     // MARK: - Directory Management
     
-    private var hostsDirectory: URL {
+    public var hostsDirectory: URL {
         let fileManager = FileManager.default
         let docDir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
         let hostsDir = docDir.appendingPathComponent("Hosts")
@@ -206,7 +206,7 @@ import SwiftUI
     
     // MARK: - Server Logic
     
-    public func startServer(port: in_port_t = 9971) -> String? {
+    public func startServer(port: in_port_t = 8080) -> String? {
         if started { stopServer() }
         
         setupRoutes()
@@ -227,9 +227,12 @@ import SwiftUI
     }
     
     private func setupRoutes() {
-        httpServer.get["/"] = { [weak self] _ in
-            guard let self = self else { return .internalServerError(nil) }
-            return .ok(.html(self.uploadHtml))
+        httpServer.get["/"] = { _ in
+            if let path = Bundle.main.path(forResource: "upload", ofType: "html"),
+               let html = try? String(contentsOfFile: path) {
+                return .ok(.html(html))
+            }
+            return .notFound()
         }
         
         httpServer.post["/upload"] = { [weak self] req in
@@ -266,13 +269,24 @@ import SwiftUI
     }
     
     private func saveHostsFile(data: Data, filename: String) -> HttpResponse {
-        let destURL = hostsDirectory.appendingPathComponent(filename)
+        // If there's an active host, overwrite it; otherwise, save as new file
+        let actualFilename = activeHost ?? filename
+        let destURL = hostsDirectory.appendingPathComponent(actualFilename)
+        
         do {
             try data.write(to: destURL)
-            DispatchQueue.main.async {
-                self.onReceiveHosts?(filename)
+            
+            // If we overwrote the active host, refresh the VPN/Proxy content
+            if let active = activeHost, active == actualFilename {
+                applyHostsProxy(filename: active)
+                updateVPNConfiguration(filename: active)
             }
-            return .ok(.text("Upload Successful! Filename: \(filename)"))
+            
+            DispatchQueue.main.async {
+                self.onReceiveHosts?(actualFilename)
+                NotificationCenter.default.post(name: NSNotification.Name("HSBHostsUploaded"), object: nil)
+            }
+            return .ok(.text("Upload Successful! Updated: \(actualFilename)"))
         } catch {
             return .internalServerError(.text("Save failed: \(error)"))
         }
@@ -377,40 +391,6 @@ import SwiftUI
     }
     
     // MARK: - Utils
-    
-    private var uploadHtml: String {
-        return """
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Upload Hosts File</title>
-            <style>
-                body { font-family: -apple-system, sans-serif; text-align: center; padding: 50px; background: #f0f0f0; }
-                .container { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 500px; margin: 0 auto; }
-                h1 { color: #333; }
-                .btn { display: inline-block; padding: 15px 30px; background: #007aff; color: white; border-radius: 10px; text-decoration: none; font-weight: bold; cursor: pointer; border: none; font-size: 18px; margin-top: 20px; }
-                input[type=file] { display: none; }
-                .file-label { display: block; padding: 40px; border: 2px dashed #ddd; border-radius: 10px; margin: 20px 0; color: #666; cursor: pointer; }
-                .file-label:hover { border-color: #007aff; background: #f8faff; color: #007aff; }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h1>Upload Hosts File</h1>
-                <p>Select a hosts file to upload to your TV.</p>
-                <form action="/upload" method="post" enctype="multipart/form-data">
-                    <label class="file-label">
-                        <input type="file" name="file" onchange="this.form.submit()">
-                        <span>Click to Select File</span>
-                    </label>
-                </form>
-            </div>
-        </body>
-        </html>
-        """
-    }
     
     private func getLocalIPAddress() -> String? {
         var ipv4Address: String?
