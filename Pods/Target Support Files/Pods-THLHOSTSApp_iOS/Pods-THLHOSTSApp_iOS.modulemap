@@ -1,6 +1,0 @@
-framework module Pods_THLHOSTSApp_iOS {
-  umbrella header "Pods-THLHOSTSApp_iOS-umbrella.h"
-
-  export *
-  module * { export * }
-}

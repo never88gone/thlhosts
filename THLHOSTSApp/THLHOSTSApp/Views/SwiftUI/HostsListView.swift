@@ -23,8 +23,10 @@ struct HostsListView: View {
                 tvOSBottomActions
                 #endif
             }
+            #if os(tvOS)
             .padding(.horizontal, 80)
             .padding(.vertical, 40)
+            #endif
         }
         #if os(iOS)
         .toolbar {

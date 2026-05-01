@@ -74,7 +74,7 @@ struct HostsDetailView: View {
                         .foregroundColor(.appText)
                     
                     VStack(spacing: 20) {
-                        if let qrImage = generateQRCode(from: "http://\(viewModel.serverIP):9971") {
+                        if let qrImage = generateQRCode(from: "http://\(viewModel.serverIP):8080") {
                             Image(uiImage: qrImage)
                                 .interpolation(.none)
                                 .resizable()
@@ -85,7 +85,7 @@ struct HostsDetailView: View {
                                 .cornerRadius(20)
                         }
                         
-                        Text("http://\(viewModel.serverIP):9971")
+                        Text("http://\(viewModel.serverIP):8080")
                             .font(.system(.subheadline, design: .monospaced))
                             .foregroundColor(.appCTA)
                     }

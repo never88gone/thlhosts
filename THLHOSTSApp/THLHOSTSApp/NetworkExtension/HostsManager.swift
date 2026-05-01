@@ -1,6 +1,4 @@
 
-import Foundation
-
 import Swifter
 
 class HostsManager {
@@ -65,12 +63,12 @@ class HostsManager {
                     }
                 }
                 
-                HSBLogger.shared.log("DEBUG: Content-Type: \(contentType)", level: .debug)
-                HSBLogger.shared.log("DEBUG: Boundary: \(boundary)", level: .debug)
-                HSBLogger.shared.log("DEBUG: Body Size: \(data.count)", level: .debug)
+                log("DEBUG: Content-Type: \(contentType)", level: .debug)
+                log("DEBUG: Boundary: \(boundary)", level: .debug)
+                log("DEBUG: Body Size: \(data.count)", level: .debug)
                 
                 let parts = SimpleMultiPartParser.parse(data: data, boundary: boundary)
-                HSBLogger.shared.log("DEBUG: Parsed Parts: \(parts.count)", level: .debug)
+                log("DEBUG: Parsed Parts: \(parts.count)", level: .debug)
                 
                 var name = "Uploaded"
                 var fileContent = ""
@@ -93,7 +91,7 @@ class HostsManager {
                         }
                     }
                     
-                    HSBLogger.shared.log("DEBUG: Part Name Detected: \(partName)", level: .debug)
+                    log("DEBUG: Part Name Detected: \(partName)", level: .debug)
                     
                     if partName == "name", let body = String(data: part.body, encoding: .utf8) {
                         let trimmed = body.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -102,12 +100,12 @@ class HostsManager {
                         }
                     } else if partName == "file", let body = String(data: part.body, encoding: .utf8) {
                          fileContent = body
-                         HSBLogger.shared.log("DEBUG: File content found, length: \(body.count)", level: .debug)
+                         log("DEBUG: File content found, length: \(body.count)", level: .debug)
                     }
                 }
                 
                 if !fileContent.isEmpty {
-                    HSBLogger.shared.log("Received upload: Name=\(name), ContentLength=\(fileContent.count)", level: .info)
+                    log("Received upload: Name=\(name), ContentLength=\(fileContent.count)", level: .info)
                     DispatchQueue.main.async {
                         self.onHostsUploaded?(name, fileContent)
                     }
@@ -122,10 +120,20 @@ class HostsManager {
         
         do {
             try server.start(port)
-            HSBLogger.shared.log("Server started on port \(port)", level: .info)
+            log("Server started on port \(port)", level: .info)
         } catch {
-            HSBLogger.shared.log("Server start error: \(error)", level: .error)
+            log("Server start error: \(error)", level: .error)
         }
+    }
+
+    private enum LogLevel: String { case info, warning, error, debug }
+    private func log(_ message: String, level: LogLevel = .info) {
+        #if canImport(UIKit)
+        // If possible, try to use the shared logger (for Main App)
+        // This is a dynamic check that works if the symbol is available
+        // But for simplicity and to avoid compilation errors, we just print here
+        #endif
+        print("[HostsManager] [\(level.rawValue.uppercased())] \(message)")
     }
     
     func stopServer() {

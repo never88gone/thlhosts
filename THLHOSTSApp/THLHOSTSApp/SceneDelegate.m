@@ -10,15 +10,7 @@
 
 #import <TargetConditionals.h>
 
-#if TARGET_OS_TV
-#if __has_include("THLHOSTSApp-Swift.h")
 #import "THLHOSTSApp-Swift.h"
-#elif __has_include("THLHOSTSApp_iOS-Swift.h")
-#import "THLHOSTSApp_iOS-Swift.h"
-#endif
-#else
-#import "THLHOSTSApp_iOS-Swift.h"
-#endif
 
 @implementation SceneDelegate
 

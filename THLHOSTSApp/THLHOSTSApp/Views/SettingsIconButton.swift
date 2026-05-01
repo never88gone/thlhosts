@@ -1,5 +1,6 @@
 import UIKit
 
+#if os(tvOS)
 /// A custom UIControl subclass that supports tvOS focus, showing a `gearshape.fill` icon
 /// with animated scale + tint changes on focus.
 class SettingsIconButton: UIControl {
@@ -10,7 +11,7 @@ class SettingsIconButton: UIControl {
         let config = UIImage.SymbolConfiguration(pointSize: 40, weight: .bold)
         iv.image = UIImage(systemName: "gearshape.fill", withConfiguration: config)
         iv.contentMode = .scaleAspectFit
-        iv.tintColor = .appText
+        iv.tintColor = UIColor.appText
         iv.backgroundColor = .clear
         iv.isUserInteractionEnabled = false
         return iv
@@ -49,13 +50,13 @@ class SettingsIconButton: UIControl {
         if context.nextFocusedView == self {
             coordinator.addCoordinatedAnimations({
                 self.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-                self.imageView.tintColor = .appCTA
+                self.imageView.tintColor = UIColor.appCTA
                 self.imageView.alpha = 1.0
             }, completion: nil)
         } else if context.previouslyFocusedView == self {
             coordinator.addCoordinatedAnimations({
                 self.transform = .identity
-                self.imageView.tintColor = .appText
+                self.imageView.tintColor = UIColor.appText
                 self.imageView.alpha = 0.85
             }, completion: nil)
         }
@@ -70,24 +71,21 @@ class SettingsIconButton: UIControl {
 
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         super.pressesBegan(presses, with: event)
-        #if os(tvOS)
         if presses.contains(where: { $0.type == .select }) {
             UIView.animate(withDuration: 0.1) {
                 self.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             }
         }
-        #endif
     }
 
     override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         super.pressesEnded(presses, with: event)
-        #if os(tvOS)
         if presses.contains(where: { $0.type == .select }) {
             UIView.animate(withDuration: 0.12) {
                 self.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
             }
             sendActions(for: .primaryActionTriggered)
         }
-        #endif
     }
 }
+#endif
