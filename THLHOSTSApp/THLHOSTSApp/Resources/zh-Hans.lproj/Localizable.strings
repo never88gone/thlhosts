@@ -9,6 +9,8 @@
 "status" = "状态";
 "active" = "已启用";
 "inactive" = "未启用";
+"settings" = "设置";
+"fetch_url" = "从网络获取";
 "system_active" = "系统生效中";
 "system_inactive" = "未生效";
 "language" = "语言";

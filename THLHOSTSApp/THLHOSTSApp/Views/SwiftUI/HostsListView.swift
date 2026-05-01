@@ -120,7 +120,9 @@ struct HostsListView: View {
                 ForEach(viewModel.hostsFiles) { file in
                     hostRow(file)
                         .listRowBackground(Color.appSecondary)
+                        #if os(iOS)
                         .listRowSeparatorTint(Color.appDivider)
+                        #endif
                         .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                 }
             }

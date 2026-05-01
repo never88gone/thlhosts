@@ -123,6 +123,12 @@ class HostsViewModel: ObservableObject {
             }
         }
     }
+    func updateSourceURL(for file: HostsFile, url: String) {
+        if let index = hostsFiles.firstIndex(where: { $0.id == file.id }) {
+            hostsFiles[index].sourceURL = url
+            HostsStorage.shared.save(hostsFiles)
+        }
+    }
     
     func toggleVPN() {
         let activeFiles = hostsFiles.filter { $0.isEnabled }
@@ -149,6 +155,36 @@ class HostsViewModel: ObservableObject {
     
     private func updateVPNStatus() {
         self.isVPNEnabled = HSBHostsManager.shared.isVPNEnabled
+    }
+    
+    func fetchHostsFromURL(url: String, for file: HostsFile, completion: @escaping (Bool) -> Void) {
+        guard let downloadURL = URL(string: url.trimmingCharacters(in: .whitespacesAndNewlines)) else {
+            HSBLogger.shared.log("[错误] 无效的 URL: \(url)", level: .error)
+            completion(false)
+            return
+        }
+        
+        HSBLogger.shared.log("正在从 URL 下载 Hosts: \(url)", level: .info)
+        
+        URLSession.shared.dataTask(with: downloadURL) { [weak self] data, response, error in
+            if let error = error {
+                HSBLogger.shared.log("[错误] 下载失败: \(error.localizedDescription)", level: .error)
+                DispatchQueue.main.async { completion(false) }
+                return
+            }
+            
+            guard let data = data, let content = String(data: data, encoding: .utf8) else {
+                HSBLogger.shared.log("[错误] 无法解析下载的数据", level: .error)
+                DispatchQueue.main.async { completion(false) }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self?.updateContent(for: file, content: content)
+                HSBLogger.shared.log("成功从网络更新配置: \(file.name)，长度: \(content.count)", level: .info)
+                completion(true)
+            }
+        }.resume()
     }
     
     func importFile(from url: URL) {

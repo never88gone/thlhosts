@@ -40,9 +40,36 @@ struct HostsDetailView: View {
                 
                 // Editor
                 VStack(alignment: .leading, spacing: 12) {
-                    Label("hosts_content".localized, systemImage: "curlybraces")
-                        .font(.headline)
-                        .foregroundColor(.appText)
+                    HStack {
+                        Label("hosts_content".localized, systemImage: "curlybraces")
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        // Show "Fetch from URL" if content looks like a URL
+                        if content.trimmingCharacters(in: .whitespacesAndNewlines).lowercased().hasPrefix("http") {
+                            Button(action: {
+                                viewModel.fetchHostsFromURL(url: content, for: file) { success in
+                                    if success {
+                                        // Refresh local state if needed
+                                        self.content = viewModel.hostsFiles.first(where: { $0.id == file.id })?.content ?? content
+                                    }
+                                }
+                            }) {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "icloud.and.arrow.down")
+                                    Text("fetch_url".localized)
+                                }
+                                .font(.subheadline.bold())
+                                .foregroundColor(.appCTA)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 6)
+                                .background(Color.appCTA.opacity(0.1))
+                                .cornerRadius(8)
+                            }
+                        }
+                    }
+                    .foregroundColor(.appText)
                     
                     #if os(tvOS)
                     ScrollView {

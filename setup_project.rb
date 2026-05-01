@@ -16,6 +16,7 @@ def duplicate_target(project, src_target_name, new_target_name, platform_sdk, su
     t = project.targets.find { |t| t.name == new_target_name }
     t.build_configurations.each do |config|
       config.build_settings['SUPPORTS_MACCATALYST'] = 'YES'
+      config.build_settings['SWIFT_VERSION'] = '5.0'
     end
     return t
   end
@@ -49,6 +50,7 @@ def duplicate_target(project, src_target_name, new_target_name, platform_sdk, su
     config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = "#{config.build_settings['PRODUCT_BUNDLE_IDENTIFIER']}.ios"
     config.build_settings['INFOPLIST_FILE'] = 'THLHOSTSApp/Info.plist' # Reuse existing plist for now
     config.build_settings['SUPPORTS_MACCATALYST'] = 'YES'
+    config.build_settings['SWIFT_VERSION'] = '5.0'
   end
 
   return new_target

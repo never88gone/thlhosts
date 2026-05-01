@@ -1,6 +1,4 @@
-
 import NetworkExtension
-import Swifter
 
 class PacketTunnelProvider: NEPacketTunnelProvider {
 

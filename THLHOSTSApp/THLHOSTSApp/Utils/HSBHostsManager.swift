@@ -430,6 +430,7 @@ import SwiftUI
     // MARK: - UI Factory
     
     @objc public func makeRootViewController() -> UIViewController {
+        #if os(iOS)
         // MARK: - Global Navigation Bar Appearance (Dark Design System)
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
@@ -449,6 +450,8 @@ import SwiftUI
         UINavigationBar.appearance().standardAppearance   = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
         UINavigationBar.appearance().compactAppearance    = appearance
+        #endif
+        
         UINavigationBar.appearance().tintColor = UIColor(hex: "#698df9")
         
         return UIHostingController(rootView: MainView())
