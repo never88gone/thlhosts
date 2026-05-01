@@ -15,7 +15,7 @@ import SwiftUI
     // VPN Manager
     private var vpnManager: NETunnelProviderManager?
     private let kTunnelBundleSuffix = ".extension"
-    private let kAppGroupIdentifier = "com.never88gone.thlhosts" // 修改为你的 App Group ID
+    private let kAppGroupIdentifier = "group.com.never88gone.thlhosts" // 修改为你的 App Group ID
     
     // VPN Status
     @Published public var isVPNEnabled: Bool = false
@@ -23,21 +23,33 @@ import SwiftUI
     
     private override init() {
         super.init()
-        loadVPNManager()
+        // Delaying load to avoid early IPC issues
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.loadVPNManager()
+        }
         observeVPNStatus()
     }
     
     // MARK: - VPN Management
     
     private func loadVPNManager() {
+        let bundleID = Bundle.main.bundleIdentifier ?? "unknown"
+        let providerID = bundleID + kTunnelBundleSuffix
+        NSLog("HSBHostsManager: Loading VPN configs. AppID: \(bundleID), ProviderID: \(providerID)")
+        
         NETunnelProviderManager.loadAllFromPreferences { [weak self] managers, error in
             if let error = error {
-                NSLog("HSBHostsManager: Failed to load VPN config: \(error)")
+                NSLog("HSBHostsManager: Failed to load VPN config: \(error.localizedDescription) (Domain: \((error as NSError).domain), Code: \((error as NSError).code))")
                 return
             }
             
             // Find existing manager or create new one
             self?.vpnManager = managers?.first
+            if let manager = self?.vpnManager {
+                NSLog("HSBHostsManager: Found existing VPN configuration: \(manager.localizedDescription ?? "No Description")")
+            } else {
+                NSLog("HSBHostsManager: No existing VPN configuration found.")
+            }
             self?.updateVPNStatus()
         }
     }
@@ -418,6 +430,27 @@ import SwiftUI
     // MARK: - UI Factory
     
     @objc public func makeRootViewController() -> UIViewController {
+        // MARK: - Global Navigation Bar Appearance (Dark Design System)
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor         = UIColor(hex: "#030712")   // appBackground
+        appearance.titleTextAttributes     = [.foregroundColor: UIColor(hex: "#CBD5E1")]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor(hex: "#CBD5E1")]
+        
+        let buttonAttrs: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor(hex: "#698df9")  // appCTA
+        ]
+        let barButtonAppearance = UIBarButtonItemAppearance()
+        barButtonAppearance.normal.titleTextAttributes = buttonAttrs
+        appearance.buttonAppearance = barButtonAppearance
+        appearance.doneButtonAppearance = barButtonAppearance
+        appearance.backButtonAppearance = barButtonAppearance
+        
+        UINavigationBar.appearance().standardAppearance   = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance    = appearance
+        UINavigationBar.appearance().tintColor = UIColor(hex: "#698df9")
+        
         return UIHostingController(rootView: MainView())
     }
 }

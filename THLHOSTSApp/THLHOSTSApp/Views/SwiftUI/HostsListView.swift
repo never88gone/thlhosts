@@ -97,14 +97,31 @@ struct HostsListView: View {
         List {
             #if os(iOS)
             Section {
-                Toggle("master_switch".localized, isOn: $viewModel.isVPNEnabled)
+                Toggle("master_switch".localized, isOn: Binding(
+                    get: { viewModel.isVPNEnabled },
+                    set: { _ in viewModel.toggleVPN() }
+                ))
                     .toggleStyle(SwitchToggleStyle(tint: .appCTA))
+                    .foregroundColor(.appText)
+                    .listRowBackground(Color.appSecondary)
+            } header: {
+                Text("app_name".localized)
+                    .font(.subheadline.bold())
+                    .foregroundColor(.appCTA) // 品牌色标题
+                    .textCase(nil)
             }
             #endif
             
-            Section(header: Text("configurations".localized)) {
+            Section(header: Text("configurations".localized)
+                        .font(.caption.weight(.semibold))
+                        .foregroundColor(.appSubText) // 使用更柔和的次要文字色
+                        .textCase(nil)
+            ) {
                 ForEach(viewModel.hostsFiles) { file in
                     hostRow(file)
+                        .listRowBackground(Color.appSecondary)
+                        .listRowSeparatorTint(Color.appDivider)
+                        .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                 }
             }
         }
@@ -112,6 +129,10 @@ struct HostsListView: View {
         .listStyle(PlainListStyle())
         #else
         .listStyle(InsetGroupedListStyle())
+        .scrollContentBackground(.hidden)
+        .background(Color.appBackground)
+        .toolbarBackground(Color.appBackground, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         #endif
     }
     
@@ -136,7 +157,7 @@ struct HostsListView: View {
                     } else {
                         Text("no_configs".localized)
                             .font(.system(size: 60, weight: .medium))
-                            .foregroundColor(.appMutedText)
+                            .foregroundColor(.appSubText)
                     }
                     
                     HStack(spacing: 12) {
@@ -144,7 +165,7 @@ struct HostsListView: View {
                         Text("press_to_change".localized)
                     }
                     .font(.headline)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.appSubText)
                     .opacity(isCardFocused ? 1 : 0.6)
                 }
                 .padding(60)
@@ -176,12 +197,12 @@ struct HostsListView: View {
                 
                 HStack(spacing: 20) {
                     Circle()
-                        .fill(viewModel.isVPNEnabled ? Color.green : Color.gray)
+                        .fill(viewModel.isVPNEnabled ? Color.appSuccess : Color.appSubText)
                         .frame(width: 20, height: 20)
                     
                     Text("status".localized + ": " + (viewModel.isVPNEnabled ? "active".localized : "inactive".localized))
                         .font(.title2.bold())
-                        .foregroundColor(viewModel.isVPNEnabled ? .appCTA : .secondary)
+                        .foregroundColor(viewModel.isVPNEnabled ? .appSuccess : .appSubText)
                 }
             }
             
@@ -201,9 +222,10 @@ struct HostsListView: View {
                     VStack(spacing: 4) {
                         Text("scan_to_upload".localized)
                             .font(.headline)
+                            .foregroundColor(.appText)
                         Text("http://\(viewModel.serverIP):8080")
                             .font(.caption2)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.appSubText)
                     }
                 }
                 .padding(20)
@@ -243,34 +265,77 @@ struct HostsListView: View {
     }
     
     private func hostRow(_ file: HostsFile) -> some View {
+        #if os(tvOS)
         Button(action: { 
-            #if os(tvOS)
             viewModel.toggleHosts(file)
-            #else
-            viewModel.selectedFile = file 
-            #endif
         }) {
-            HStack {
-                VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 14) {
+                Circle()
+                    .fill(file.isEnabled ? Color.appSuccess : Color.appMutedText.opacity(0.4))
+                    .frame(width: 8, height: 8)
+                
+                VStack(alignment: .leading, spacing: 3) {
                     Text(file.name)
-                        .font(.title2.bold())
+                        .font(.body.weight(.medium))
                         .foregroundColor(.appText)
                     Text(file.isEnabled ? "active".localized : "inactive".localized)
-                        .font(.headline)
-                        .foregroundColor(file.isEnabled ? .appCTA : .secondary)
+                        .font(.caption)
+                        .foregroundColor(file.isEnabled ? .appSuccess : .appMutedText)
                 }
                 Spacer()
                 if file.isEnabled {
                     Image(systemName: "checkmark.circle.fill")
-                        .font(.title)
+                        .font(.body)
                         .foregroundColor(.appCTA)
                 }
             }
-            .padding(30)
-            .background(Color.white.opacity(0.1))
-            .cornerRadius(16)
+            .padding(.vertical, 6)
         }
         .buttonStyle(.plain)
+        #else
+        // iOS version: NavigationLink for detail, Button for toggle
+        HStack(spacing: 0) {
+            // Left part: Tap to toggle activation
+            Button(action: {
+                withAnimation {
+                    viewModel.toggleHosts(file)
+                }
+            }) {
+                HStack(spacing: 14) {
+                    Circle()
+                        .fill(file.isEnabled ? Color.appSuccess : Color.appMutedText.opacity(0.4))
+                        .frame(width: 10, height: 10)
+                        .shadow(color: file.isEnabled ? Color.appSuccess.opacity(0.5) : .clear, radius: 4)
+                    
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(file.name)
+                            .font(.body.weight(.semibold))
+                            .foregroundColor(.appText)
+                        Text(file.isEnabled ? "active".localized : "inactive".localized)
+                            .font(.caption)
+                            .foregroundColor(file.isEnabled ? .appSuccess : .appSubText)
+                    }
+                    Spacer()
+                }
+                .contentShape(Rectangle())
+                .padding(.vertical, 8)
+            }
+            .buttonStyle(.plain)
+            
+            // Right part: NavigationLink to detail
+            NavigationLink(value: file) {
+                HStack {
+                    if file.isEnabled {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.body)
+                            .foregroundColor(viewModel.isVPNEnabled ? .appCTA : .appSubText.opacity(0.6))
+                    }
+                }
+                .padding(.leading, 12)
+                .padding(.vertical, 8)
+            }
+        }
+        #endif
     }
     
     private var emptyPlaceholder: some View {

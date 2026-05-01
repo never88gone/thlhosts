@@ -25,6 +25,7 @@ struct MainView: View {
         #if os(iOS) || os(macOS)
         .sheet(isPresented: $showingSettings) {
             SettingsView()
+                .preferredColorScheme(.dark)
         }
         #endif
     }
@@ -46,6 +47,7 @@ struct MainView: View {
                 EmptyStateView(serverIP: viewModel.serverIP)
             }
         }
+        .toolbarColorScheme(.dark, for: .navigationBar)
     }
     
     private var stackView: some View {
@@ -66,6 +68,7 @@ struct MainView: View {
                     HostsPickerView(viewModel: viewModel)
                 }
         }
+        .toolbarColorScheme(.dark, for: .navigationBar)
     }
 }
 

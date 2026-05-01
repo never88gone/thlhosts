@@ -20,12 +20,14 @@ struct SettingsView: View {
                     }
                 }
         }
+        .preferredColorScheme(.dark)
+        .toolbarColorScheme(.dark, for: .navigationBar)
         #endif
     }
     
     private var content: some View {
         Form {
-            Section(header: Text("settings".localized)) {
+            Section(header: Text("settings".localized).foregroundColor(.appSubText)) {
                 Picker("language".localized, selection: $appLanguage) {
                     Text("follow_system".localized).tag("system")
                     Text("简体中文").tag("zh-Hans")
@@ -35,16 +37,18 @@ struct SettingsView: View {
                     HSBHostsLanguageManager.shared.setLanguage(newValue)
                 }
             }
+            .listRowBackground(Color.appSecondary)
             
             #if os(tvOS)
-            Section(header: Text("vpn_usage_title".localized)) {
+            Section(header: Text("vpn_usage_title".localized).foregroundColor(.appSubText)) {
                 Text("vpn_usage_desc".localized)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.appSubText)
             }
+            .listRowBackground(Color.appSecondary)
             #endif
             
-            Section(header: Text("about".localized)) {
+            Section(header: Text("about".localized).foregroundColor(.appSubText)) {
                 NavigationLink(destination: AboutDetailView()) {
                     Label("about".localized, systemImage: "info.circle")
                 }
@@ -69,6 +73,7 @@ struct SettingsView: View {
                 }
                 #endif
             }
+            .listRowBackground(Color.appSecondary)
             
             Section {
                 HStack {
@@ -87,6 +92,7 @@ struct SettingsView: View {
         #if os(iOS)
         .sheet(isPresented: $showingLogs) {
             LogView()
+                .preferredColorScheme(.dark)
         }
         #endif
     }
@@ -113,9 +119,11 @@ struct AboutDetailView: View {
                 
                 Text("app_name".localized)
                     .font(.system(size: 60, weight: .bold))
+                    .foregroundColor(.appText)
                 
                 Text("about_content".localized)
                     .font(.title3)
+                    .foregroundColor(.appSubText)
                     .padding()
                     .multilineTextAlignment(.center)
                 
@@ -126,6 +134,7 @@ struct AboutDetailView: View {
         .navigationTitle("about".localized)
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        .background(Color.appBackground.ignoresSafeArea())
         #endif
     }
 }
@@ -154,6 +163,8 @@ struct ContactView: View {
         .navigationTitle("contact_us".localized)
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        .scrollContentBackground(.hidden)
+        .background(Color.appBackground.ignoresSafeArea())
         #endif
     }
 }
@@ -164,9 +175,11 @@ struct PrivacyPolicyView: View {
             VStack(alignment: .leading, spacing: 30) {
                 Text("privacy_policy".localized)
                     .font(.largeTitle.bold())
+                    .foregroundColor(.appText)
                 
                 Text("privacy_desc".localized)
                     .font(.title3)
+                    .foregroundColor(.appSubText)
                 
                 Spacer()
             }
@@ -175,6 +188,7 @@ struct PrivacyPolicyView: View {
         .navigationTitle("privacy_policy".localized)
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        .background(Color.appBackground.ignoresSafeArea())
         #endif
     }
 }

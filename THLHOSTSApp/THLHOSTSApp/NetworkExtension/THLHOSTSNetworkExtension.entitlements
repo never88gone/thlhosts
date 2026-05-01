@@ -8,7 +8,7 @@
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>com.never88gone.thlhosts</string>
+		<string>group.com.never88gone.thlhosts</string>
 	</array>
 </dict>
 </plist>

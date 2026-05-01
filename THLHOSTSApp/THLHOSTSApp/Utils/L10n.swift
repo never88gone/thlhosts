@@ -55,13 +55,14 @@ enum L10n {
             "change_config": ["en": "Change Configuration", "zh": "切换配置"],
             "active_config": ["en": "Active", "zh": "当前配置"],
             "about_content": ["en": "THL Hosts is a powerful tool for managing and redirecting network requests via hosts files. It works locally on your device to ensure privacy and speed.", "zh": "糖葫芦 Hosts 是一款强大的 Hosts 文件管理与请求转发工具。它完全在本地运行，确保您的隐私安全与访问速度。"],
-            "privacy_desc": ["en": "THL Hosts is an offline-first application. We do not collect, store, or transmit any of your personal data or browsing history to external servers.", "zh": "糖葫芦 Hosts 是一款离线优先的应用。我们不会收集、存储 or 向外部服务器传输您的任何个人数据或浏览历史。"],
+            "privacy_desc": ["en": "THL Hosts is a fully offline application. We do not collect, store, or transmit any of your personal data or browsing history. All Hosts resolution happens entirely on your device.", "zh": "糖葫芦 Hosts 是一款纯离线应用。我们不会收集、存储或向外部服务器传输您的任何个人数据或浏览历史。所有 Hosts 解析均完全在您的设备本地完成。"],
             "telegram": ["en": "Telegram", "zh": "Telegram"],
             "github": ["en": "GitHub", "zh": "GitHub"],
             "press_to_change": ["en": "Press to change configuration", "zh": "按 OK 键切换配置"],
             "vpn_usage_title": ["en": "How it works", "zh": "工作原理"],
             "vpn_usage_desc": ["en": "This app uses a local VPN configuration to intercept and redirect network requests based on your hosts rules. NO data leaves your device.", "zh": "本应用使用本地 VPN 配置来拦截并根据您的 Hosts 规则转发网络请求。所有处理均在本地完成，无数据外传。"],
-            "clear": ["en": "Clear", "zh": "清除"]
+            "clear": ["en": "Clear", "zh": "清除"],
+            "click_plus_to_add": ["en": "Tap + at the top to add a configuration", "zh": "点击顶部的 + 号添加配置"]
         ]
         
         let lang = isZh ? "zh" : "en"

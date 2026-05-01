@@ -20,11 +20,11 @@ struct HostsDetailView: View {
                         
                         HStack(spacing: 8) {
                             Circle()
-                                .fill(file.isEnabled ? Color.appCTA : Color.appMutedText)
+                                .fill(file.isEnabled ? Color.appSuccess : Color.appMutedText)
                                 .frame(width: UIDevice.current.userInterfaceIdiom == .tv ? 12 : 8)
                             Text(file.isEnabled ? "system_active".localized : "system_inactive".localized)
                                 .font(UIDevice.current.userInterfaceIdiom == .tv ? .headline : .subheadline)
-                                .foregroundColor(file.isEnabled ? .appCTA : .appMutedText)
+                                .foregroundColor(file.isEnabled ? .appSuccess : .appSubText)
                         }
                     }
                     Spacer()
@@ -60,7 +60,7 @@ struct HostsDetailView: View {
                         .scrollContentBackground(.hidden)
                         .frame(minHeight: 350)
                         .padding(8)
-                        .background(Color.appPrimary.opacity(0.3))
+                        .background(Color.appSecondary.opacity(0.5))
                         .glassBackground(cornerRadius: 16)
                         .onChange(of: content) { newValue in
                             viewModel.updateContent(for: file, content: newValue)

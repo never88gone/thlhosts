@@ -15,8 +15,15 @@ class HostsViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
+        #if os(tvOS)
         self.serverIP = HSBHostsManager.shared.startServer() ?? "localhost"
+        HSBLogger.shared.log("App 启动，HTTP 服务器地址: \(self.serverIP):8080", level: .info)
+        #else
+        HSBLogger.shared.log("App 启动 (iOS 模式)", level: .info)
+        #endif
+        
         loadData()
+        HSBLogger.shared.log("已加载 \(self.hostsFiles.count) 个 Hosts 配置", level: .info)
         
         // Subscribe to VPN status changes
         NotificationCenter.default.publisher(for: .NEVPNStatusDidChange)
@@ -68,17 +75,27 @@ class HostsViewModel: ObservableObject {
                     updatedFiles[i].isEnabled = false
                 }
                 HSBHostsManager.shared.activeHost = file.name
+                HSBLogger.shared.log("切换活跃配置 → \(file.name)", level: .info)
             } else {
                 HSBHostsManager.shared.activeHost = nil
+                HSBLogger.shared.log("停用配置: \(file.name)", level: .info)
             }
             
             updatedFiles[index].isEnabled = willEnable
             self.hostsFiles = updatedFiles
             HostsStorage.shared.save(updatedFiles)
+            
+            // Auto-enable VPN if a host is activated
+            if willEnable && !isVPNEnabled {
+                isVPNEnabled = true
+                HSBHostsManager.shared.isVPNEnabled = true
+                HSBLogger.shared.log("检测到配置激活，自动开启主开关", level: .info)
+            }
         }
     }
     
     func deleteHosts(_ file: HostsFile) {
+        HSBLogger.shared.log("删除配置: \(file.name)", level: .info)
         hostsFiles.removeAll(where: { $0.id == file.id })
         HostsStorage.shared.save(hostsFiles)
         HSBHostsManager.shared.deleteHostsFile(filename: file.name)
@@ -89,6 +106,7 @@ class HostsViewModel: ObservableObject {
     }
     
     func addNewHosts(name: String) {
+        HSBLogger.shared.log("新建配置: \(name)", level: .info)
         let newFile = HostsFile(name: name, content: "# New Hosts File\n", isEnabled: false)
         hostsFiles.append(newFile)
         HostsStorage.shared.save(hostsFiles)
@@ -108,14 +126,25 @@ class HostsViewModel: ObservableObject {
     
     func toggleVPN() {
         let activeFiles = hostsFiles.filter { $0.isEnabled }
-        if activeFiles.isEmpty {
-            HSBLogger.shared.log("Cannot start service: No hosts configuration selected.", level: .warning)
-            // Optionally set a flag to show an alert in UI
+        if activeFiles.isEmpty && !isVPNEnabled {
+            HSBLogger.shared.log("[警告] 无法启动服务：未选择任何 Hosts 配置", level: .warning)
             return
         }
         
         isVPNEnabled.toggle()
+        
+        // If turning OFF, disable all hosts configurations
+        if !isVPNEnabled {
+            for i in 0..<hostsFiles.count {
+                hostsFiles[i].isEnabled = false
+            }
+            HostsStorage.shared.save(hostsFiles)
+            HSBHostsManager.shared.activeHost = nil
+            HSBLogger.shared.log("主开关已关闭，已重置所有子配置状态", level: .info)
+        }
+        
         HSBHostsManager.shared.isVPNEnabled = isVPNEnabled
+        HSBLogger.shared.log(isVPNEnabled ? "VPN 服务已启动" : "VPN 服务已停止", level: .info)
     }
     
     private func updateVPNStatus() {
@@ -123,7 +152,10 @@ class HostsViewModel: ObservableObject {
     }
     
     func importFile(from url: URL) {
-        guard url.startAccessingSecurityScopedResource() else { return }
+        guard url.startAccessingSecurityScopedResource() else {
+            HSBLogger.shared.log("[错误] 无法访问文件: \(url.lastPathComponent)", level: .error)
+            return
+        }
         defer { url.stopAccessingSecurityScopedResource() }
         
         do {
@@ -133,10 +165,11 @@ class HostsViewModel: ObservableObject {
             // Save to disk
             let destinationURL = HSBHostsManager.shared.hostsDirectory.appendingPathComponent(filename)
             try content.write(to: destinationURL, atomically: true, encoding: .utf8)
+            HSBLogger.shared.log("导入配置成功: \(filename)，共 \(content.components(separatedBy: "\n").count) 行", level: .info)
             
             loadData()
         } catch {
-            print("Failed to import file: \(error)")
+            HSBLogger.shared.log("[错误] 导入文件失败: \(error.localizedDescription)", level: .error)
         }
     }
 }

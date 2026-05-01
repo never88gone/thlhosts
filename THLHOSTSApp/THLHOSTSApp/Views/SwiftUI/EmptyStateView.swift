@@ -70,8 +70,9 @@ struct EmptyStateView: View {
             VStack(spacing: 8) {
                 Text("no_configs".localized)
                     .font(.title2.bold())
+                    .foregroundColor(.appText)
                 Text("import_guide".localized)
-                    .foregroundColor(.appMutedText)
+                    .foregroundColor(.appSubText)
             }
             
             HStack(spacing: 16) {

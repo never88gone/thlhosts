@@ -41,4 +41,4 @@
 "vpn_usage_desc" = "This app uses a local VPN tunnel to intercept DNS and apply Hosts rules. All data is processed locally.";
 "about_content" = "THL Hosts is an open-source utility for tvOS/iOS to manage Hosts files with multi-config switching.";
 "contact_desc" = "For feedback or suggestions, feel free to contact us:";
-"privacy_desc" = "We value your privacy. THL Hosts does not collect, store, or transmit any personal data.";
+"privacy_desc" = "THL Hosts is a fully offline application. We do not collect, store, or transmit any of your personal data or browsing history. All Hosts resolution happens entirely on your device.";
