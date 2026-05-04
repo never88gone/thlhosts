@@ -43,8 +43,22 @@ struct MainView: View {
         } detail: {
             if let selected = viewModel.selectedFile {
                 HostsDetailView(viewModel: viewModel, file: selected)
+            } else if viewModel.hostsFiles.isEmpty {
+                EmptyStateView(serverIP: viewModel.serverIP, onImport: {
+                    viewModel.triggerFileImport()
+                })
             } else {
-                EmptyStateView(serverIP: viewModel.serverIP)
+                // List not empty but nothing selected
+                VStack(spacing: 20) {
+                    Image(systemName: "sidebar.left")
+                        .font(.system(size: 50))
+                        .foregroundColor(.appCTA.opacity(0.5))
+                    Text("请从左侧选择一个配置")
+                        .font(.headline)
+                        .foregroundColor(.appSubText)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.appBackground.ignoresSafeArea())
             }
         }
         .toolbarColorScheme(.dark, for: .navigationBar)

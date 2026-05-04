@@ -3,6 +3,7 @@ import CoreImage.CIFilterBuiltins
 
 struct EmptyStateView: View {
     let serverIP: String
+    var onImport: (() -> Void)? = nil
     
     var body: some View {
         VStack(spacing: 32) {
@@ -77,7 +78,7 @@ struct EmptyStateView: View {
             
             HStack(spacing: 16) {
                 Button(action: {
-                    // Trigger import will be handled in ListView/ViewModel
+                    onImport?()
                 }) {
                     Label("Import File", systemImage: "square.and.arrow.down")
                         .font(.headline)

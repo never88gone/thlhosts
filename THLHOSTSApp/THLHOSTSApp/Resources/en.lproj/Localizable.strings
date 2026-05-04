@@ -42,3 +42,6 @@
 "about_content" = "THL Hosts is an open-source utility for tvOS/iOS to manage Hosts files with multi-config switching.";
 "contact_desc" = "For feedback or suggestions, feel free to contact us:";
 "privacy_desc" = "THL Hosts is a fully offline application. We do not collect, store, or transmit any of your personal data or browsing history. All Hosts resolution happens entirely on your device.";
+"new_local_config" = "New Local Config";
+"download_from_url" = "Download from URL";
+"enter_url_guide" = "Please enter the configuration name and remote URL";

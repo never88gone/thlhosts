@@ -1,12 +1,21 @@
 import SwiftUI
+import UniformTypeIdentifiers
+
+extension UTType {
+    static var hosts: UTType {
+        UTType(filenameExtension: "hosts") ?? .plainText
+    }
+}
 
 struct HostsListView: View {
     @ObservedObject var viewModel: HostsViewModel
     @Binding var showingSettings: Bool
     @Binding var showingPicker: Bool
     @State private var showingAddAlert = false
+    @State private var showingURLAlert = false
     @State private var showingImporter = false
     @State private var newFileName = ""
+    @State private var remoteURL = ""
     
     var body: some View {
         ZStack {
@@ -28,15 +37,23 @@ struct HostsListView: View {
             .padding(.vertical, 40)
             #endif
         }
-        #if os(iOS)
+        #if os(iOS) || os(macOS)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 HStack(spacing: 16) {
                     Button(action: { showingImporter = true }) {
                         Image(systemName: "square.and.arrow.down")
                     }
-                    Button(action: { showingAddAlert = true }) {
+                    Menu {
+                        Button(action: { showingAddAlert = true }) {
+                            Label("new_local_config".localized, systemImage: "plus.circle")
+                        }
+                        Button(action: { showingURLAlert = true }) {
+                            Label("download_from_url".localized, systemImage: "icloud.and.arrow.down")
+                        }
+                    } label: {
                         Image(systemName: "plus.circle.fill")
+                            .font(.title3)
                     }
                 }
             }
@@ -48,7 +65,7 @@ struct HostsListView: View {
         }
         .fileImporter(
             isPresented: $showingImporter,
-            allowedContentTypes: [.plainText, .item],
+            allowedContentTypes: [.plainText, .text, .data, .hosts, .item],
             allowsMultipleSelection: false
         ) { result in
             switch result {
@@ -73,9 +90,32 @@ struct HostsListView: View {
         } message: {
             Text("enter_name_guide".localized)
         }
+        .alert("download_from_url".localized, isPresented: $showingURLAlert) {
+            TextField("name".localized, text: $newFileName)
+            TextField("URL (http/https)", text: $remoteURL)
+            Button("cancel".localized, role: .cancel) { 
+                newFileName = ""
+                remoteURL = ""
+            }
+            Button("add".localized) {
+                if !newFileName.isEmpty && !remoteURL.isEmpty {
+                    viewModel.addHostsFromURL(name: newFileName, url: remoteURL)
+                    newFileName = ""
+                    remoteURL = ""
+                }
+            }
+        } message: {
+            Text("enter_url_guide".localized)
+        }
         #if os(tvOS)
         .navigationTitle("") // Hide system title on tvOS to avoid overlap with custom header
         #endif
+        .onChange(of: viewModel.showingImporterTrigger) { newValue in
+            if newValue {
+                showingImporter = true
+                viewModel.showingImporterTrigger = false // Reset trigger
+            }
+        }
     }
     
     // MARK: - Components
@@ -94,7 +134,7 @@ struct HostsListView: View {
     }
     
     private var mainList: some View {
-        List {
+        List(selection: $viewModel.selectedFile) {
             #if os(iOS)
             Section {
                 Toggle("master_switch".localized, isOn: Binding(
@@ -119,6 +159,7 @@ struct HostsListView: View {
             ) {
                 ForEach(viewModel.hostsFiles) { file in
                     hostRow(file)
+                        .tag(file)
                         .listRowBackground(Color.appSecondary)
                         #if os(iOS)
                         .listRowSeparatorTint(Color.appDivider)
@@ -295,48 +336,49 @@ struct HostsListView: View {
         }
         .buttonStyle(.plain)
         #else
-        // iOS version: NavigationLink for detail, Button for toggle
-        HStack(spacing: 0) {
+        // macOS/iOS version: Dedicated toggle button + row content that allows selection
+        HStack(spacing: 14) {
             // Left part: Tap to toggle activation
             Button(action: {
                 withAnimation {
                     viewModel.toggleHosts(file)
                 }
             }) {
-                HStack(spacing: 14) {
-                    Circle()
-                        .fill(file.isEnabled ? Color.appSuccess : Color.appMutedText.opacity(0.4))
-                        .frame(width: 10, height: 10)
-                        .shadow(color: file.isEnabled ? Color.appSuccess.opacity(0.5) : .clear, radius: 4)
-                    
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text(file.name)
-                            .font(.body.weight(.semibold))
-                            .foregroundColor(.appText)
-                        Text(file.isEnabled ? "active".localized : "inactive".localized)
-                            .font(.caption)
-                            .foregroundColor(file.isEnabled ? .appSuccess : .appSubText)
-                    }
-                    Spacer()
-                }
-                .contentShape(Rectangle())
-                .padding(.vertical, 8)
+                Circle()
+                    .fill(file.isEnabled ? Color.appSuccess : Color.appMutedText.opacity(0.4))
+                    .frame(width: 10, height: 10)
+                    .shadow(color: file.isEnabled ? Color.appSuccess.opacity(0.5) : .clear, radius: 4)
             }
             .buttonStyle(.plain)
             
-            // Right part: NavigationLink to detail
-            NavigationLink(value: file) {
-                HStack {
-                    if file.isEnabled {
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.body)
-                            .foregroundColor(viewModel.isVPNEnabled ? .appCTA : .appSubText.opacity(0.6))
-                    }
-                }
-                .padding(.leading, 12)
-                .padding(.vertical, 8)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(file.name)
+                    .font(.body.weight(.semibold))
+                    .foregroundColor(.appText)
+                Text(file.isEnabled ? "active".localized : "inactive".localized)
+                    .font(.caption)
+                    .foregroundColor(file.isEnabled ? .appSuccess : .appSubText)
             }
+            
+            Spacer()
+            
+            if file.isEnabled {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.body)
+                    .foregroundColor(viewModel.isVPNEnabled ? .appCTA : .appSubText.opacity(0.6))
+            }
+            
+            #if os(iOS)
+            // Still use NavigationLink on iOS for push navigation in Stack mode
+            NavigationLink(value: file) {
+                EmptyView()
+            }
+            .frame(width: 0)
+            .opacity(0)
+            #endif
         }
+        .contentShape(Rectangle())
+        .padding(.vertical, 8)
         #endif
     }
     

@@ -44,3 +44,6 @@
 "about_content" = "THL Hosts 是一款专为 tvOS 和 iOS 设计的开源 Hosts 管理工具，支持扫码快速上传及多配置切换。";
 "contact_desc" = "如有问题或建议，欢迎通过以下方式联系：";
 "privacy_desc" = "糖葫芦 Hosts 是一款纯离线应用。我们不会收集、存储或向外部服务器传输您的任何个人数据或浏览历史。所有 Hosts 解析均完全在您的设备本地完成。";
+"new_local_config" = "新建本地配置";
+"download_from_url" = "从 URL 下载";
+"enter_url_guide" = "请输入配置名称和远程 URL 地址";

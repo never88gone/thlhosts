@@ -7,6 +7,11 @@ class HostsViewModel: ObservableObject {
     @Published var selectedFile: HostsFile?
     @Published var isVPNEnabled: Bool = false
     @Published var serverIP: String = "localhost"
+    @Published var showingImporterTrigger: Bool = false
+    
+    func triggerFileImport() {
+        showingImporterTrigger = true
+    }
     
     var activeHostsFile: HostsFile? {
         hostsFiles.first(where: { $0.isEnabled })
@@ -59,8 +64,27 @@ class HostsViewModel: ObservableObject {
             .store(in: &cancellables)
         
         // Listen for remote uploads
-        NotificationCenter.default.addObserver(forName: NSNotification.Name("HSBHostsUploaded"), object: nil, queue: .main) { [weak self] _ in
-            self?.loadData()
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("HSBHostsUploaded"), object: nil, queue: .main) { [weak self] notification in
+            if let filename = notification.object as? String {
+                self?.syncUploadedFile(filename: filename)
+            } else {
+                self?.loadData()
+            }
+        }
+    }
+    
+    private func syncUploadedFile(filename: String) {
+        let fileURL = HSBHostsManager.shared.hostsDirectory.appendingPathComponent(filename)
+        if let content = try? String(contentsOf: fileURL) {
+            if let index = hostsFiles.firstIndex(where: { $0.name == filename }) {
+                hostsFiles[index].content = content
+            } else {
+                let newFile = HostsFile(name: filename, content: content, isEnabled: false)
+                hostsFiles.append(newFile)
+            }
+            HostsStorage.shared.save(hostsFiles)
+            loadData()
+            HSBLogger.shared.log("已同步远程上传的配置: \(filename)", level: .info)
         }
     }
     
@@ -107,15 +131,29 @@ class HostsViewModel: ObservableObject {
     
     func addNewHosts(name: String) {
         HSBLogger.shared.log("新建配置: \(name)", level: .info)
-        let newFile = HostsFile(name: name, content: "# New Hosts File\n", isEnabled: false)
+        let content = "# New Hosts File\n"
+        let newFile = HostsFile(name: name, content: content, isEnabled: false)
         hostsFiles.append(newFile)
         HostsStorage.shared.save(hostsFiles)
+        HSBHostsManager.shared.saveHostsContent(content, filename: name)
+    }
+    
+    func addHostsFromURL(name: String, url: String) {
+        HSBLogger.shared.log("从 URL 新建配置: \(name), URL: \(url)", level: .info)
+        let newFile = HostsFile(name: name, content: url, isEnabled: false, sourceURL: url)
+        hostsFiles.append(newFile)
+        HostsStorage.shared.save(hostsFiles)
+        HSBHostsManager.shared.saveHostsContent(url, filename: name)
+        
+        // Auto-fetch immediately
+        fetchHostsFromURL(url: url, for: newFile) { _ in }
     }
     
     func updateContent(for file: HostsFile, content: String) {
         if let index = hostsFiles.firstIndex(where: { $0.id == file.id }) {
             hostsFiles[index].content = content
             HostsStorage.shared.save(hostsFiles)
+            HSBHostsManager.shared.saveHostsContent(content, filename: file.name)
             
             // If it's active, we need to refresh the manager
             if hostsFiles[index].isEnabled {
@@ -203,7 +241,29 @@ class HostsViewModel: ObservableObject {
             try content.write(to: destinationURL, atomically: true, encoding: .utf8)
             HSBLogger.shared.log("导入配置成功: \(filename)，共 \(content.components(separatedBy: "\n").count) 行", level: .info)
             
-            loadData()
+            // Sync with memory list and UserDefaults
+            DispatchQueue.main.async {
+                if let index = self.hostsFiles.firstIndex(where: { $0.name == filename }) {
+                    // Update existing
+                    self.hostsFiles[index].content = content
+                    
+                    // If this file is currently selected, update the selection reference
+                    if self.selectedFile?.id == self.hostsFiles[index].id {
+                        self.selectedFile = self.hostsFiles[index]
+                    }
+                } else {
+                    // Add new
+                    let newFile = HostsFile(name: filename, content: content, isEnabled: false)
+                    self.hostsFiles.append(newFile)
+                }
+                HostsStorage.shared.save(self.hostsFiles)
+                self.loadData()
+                
+                // Auto-select if nothing is selected
+                if self.selectedFile == nil {
+                    self.selectedFile = self.hostsFiles.last
+                }
+            }
         } catch {
             HSBLogger.shared.log("[错误] 导入文件失败: \(error.localizedDescription)", level: .error)
         }

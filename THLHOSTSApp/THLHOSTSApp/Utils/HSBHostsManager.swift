@@ -39,16 +39,22 @@ import SwiftUI
         
         NETunnelProviderManager.loadAllFromPreferences { [weak self] managers, error in
             if let error = error {
-                NSLog("HSBHostsManager: Failed to load VPN config: \(error.localizedDescription) (Domain: \((error as NSError).domain), Code: \((error as NSError).code))")
+                NSLog("HSBHostsManager: Failed to load VPN config: \(error.localizedDescription)")
                 return
             }
             
-            // Find existing manager or create new one
-            self?.vpnManager = managers?.first
+            // On tvOS, we might need to be more aggressive in finding our specific manager
+            let bundleID = Bundle.main.bundleIdentifier ?? ""
+            let providerID = bundleID + (self?.kTunnelBundleSuffix ?? ".extension")
+            
+            self?.vpnManager = managers?.first(where: { manager in
+                (manager.protocolConfiguration as? NETunnelProviderProtocol)?.providerBundleIdentifier == providerID
+            }) ?? managers?.first
+            
             if let manager = self?.vpnManager {
-                NSLog("HSBHostsManager: Found existing VPN configuration: \(manager.localizedDescription ?? "No Description")")
+                NSLog("HSBHostsManager: Found VPN configuration: \(manager.localizedDescription ?? "No Description")")
             } else {
-                NSLog("HSBHostsManager: No existing VPN configuration found.")
+                NSLog("HSBHostsManager: No VPN configuration found, will create on demand.")
             }
             self?.updateVPNStatus()
         }
@@ -80,8 +86,38 @@ import SwiftUI
     
     public var hostsDirectory: URL {
         let fileManager = FileManager.default
-        let docDir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let hostsDir = docDir.appendingPathComponent("Hosts")
+        
+        // 1. Try App Group (Best for all platforms with Extensions)
+        if let groupURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: kAppGroupIdentifier) {
+            let hostsDir = groupURL.appendingPathComponent("Hosts", isDirectory: true)
+            if !fileManager.fileExists(atPath: hostsDir.path) {
+                try? fileManager.createDirectory(at: hostsDir, withIntermediateDirectories: true, attributes: nil)
+            }
+            // Check if writable
+            let testFile = hostsDir.appendingPathComponent(".test")
+            if (try? "test".write(to: testFile, atomically: true, encoding: .utf8)) != nil {
+                try? fileManager.removeItem(at: testFile)
+                return hostsDir
+            }
+        }
+        
+        // 2. Try Application Support (Persistent on iOS/iPadOS)
+        if let appSupportDir = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
+            let hostsDir = appSupportDir.appendingPathComponent("Hosts", isDirectory: true)
+            if !fileManager.fileExists(atPath: hostsDir.path) {
+                try? fileManager.createDirectory(at: hostsDir, withIntermediateDirectories: true, attributes: nil)
+            }
+            // Check if writable
+            let testFile = hostsDir.appendingPathComponent(".test")
+            if (try? "test".write(to: testFile, atomically: true, encoding: .utf8)) != nil {
+                try? fileManager.removeItem(at: testFile)
+                return hostsDir
+            }
+        }
+        
+        // 3. Last Resort: Caches (Always writable on tvOS)
+        let cacheDir = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        let hostsDir = cacheDir.appendingPathComponent("Hosts", isDirectory: true)
         if !fileManager.fileExists(atPath: hostsDir.path) {
             try? fileManager.createDirectory(at: hostsDir, withIntermediateDirectories: true, attributes: nil)
         }
@@ -137,30 +173,37 @@ import SwiftUI
     }
     
     private func createVPNConfiguration(hostsContent: String) {
-        let newManager = NETunnelProviderManager()
-        
-        // Configure protocol
-        let proto = NETunnelProviderProtocol()
-        proto.providerBundleIdentifier = Bundle.main.bundleIdentifier! + kTunnelBundleSuffix
-        proto.serverAddress = "Smart DNS Proxy"
-        proto.providerConfiguration = [
-            "hosts": hostsContent,
-            "upstreamDNS": "8.8.8.8"
-        ]
-        
-        newManager.protocolConfiguration = proto
-        newManager.localizedDescription = "HSB Hosts Manager"
-        newManager.isEnabled = true
-        
-        newManager.saveToPreferences { [weak self] error in
-            if let error = error {
-                NSLog("HSBHostsManager: Failed to save VPN config: \(error)")
-                return
-            }
+        NETunnelProviderManager.loadAllFromPreferences { [weak self] managers, error in
+            let manager = managers?.first ?? NETunnelProviderManager()
             
-            NSLog("HSBHostsManager: VPN configuration saved")
-            self?.vpnManager = newManager
-            self?.startVPN(hostsContent: hostsContent)
+            // Configure protocol
+            let proto = NETunnelProviderProtocol()
+            let bundleID = Bundle.main.bundleIdentifier ?? "com.never88gone.thlhosts"
+            proto.providerBundleIdentifier = bundleID + (self?.kTunnelBundleSuffix ?? ".extension")
+            proto.serverAddress = "THLHosts"
+            proto.providerConfiguration = [
+                "hosts": hostsContent,
+                "upstreamDNS": "8.8.8.8"
+            ]
+            
+            manager.protocolConfiguration = proto
+            manager.localizedDescription = "THLHosts"
+            manager.isEnabled = true
+            
+            manager.saveToPreferences { [weak self] error in
+                if let error = error {
+                    NSLog("HSBHostsManager: Failed to save VPN config: \(error.localizedDescription)")
+                    // If IPC failed, it's almost certainly a signing/entitlement issue
+                    if (error as NSError).code == 5 {
+                        NSLog("HSBHostsManager: CRITICAL - IPC failed. Please check tvOS Provisioning Profile and Entitlements.")
+                    }
+                    return
+                }
+                
+                NSLog("HSBHostsManager: VPN configuration saved successfully")
+                self?.vpnManager = manager
+                self?.startVPN(hostsContent: hostsContent)
+            }
         }
     }
     
@@ -265,7 +308,9 @@ import SwiftUI
                 let trimmed = attribute.trimmingCharacters(in: .whitespaces)
                 if trimmed.lowercased().hasPrefix("filename=") {
                     let value = String(trimmed.dropFirst("filename=".count))
-                    filename = value.trimmingCharacters(in: CharacterSet(charactersIn: "\""))
+                    let rawName = value.trimmingCharacters(in: CharacterSet(charactersIn: "\" "))
+                    // Sanitize filename: remove illegal characters and keep only safe ones
+                    filename = rawName.components(separatedBy: CharacterSet.alphanumerics.inverted.subtracting(CharacterSet(charactersIn: ".-_"))).joined()
                 }
             }
             
@@ -279,14 +324,14 @@ import SwiftUI
         }
         return .badRequest(.text("Invalid file upload"))
     }
-    
     private func saveHostsFile(data: Data, filename: String) -> HttpResponse {
-        // If there's an active host, overwrite it; otherwise, save as new file
         let actualFilename = activeHost ?? filename
         let destURL = hostsDirectory.appendingPathComponent(actualFilename)
         
+        NSLog("HSBHostsManager: Saving file to \(destURL.path)")
+        
         do {
-            try data.write(to: destURL)
+            try data.write(to: destURL, options: .atomic)
             
             // If we overwrote the active host, refresh the VPN/Proxy content
             if let active = activeHost, active == actualFilename {
@@ -296,11 +341,12 @@ import SwiftUI
             
             DispatchQueue.main.async {
                 self.onReceiveHosts?(actualFilename)
-                NotificationCenter.default.post(name: NSNotification.Name("HSBHostsUploaded"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name("HSBHostsUploaded"), object: actualFilename)
             }
             return .ok(.text("Upload Successful! Updated: \(actualFilename)"))
         } catch {
-            return .internalServerError(.text("Save failed: \(error)"))
+            NSLog("HSBHostsManager: Failed to save uploaded file: \(error.localizedDescription)")
+            return .internalServerError(.text("Failed to save file: \(error.localizedDescription)"))
         }
     }
     
@@ -318,6 +364,11 @@ import SwiftUI
     public func getHostsContent(filename: String) -> String? {
         let url = hostsDirectory.appendingPathComponent(filename)
         return try? String(contentsOf: url, encoding: .utf8)
+    }
+    
+    public func saveHostsContent(_ content: String, filename: String) {
+        let url = hostsDirectory.appendingPathComponent(filename)
+        try? content.write(to: url, atomically: true, encoding: .utf8)
     }
     
     public func deleteHostsFile(filename: String) {

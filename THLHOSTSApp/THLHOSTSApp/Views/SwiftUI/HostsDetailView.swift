@@ -8,22 +8,30 @@ struct HostsDetailView: View {
     @State private var content: String = ""
     @State private var serverIP: String = "localhost"
     
+    private var isTV: Bool {
+        #if os(tvOS)
+        return true
+        #else
+        return false
+        #endif
+    }
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 // Header info
-                HStack(spacing: UIDevice.current.userInterfaceIdiom == .tv ? 40 : 16) {
-                    VStack(alignment: .leading, spacing: UIDevice.current.userInterfaceIdiom == .tv ? 12 : 6) {
+                HStack(spacing: isTV ? 40 : 16) {
+                    VStack(alignment: .leading, spacing: isTV ? 12 : 6) {
                         Text(file.name)
-                            .font(UIDevice.current.userInterfaceIdiom == .tv ? .system(size: 64, weight: .bold) : .title2.bold())
+                            .font(isTV ? .system(size: 64, weight: .bold) : .title2.bold())
                             .foregroundColor(.appText)
                         
                         HStack(spacing: 8) {
                             Circle()
                                 .fill(file.isEnabled ? Color.appSuccess : Color.appMutedText)
-                                .frame(width: UIDevice.current.userInterfaceIdiom == .tv ? 12 : 8)
+                                .frame(width: isTV ? 12 : 8)
                             Text(file.isEnabled ? "system_active".localized : "system_inactive".localized)
-                                .font(UIDevice.current.userInterfaceIdiom == .tv ? .headline : .subheadline)
+                                .font(isTV ? .headline : .subheadline)
                                 .foregroundColor(file.isEnabled ? .appSuccess : .appSubText)
                         }
                     }
@@ -135,6 +143,12 @@ struct HostsDetailView: View {
             self.content = file.content
             // Get IP from manager
             self.serverIP = getWiFiAddress() ?? "localhost"
+        }
+        .onChange(of: file.content) { newValue in
+            // Refresh content if it changed externally (e.g., via import)
+            if self.content != newValue {
+                self.content = newValue
+            }
         }
     }
     
