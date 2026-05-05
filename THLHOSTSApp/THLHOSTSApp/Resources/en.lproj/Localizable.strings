@@ -40,6 +40,12 @@
 "vpn_usage_title" = "VPN Usage Note";
 "vpn_usage_desc" = "This app uses a local VPN tunnel to intercept DNS and apply Hosts rules. All data is processed locally.";
 "about_content" = "THL Hosts is a powerful, fully local tool for managing and redirecting network requests via hosts files. It works entirely on your device to ensure privacy and speed.";
+"content_too_long_preview_only" = "Content too long, showing preview only";
+"delete" = "Delete";
+"error" = "Error";
+"ok" = "OK";
+"error_no_active_config" = "Cannot start service: Please select and activate a Hosts configuration on the left first.";
+"error_config_empty" = "Cannot start service: The active configuration is empty. Please edit it or select another one.";
 "contact_desc" = "For feedback or suggestions, feel free to contact us:";
 "privacy_desc" = "THL Hosts is a fully offline application. We do not collect, store, or transmit any of your personal data or browsing history. All Hosts resolution happens entirely on your device.";
 "new_local_config" = "New Local Config";

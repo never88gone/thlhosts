@@ -8,6 +8,11 @@ class HostsViewModel: ObservableObject {
     @Published var isVPNEnabled: Bool = false
     @Published var serverIP: String = "localhost"
     @Published var showingImporterTrigger: Bool = false
+    @Published var isDownloading: Bool = false
+    
+    // 错误提示
+    @Published var errorMessage: String = ""
+    @Published var showingErrorAlert: Bool = false
     
     func triggerFileImport() {
         showingImporterTrigger = true
@@ -172,6 +177,15 @@ class HostsViewModel: ObservableObject {
         let activeFiles = hostsFiles.filter { $0.isEnabled }
         if activeFiles.isEmpty && !isVPNEnabled {
             HSBLogger.shared.log("[警告] 无法启动服务：未选择任何 Hosts 配置", level: .warning)
+            self.errorMessage = "error_no_active_config".localized
+            self.showingErrorAlert = true
+            return
+        }
+        
+        if !isVPNEnabled, let activeFile = activeFiles.first, activeFile.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            HSBLogger.shared.log("[警告] 无法启动服务：当前活跃配置内容为空", level: .warning)
+            self.errorMessage = "error_config_empty".localized
+            self.showingErrorAlert = true
             return
         }
         
@@ -203,21 +217,29 @@ class HostsViewModel: ObservableObject {
         }
         
         HSBLogger.shared.log("正在从 URL 下载 Hosts: \(url)", level: .info)
+        DispatchQueue.main.async { self.isDownloading = true }
         
         URLSession.shared.dataTask(with: downloadURL) { [weak self] data, response, error in
             if let error = error {
                 HSBLogger.shared.log("[错误] 下载失败: \(error.localizedDescription)", level: .error)
-                DispatchQueue.main.async { completion(false) }
+                DispatchQueue.main.async { 
+                    self?.isDownloading = false
+                    completion(false) 
+                }
                 return
             }
             
             guard let data = data, let content = String(data: data, encoding: .utf8) else {
                 HSBLogger.shared.log("[错误] 无法解析下载的数据", level: .error)
-                DispatchQueue.main.async { completion(false) }
+                DispatchQueue.main.async { 
+                    self?.isDownloading = false
+                    completion(false) 
+                }
                 return
             }
             
             DispatchQueue.main.async {
+                self?.isDownloading = false
                 self?.updateContent(for: file, content: content)
                 HSBLogger.shared.log("成功从网络更新配置: \(file.name)，长度: \(content.count)", level: .info)
                 completion(true)

@@ -105,7 +105,7 @@ struct HostsListView: View {
     }
     
     private var mainList: some View {
-        List(selection: $viewModel.selectedFile) {
+        List {
             #if os(iOS)
             Section {
                 Toggle("master_switch".localized, isOn: Binding(
@@ -118,24 +118,24 @@ struct HostsListView: View {
             } header: {
                 Text("app_name".localized)
                     .font(.subheadline.bold())
-                    .foregroundColor(.appCTA) // 品牌色标题
+                    .foregroundColor(.appCTA)
                     .textCase(nil)
             }
             #endif
-            
+
             Section(header: Text("configurations".localized)
                         .font(.caption.weight(.semibold))
-                        .foregroundColor(.appSubText) // 使用更柔和的次要文字色
+                        .foregroundColor(.appSubText)
                         .textCase(nil)
             ) {
                 ForEach(viewModel.hostsFiles) { file in
+                    #if os(iOS)
+                    iOSRow(file)
+                    #else
                     hostRow(file)
-                        .tag(file)
                         .listRowBackground(Color.appSecondary)
-                        #if os(iOS)
-                        .listRowSeparatorTint(Color.appDivider)
-                        #endif
                         .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                    #endif
                 }
             }
         }
@@ -149,6 +149,45 @@ struct HostsListView: View {
         .toolbarBackground(.visible, for: .navigationBar)
         #endif
     }
+
+    #if os(iOS)
+    /// iPhone: NavigationLink 跳转到详情页；iPad: Button 驱动 selectedFile 显示 SplitView detail
+    @ViewBuilder
+    private func iOSRow(_ file: HostsFile) -> some View {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            NavigationLink(destination: HostsDetailView(viewModel: viewModel, file: file)) {
+                hostRow(file)
+            }
+            .listRowBackground(Color.appSecondary)
+            .listRowSeparatorTint(Color.appDivider)
+            .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                Button(role: .destructive) {
+                    withAnimation { viewModel.deleteHosts(file) }
+                } label: {
+                    Label("delete".localized, systemImage: "trash")
+                }
+            }
+        } else {
+            Button(action: { viewModel.selectedFile = file }) {
+                hostRow(file)
+            }
+            .buttonStyle(.plain)
+            .listRowBackground(viewModel.selectedFile?.id == file.id
+                ? Color.appCTA.opacity(0.15)
+                : Color.appSecondary)
+            .listRowSeparatorTint(Color.appDivider)
+            .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                Button(role: .destructive) {
+                    withAnimation { viewModel.deleteHosts(file) }
+                } label: {
+                    Label("delete".localized, systemImage: "trash")
+                }
+            }
+        }
+    }
+    #endif
     
     #if os(tvOS)
     @FocusState private var isCardFocused: Bool
@@ -200,7 +239,9 @@ struct HostsListView: View {
             
             Spacer()
         }
+        #if os(tvOS)
         .focusSection()
+        #endif
     }
     #endif
     
@@ -268,7 +309,9 @@ struct HostsListView: View {
             Spacer()
         }
         .padding(.top, 20)
+        #if os(tvOS)
         .focusSection()
+        #endif
     }
     
     private func hostRow(_ file: HostsFile) -> some View {
@@ -332,14 +375,6 @@ struct HostsListView: View {
                     .foregroundColor(viewModel.isVPNEnabled ? .appCTA : .appSubText.opacity(0.6))
             }
             
-            #if os(iOS)
-            // Still use NavigationLink on iOS for push navigation in Stack mode
-            NavigationLink(value: file) {
-                EmptyView()
-            }
-            .frame(width: 0)
-            .opacity(0)
-            #endif
         }
         .contentShape(Rectangle())
         .padding(.vertical, 8)

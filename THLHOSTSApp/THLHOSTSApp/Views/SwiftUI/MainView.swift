@@ -28,6 +28,11 @@ struct MainView: View {
                 .preferredColorScheme(.dark)
         }
         #endif
+        .alert("error".localized, isPresented: $viewModel.showingErrorAlert) {
+            Button("ok".localized, role: .cancel) { }
+        } message: {
+            Text(viewModel.errorMessage)
+        }
     }
     
     // MARK: - Layouts
@@ -137,6 +142,13 @@ struct HostsPickerView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             }
                             .buttonStyle(.bordered)
+                            .contextMenu {
+                                Button(role: .destructive, action: {
+                                    viewModel.deleteHosts(file)
+                                }) {
+                                    Label("delete".localized, systemImage: "trash")
+                                }
+                            }
                             .onFocusChange { focused in
                                 if focused {
                                     focusedFileIdInPicker = file.id
@@ -150,7 +162,9 @@ struct HostsPickerView: View {
             }
             .frame(width: 700)
             .background(Color.black.opacity(0.15))
+            #if os(tvOS)
             .focusSection()
+            #endif
             
             // Right: Content Preview
             VStack(alignment: .leading, spacing: 30) {
@@ -171,32 +185,33 @@ struct HostsPickerView: View {
                     }
                     
                     ScrollView {
-                        Text(file.content)
+                        // 性能优化：巨大文件仅渲染前 2000 个字符用于预览
+                        let isOversize = file.content.count > 2000
+                        let displayContent = isOversize ? String(file.content.prefix(2000)) + "\n\n... (" + "content_too_long_preview_only".localized + ") ..." : file.content
+                        
+                        Text(displayContent)
                             .font(.system(.title3, design: .monospaced))
                             .lineSpacing(8)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(40)
-                            #if os(tvOS)
-                            .focusable(true)
-                            .focused($isContentFocused)
-                            #endif
                     }
+                    #if os(tvOS)
+                    .focusable(true)
+                    .focused($isContentFocused)
+                    #endif
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color.white.opacity(isContentFocused ? 0.15 : 0.05))
                     .cornerRadius(20)
                     .overlay(
                         RoundedRectangle(cornerRadius: 20)
-                            .stroke(isContentFocused ? Color.white : Color.white.opacity(0.1), lineWidth: isContentFocused ? 4 : 1)
+                            .stroke(isContentFocused ? Color.white : Color.white.opacity(0.1), lineWidth: 3)
                     )
-                    #if os(tvOS)
-                    .scaleEffect(isContentFocused ? 1.02 : 1.0)
-                    .animation(.interactiveSpring(), value: isContentFocused)
-                    #endif
                     
                     // Bottom actions and QR code
                     HStack(alignment: .center, spacing: 40) {
                         Button(action: {
-                            updateURL = file.sourceURL ?? ""
+                            let defaultURL = "https://cdn.jsdelivr.net/gh/neoFelhz/neohosts@gh-pages/full/hosts.txt"
+                            updateURL = (file.sourceURL?.isEmpty == false) ? file.sourceURL! : defaultURL
                             showingURLAlert = true
                         }) {
                             HStack(spacing: 8) {
@@ -237,6 +252,9 @@ struct HostsPickerView: View {
                             .cornerRadius(16)
                         }
                     }
+                    #if os(tvOS)
+                    .focusSection()
+                    #endif
                 } else {
                     Spacer()
                     VStack(spacing: 30) {
@@ -254,31 +272,97 @@ struct HostsPickerView: View {
             .padding(80)
             .frame(maxWidth: .infinity)
             .background(Color.appBackground)
+            #if os(tvOS)
             .focusSection()
+            #endif
         }
         .ignoresSafeArea()
         .navigationBarHidden(true)
         .onAppear {
             focusedFileIdInPicker = viewModel.activeHostsFile?.id ?? viewModel.hostsFiles.first?.id
         }
-        .alert("update_from_url".localized, isPresented: $showingURLAlert) {
-            TextField("url_placeholder".localized, text: $updateURL)
-            Button("cancel".localized, role: .cancel) { updateURL = "" }
-            Button("done".localized) {
-                if !updateURL.isEmpty {
-                    let file = viewModel.hostsFiles.first(where: { $0.id == focusedFileIdInPicker }) ?? viewModel.activeHostsFile ?? viewModel.hostsFiles.first
-                    if let file = file {
-                        viewModel.fetchHostsFromURL(url: updateURL, for: file) { success in
-                            if success {
-                                viewModel.updateSourceURL(for: file, url: updateURL)
+        .overlay {
+            if showingURLAlert {
+                ZStack {
+                    Color.black.opacity(0.8).ignoresSafeArea()
+                    
+                    VStack(spacing: 30) {
+                        Text("update_from_url".localized)
+                            .font(.system(size: 40, weight: .bold))
+                            .foregroundColor(.white)
+                        
+                        Text("enter_url_update_guide".localized)
+                            .font(.title3)
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
+                        
+                        TextField("url_placeholder".localized, text: $updateURL)
+                            .padding()
+                            .background(Color.white.opacity(0.1))
+                            .cornerRadius(12)
+                            .foregroundColor(.white)
+                            .font(.title2)
+                        
+                        HStack(spacing: 40) {
+                            Button(action: {
+                                showingURLAlert = false
+                                updateURL = ""
+                            }) {
+                                Text("cancel".localized)
+                                    .padding(.horizontal, 30)
+                                    .padding(.vertical, 15)
                             }
+                            #if os(tvOS)
+                            .buttonStyle(.bordered)
+                            #endif
+                            
+                            Button(action: {
+                                if !updateURL.isEmpty {
+                                    let file = viewModel.hostsFiles.first(where: { $0.id == focusedFileIdInPicker }) ?? viewModel.activeHostsFile ?? viewModel.hostsFiles.first
+                                    if let file = file {
+                                        viewModel.fetchHostsFromURL(url: updateURL, for: file) { success in
+                                            if success {
+                                                viewModel.updateSourceURL(for: file, url: updateURL)
+                                            }
+                                        }
+                                    }
+                                    showingURLAlert = false
+                                    updateURL = ""
+                                }
+                            }) {
+                                Text("done".localized)
+                                    .padding(.horizontal, 30)
+                                    .padding(.vertical, 15)
+                            }
+                            #if os(tvOS)
+                            .buttonStyle(.borderedProminent)
+                            #endif
                         }
+                        .padding(.top, 20)
                     }
-                    updateURL = ""
+                    .padding(60)
+                    .frame(maxWidth: 800)
+                    .background(Color(white: 0.15))
+                    .cornerRadius(30)
+                    .shadow(radius: 20)
                 }
+                .zIndex(1000)
+            } else if viewModel.isDownloading {
+                ZStack {
+                    Color.black.opacity(0.5).ignoresSafeArea()
+                    VStack(spacing: 20) {
+                        ProgressView()
+                            .scaleEffect(2)
+                        Text("downloading".localized)
+                            .font(.headline)
+                            .foregroundColor(.white)
+                    }
+                    .padding(40)
+                    .background(Color.black.opacity(0.8))
+                    .cornerRadius(20)
+                }
+                .zIndex(999)
             }
-        } message: {
-            Text("enter_url_update_guide".localized)
         }
     }
     

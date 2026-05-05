@@ -370,7 +370,9 @@ import SwiftUI
     
     public func saveHostsContent(_ content: String, filename: String) {
         let url = hostsDirectory.appendingPathComponent(filename)
-        try? content.write(to: url, atomically: true, encoding: .utf8)
+        DispatchQueue.global(qos: .utility).async {
+            try? content.write(to: url, atomically: true, encoding: .utf8)
+        }
     }
     
     public func deleteHostsFile(filename: String) {

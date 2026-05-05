@@ -1,4 +1,4 @@
-"app_name" = "THL Hosts";
+"app_name" = "糖葫芦Hosts";
 "new_hosts_file" = "新建 Hosts 文件";
 "enter_name_guide" = "请输入新配置的名称";
 "name" = "名称";
@@ -42,6 +42,12 @@
 "vpn_usage_title" = "VPN 权限说明";
 "vpn_usage_desc" = "本应用通过建立本地 VPN 隧道来劫持并修改 DNS 解析以实现 Hosts 功能。所有数据均在本地处理，不会上传至任何服务器。";
 "about_content" = "THL Hosts 是一款专为 tvOS 和 iOS 设计的纯本地 Hosts 管理工具，支持扫码快速上传及多配置切换，保护您的隐私与数据安全。";
+"content_too_long_preview_only" = "内容过长，仅展示部分预览";
+"delete" = "删除";
+"error" = "错误";
+"ok" = "确定";
+"error_no_active_config" = "无法启动服务：请先在左侧选择并激活一个 Hosts 配置。";
+"error_config_empty" = "无法启动服务：当前激活的配置内容为空，请重新编辑或选择其他配置。";
 "contact_desc" = "如有问题或建议，欢迎通过以下方式联系：";
 "privacy_desc" = "糖葫芦 Hosts 是一款纯离线应用。我们不会收集、存储或向外部服务器传输您的任何个人数据或浏览历史。所有 Hosts 解析均完全在您的设备本地完成。";
 "new_local_config" = "新建本地配置";

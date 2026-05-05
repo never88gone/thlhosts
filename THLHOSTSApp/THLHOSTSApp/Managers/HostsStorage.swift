@@ -6,8 +6,10 @@ class HostsStorage {
     private let key = "SavedHostsFiles"
     
     func save(_ files: [HostsFile]) {
-        if let data = try? JSONEncoder().encode(files) {
-            UserDefaults.standard.set(data, forKey: key)
+        DispatchQueue.global(qos: .userInitiated).async { [key] in
+            if let data = try? JSONEncoder().encode(files) {
+                UserDefaults.standard.set(data, forKey: key)
+            }
         }
     }
     

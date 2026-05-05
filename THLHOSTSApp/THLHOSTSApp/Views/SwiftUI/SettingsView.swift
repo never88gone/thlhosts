@@ -259,11 +259,13 @@ struct PrivacyPolicyView: View {
                 Spacer()
             }
             .padding(60)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.appBackground.ignoresSafeArea())
         .navigationTitle("privacy_policy".localized)
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
-        .background(Color.appBackground.ignoresSafeArea())
         #endif
     }
 }
