@@ -3,8 +3,19 @@
 [![Platform](https://img.shields.io/badge/Platform-iOS%20%7C%20tvOS-blue?logo=apple)](https://developer.apple.com)
 [![Swift](https://img.shields.io/badge/Swift-5.9+-orange?logo=swift)](https://swift.org)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+[![TestFlight](https://img.shields.io/badge/TestFlight-加入测试-blue?logo=apple)](https://testflight.apple.com/join/uB86FKvp)
+
+**[English](README.en.md)**
 
 一款为 **iOS** 和 **tvOS** 打造的纯本地 Hosts 管理工具。通过建立本地 VPN 隧道，实现 DNS 级别的 Hosts 劫持，无需越狱，完全离线运行，保护您的隐私与数据安全。
+
+---
+
+## 🧪 TestFlight 公测
+
+欢迎加入 TestFlight 体验最新版本：
+
+**[➡️ 点击加入 TestFlight 测试](https://testflight.apple.com/join/uB86FKvp)**
 
 ---
 
