@@ -24,7 +24,7 @@
 		3873ED1B2F3B12B300FE696C /* HostsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ED182F3B12B300FE696C /* HostsListCell.swift */; };
 		3873ED1C2F3B12B300FE696C /* HSBLiquidGlassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ED192F3B12B300FE696C /* HSBLiquidGlassView.swift */; };
 		3873ED212F3B142900FE696C /* HSBLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3873ED1F2F3B142900FE696C /* HSBLogger.swift */; };
-		38C116372F2DA0EA001F800C /* Luanch_tv.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162F2F2DA0EA001F800C /* Luanch_tv.storyboard */; platformFilters = (tvos, ); };
+		38C116372F2DA0EA001F800C /* Launch_tv.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162F2F2DA0EA001F800C /* Launch_tv.storyboard */; platformFilters = (tvos, ); };
 		38C1163A2F2DA0EA001F800C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162C2F2DA0EA001F800C /* Assets.xcassets */; };
 		38C1163B2F2DA0EA001F800C /* Pods-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */; };
 		38C1163C2F2DA0EA001F800C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C116302F2DA0EA001F800C /* main.m */; };
@@ -110,13 +110,14 @@
 		3873ED252F3B22EA00FE696C /* THLHOSTSApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = THLHOSTSApp.entitlements; sourceTree = "<group>"; };
 		38C1162A2F2DA0EA001F800C /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
 		38C1162C2F2DA0EA001F800C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		38C1162E2F2DA0EA001F800C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		38C1162F2F2DA0EA001F800C /* Luanch_tv.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Luanch_tv.storyboard; sourceTree = "<group>"; };
+		38C1162E2F2DA0EA001F800C /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
+		38C1162F2F2DA0EA001F800C /* Launch_tv.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch_tv.storyboard; sourceTree = "<group>"; };
 		38C116302F2DA0EA001F800C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		38C116312F2DA0EA001F800C /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		38C116322F2DA0EA001F800C /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
 		38C116332F2DA0EA001F800C /* THLHOSTSApp.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = THLHOSTSApp.pch; sourceTree = "<group>"; };
 		38C116342F2DA0EA001F800C /* THLHOSTSApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "THLHOSTSApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		38CBDD5F2FA9A2A700C1FAE9 /* Info-tvos.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-tvos.plist"; sourceTree = "<group>"; };
 		478EAE1909F7DE4B90C39231 /* HostsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HostsViewModel.swift; sourceTree = "<group>"; };
 		4C47B1AB27F6EB1F783F586D /* HostsListView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HostsListView.swift; sourceTree = "<group>"; };
 		5D0B7EB5F373374F55971E27 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -292,8 +293,9 @@
 				3873EC892F3086AD00FE696C /* Models */,
 				38C1162B2F2DA0EA001F800C /* Data */,
 				38C1162C2F2DA0EA001F800C /* Assets.xcassets */,
-				38C1162E2F2DA0EA001F800C /* Info.plist */,
-				38C1162F2F2DA0EA001F800C /* Luanch_tv.storyboard */,
+				38C1162E2F2DA0EA001F800C /* Info-iOS.plist */,
+				38CBDD5F2FA9A2A700C1FAE9 /* Info-tvos.plist */,
+				38C1162F2F2DA0EA001F800C /* Launch_tv.storyboard */,
 				3873ED062F3AFFD100FE696C /* Launch.storyboard */,
 				38C116302F2DA0EA001F800C /* main.m */,
 				38C116312F2DA0EA001F800C /* SceneDelegate.h */,
@@ -458,7 +460,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				38C116372F2DA0EA001F800C /* Luanch_tv.storyboard in Resources */,
+				38C116372F2DA0EA001F800C /* Launch_tv.storyboard in Resources */,
 				3873ED172F3B05DD00FE696C /* upload.html in Resources */,
 				3873ECBA2F30A94A00FE696C /* Localizable.strings in Resources */,
 				38C1163A2F2DA0EA001F800C /* Assets.xcassets in Resources */,
@@ -839,7 +841,10 @@
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Masonry-tvOS/Masonry.framework/Headers\"",
 				);
-				INFOPLIST_FILE = THLHOSTSApp/Info.plist;
+				INFOPLIST_FILE = "";
+				"INFOPLIST_FILE[sdk=appletv*]" = "THLHOSTSApp/Info-tvos.plist";
+				"INFOPLIST_FILE[sdk=iphone*]" = "THLHOSTSApp/Info-iOS.plist";
+				"INFOPLIST_FILE[sdk=macosx*]" = "THLHOSTSApp/Info-iOS.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -916,7 +921,10 @@
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Masonry-tvOS/Masonry.framework/Headers\"",
 				);
-				INFOPLIST_FILE = THLHOSTSApp/Info.plist;
+				INFOPLIST_FILE = "";
+				"INFOPLIST_FILE[sdk=appletv*]" = "THLHOSTSApp/Info-tvos.plist";
+				"INFOPLIST_FILE[sdk=iphone*]" = "THLHOSTSApp/Info-iOS.plist";
+				"INFOPLIST_FILE[sdk=macosx*]" = "THLHOSTSApp/Info-iOS.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
