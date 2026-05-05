@@ -348,7 +348,6 @@
 				B002B8631BAE420500C744AF /* Products */,
 				9675E1FA20855F6500A4A84A /* Frameworks */,
 				435CF7C4135B8C4C47B9BB0E /* Pods */,
-				B229114DB134DC6AADC8C7E9 /* NetworkExtension */,
 			);
 			sourceTree = "<group>";
 		};
@@ -359,13 +358,6 @@
 				85D776112E188077CCE2EAA2 /* THLHOSTSNetworkExtension.appex */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		B229114DB134DC6AADC8C7E9 /* NetworkExtension */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = NetworkExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

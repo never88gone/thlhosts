@@ -1,93 +1,154 @@
-# THLHOSTS
+# 🍡 糖葫芦 Hosts (THLHosts)
 
+[![Platform](https://img.shields.io/badge/Platform-iOS%20%7C%20tvOS-blue?logo=apple)](https://developer.apple.com)
+[![Swift](https://img.shields.io/badge/Swift-5.9+-orange?logo=swift)](https://swift.org)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
+一款为 **iOS** 和 **tvOS** 打造的纯本地 Hosts 管理工具。通过建立本地 VPN 隧道，实现 DNS 级别的 Hosts 劫持，无需越狱，完全离线运行，保护您的隐私与数据安全。
 
-## Getting started
+---
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## ✨ 功能特性
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+- **DNS 级别的 Hosts 拦截**：基于 `NetworkExtension` 的 Packet Tunnel 实现 DNS 代理，对系统全局生效
+- **多配置管理**：支持创建、编辑、导入、切换多个 Hosts 配置文件
+- **一键切换**：通过主开关快速启停服务
+- **URL 远程订阅**：支持从远程 URL 下载并同步 Hosts 配置（如 neoHosts 等开源列表）
+- **本地文件导入**：支持从本地文件系统导入 `.hosts` / `.txt` 格式的配置
+- **tvOS 扫码上传**：内置 HTTP 服务器，在 tvOS 设备上通过手机扫码快速上传配置
+- **IPv6 防绕过**：自动拦截已命中域名的 `AAAA` 查询，防止浏览器通过 IPv6 绕过规则
+- **实时日志**：内置日志面板，可实时查看 DNS 拦截状态，方便调试
+- **多语言支持**：支持简体中文 / English
+- **多主题**：内置多套暗色主题
 
-## Add your files
+---
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+## 📱 平台支持
+
+| 平台 | 最低版本 | 说明 |
+|------|---------|------|
+| iOS / iPadOS | 16.0+ | iPhone 支持下拉导航，iPad 支持分栏布局 |
+| tvOS | 16.0+ | 支持 Apple TV，含二维码上传功能 |
+
+---
+
+## 🏗 项目架构
 
 ```
-cd existing_repo
-git remote add origin http://17e21186f54f/MYIT/Product/thlhosts.git
-git branch -M main
-git push -uf origin main
+THLHOSTSApp/
+├── Models/
+│   ├── HostsFile.swift          # 数据模型
+│   ├── HostsStorage.swift       # 持久化存储
+│   └── HostsViewModel.swift     # 业务逻辑 ViewModel
+├── NetworkExtension/
+│   ├── PacketTunnelProvider.swift  # VPN 核心：DNS 拦截与转发
+│   └── HostsManager.swift          # Extension 内部管理
+├── Utils/
+│   ├── HSBHostsManager.swift    # VPN 配置与启动管理
+│   └── HSBLogger.swift          # 应用内日志
+├── Views/SwiftUI/
+│   ├── MainView.swift           # 主视图（iOS SplitView / tvOS Stack）
+│   ├── HostsListView.swift      # 配置列表
+│   ├── HostsDetailView.swift    # 配置详情与编辑
+│   ├── SettingsView.swift       # 设置页
+│   └── LogView.swift            # 日志面板
+└── Resources/
+    ├── zh-Hans.lproj/           # 简体中文
+    └── en.lproj/                # English
 ```
 
-## Integrate with your tools
+---
 
-- [ ] [Set up project integrations](http://17e21186f54f/MYIT/Product/thlhosts/-/settings/integrations)
+## 🔧 工作原理
 
-## Collaborate with your team
+```
+用户请求域名
+     │
+     ▼
+[系统 DNS 查询] ──────────────────────────────────┐
+     │                                            │
+     ▼                                            │
+[PacketTunnelProvider (本地 VPN)]                 │
+     │                                            │
+     ├─ 命中 Hosts (A 记录)  → 返回自定义 IP ←──┘
+     ├─ 命中 Hosts (AAAA 记录) → 返回空响应 (强制 IPv4 降级)
+     └─ 未命中 → 转发至上游 DNS (默认 114.114.114.114)
+```
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+> 所有流量处理均在设备本地进行，不经过任何外部服务器。
 
-## Test and Deploy
+---
 
-Use the built-in continuous integration in GitLab.
+## 🚀 构建与运行
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+### 依赖
 
-***
+- Xcode 15+
+- CocoaPods
 
-# Editing this README
+### 步骤
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+```bash
+# 克隆仓库
+git clone <repo-url>
+cd thlhosts
 
-## Suggestions for a good README
+# 安装依赖
+pod install
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+# 用 Xcode 打开工程
+open THLHOSTS.xcworkspace
+```
 
-## Name
-Choose a self-explaining name for your project.
+### 配置要求
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+在 Xcode 中需要配置以下内容：
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+1. **Bundle ID**：修改主 App 和 NetworkExtension Target 的 Bundle Identifier
+2. **App Group**：在两个 Target 中配置同一个 App Group（格式：`group.xxx.thlhosts`）
+3. **Capabilities**：
+   - 主 App：`Personal VPN`、`App Groups`
+   - Network Extension：`Network Extensions`（Packet Tunnel）、`App Groups`
+4. **Provisioning Profile**：需要在 Apple Developer 后台开启上述权限并下载对应描述文件
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+> ⚠️ VPN 功能需要真机运行，模拟器不支持 `NetworkExtension`。
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+---
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+## 📖 使用说明
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+1. **添加配置**：点击右上角 `+` 新建本地配置，或通过 URL 订阅远程 Hosts 列表
+2. **编辑配置**：点击配置项进入详情，直接编辑内容或从文件导入
+3. **激活配置**：点击配置列表项左侧的圆点开启/停用该配置（同时只能有一个激活）
+4. **启动服务**：切换主开关启动 VPN 服务
+5. **验证生效**：如果拦截未立即生效，尝试开关一次**飞行模式**以刷新系统 DNS 缓存
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+---
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+## 🤝 贡献
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+欢迎提交 Issue 和 Pull Request！
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+1. Fork 本仓库
+2. 创建你的分支 (`git checkout -b feature/awesome-feature`)
+3. 提交更改 (`git commit -m 'Add awesome feature'`)
+4. 推送分支 (`git push origin feature/awesome-feature`)
+5. 发起 Pull Request
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+---
 
-## License
-For open source projects, say how it is licensed.
+## 📄 许可证
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+本项目基于 [MIT License](LICENSE) 开源。
+
+---
+
+## 🔒 隐私政策
+
+请查阅 [PRIVACY_POLICY.md](PRIVACY_POLICY.md)。
+
+---
+
+## 📬 联系
+
+如有问题欢迎通过 Issue 反馈。
