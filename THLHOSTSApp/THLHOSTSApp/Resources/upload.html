@@ -139,6 +139,14 @@
         const fileInput = document.getElementById('fileInput');
         const uploadForm = document.getElementById('uploadForm');
 
+        const title = document.querySelector('h1');
+        const urlParams = new URLSearchParams(window.location.search);
+        const target = urlParams.get('target');
+        
+        if (target) {
+            title.innerText = 'Upload to: ' + target;
+        }
+
         function resetUpload() {
             status.style.display = 'none';
             uploadForm.style.display = 'block';
@@ -151,13 +159,18 @@
                 const formData = new FormData();
                 formData.append('file', file);
                 
+                let postUrl = '/upload';
+                if (target) {
+                    postUrl += '?target=' + encodeURIComponent(target);
+                }
+                
                 uploadForm.style.display = 'none';
                 status.className = 'uploading';
                 statusIcon.innerText = '⏳';
                 statusText.innerText = 'Uploading...';
                 status.style.display = 'block';
 
-                fetch('/upload', {
+                fetch(postUrl, {
                     method: 'POST',
                     body: formData
                 })

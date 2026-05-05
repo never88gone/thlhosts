@@ -7,7 +7,9 @@ struct HostsDetailView: View {
     
     @State private var content: String = ""
     @State private var serverIP: String = "localhost"
-    
+    @State private var showingURLAlert = false
+    @State private var updateURL = ""
+    @State private var showingImporter = false
     private var isTV: Bool {
         #if os(tvOS)
         return true
@@ -36,6 +38,18 @@ struct HostsDetailView: View {
                         }
                     }
                     Spacer()
+                    
+                    #if os(tvOS)
+                    Button(action: {
+                        updateURL = file.sourceURL ?? ""
+                        showingURLAlert = true
+                    }) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "link")
+                            Text("update_from_url".localized)
+                        }
+                    }
+                    #endif
                     
                     if file.isEnabled {
                         Image(systemName: "shield.check.fill")
@@ -150,6 +164,66 @@ struct HostsDetailView: View {
                 self.content = newValue
             }
         }
+        .toolbar {
+            #if os(iOS) || os(macOS)
+            ToolbarItem(placement: .primaryAction) {
+                Menu {
+                    Button(action: { showingImporter = true }) {
+                        Label("import_local_file".localized, systemImage: "folder")
+                    }
+                    Button(action: {
+                        updateURL = file.sourceURL ?? ""
+                        showingURLAlert = true 
+                    }) {
+                        Label("update_from_url".localized, systemImage: "link")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
+            }
+            #endif
+        }
+        .alert("update_from_url".localized, isPresented: $showingURLAlert) {
+            TextField("url_placeholder".localized, text: $updateURL)
+            Button("cancel".localized, role: .cancel) { updateURL = "" }
+            Button("done".localized) {
+                if !updateURL.isEmpty {
+                    viewModel.fetchHostsFromURL(url: updateURL, for: file) { success in
+                        if success {
+                            viewModel.updateSourceURL(for: file, url: updateURL)
+                            if let updatedContent = viewModel.hostsFiles.first(where: { $0.id == file.id })?.content {
+                                self.content = updatedContent
+                            }
+                        }
+                    }
+                    updateURL = ""
+                }
+            }
+        } message: {
+            Text("enter_url_update_guide".localized)
+        }
+        #if os(iOS) || os(macOS)
+        .fileImporter(
+            isPresented: $showingImporter,
+            allowedContentTypes: [.plainText, .text, .data, .hosts, .item],
+            allowsMultipleSelection: false
+        ) { result in
+            switch result {
+            case .success(let urls):
+                if let url = urls.first {
+                    if url.startAccessingSecurityScopedResource() {
+                        defer { url.stopAccessingSecurityScopedResource() }
+                        if let newContent = try? String(contentsOf: url) {
+                            viewModel.updateContent(for: file, content: newContent)
+                            self.content = newContent
+                        }
+                    }
+                }
+            case .failure(let error):
+                print("Import failed: \(error)")
+            }
+        }
+        #endif
     }
     
     // MARK: - Helpers

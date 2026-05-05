@@ -40,21 +40,9 @@ struct HostsListView: View {
         #if os(iOS) || os(macOS)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                HStack(spacing: 16) {
-                    Button(action: { showingImporter = true }) {
-                        Image(systemName: "square.and.arrow.down")
-                    }
-                    Menu {
-                        Button(action: { showingAddAlert = true }) {
-                            Label("new_local_config".localized, systemImage: "plus.circle")
-                        }
-                        Button(action: { showingURLAlert = true }) {
-                            Label("download_from_url".localized, systemImage: "icloud.and.arrow.down")
-                        }
-                    } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.title3)
-                    }
+                Button(action: { showingAddAlert = true }) {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.title3)
                 }
             }
             ToolbarItem(placement: .navigationBarLeading) {
@@ -89,23 +77,6 @@ struct HostsListView: View {
             }
         } message: {
             Text("enter_name_guide".localized)
-        }
-        .alert("download_from_url".localized, isPresented: $showingURLAlert) {
-            TextField("name".localized, text: $newFileName)
-            TextField("URL (http/https)", text: $remoteURL)
-            Button("cancel".localized, role: .cancel) { 
-                newFileName = ""
-                remoteURL = ""
-            }
-            Button("add".localized) {
-                if !newFileName.isEmpty && !remoteURL.isEmpty {
-                    viewModel.addHostsFromURL(name: newFileName, url: remoteURL)
-                    newFileName = ""
-                    remoteURL = ""
-                }
-            }
-        } message: {
-            Text("enter_url_guide".localized)
         }
         #if os(tvOS)
         .navigationTitle("") // Hide system title on tvOS to avoid overlap with custom header
@@ -229,6 +200,7 @@ struct HostsListView: View {
             
             Spacer()
         }
+        .focusSection()
     }
     #endif
     
@@ -250,47 +222,38 @@ struct HostsListView: View {
             }
             
             Spacer()
-            
-            if let qrImage = generateQRCode(from: "http://\(viewModel.serverIP):8080") {
-                VStack(spacing: 16) {
-                    Image(uiImage: qrImage)
-                        .interpolation(.none)
-                        .resizable()
-                        .frame(width: 160, height: 160)
-                        .padding(12)
-                        .background(Color.white)
-                        .cornerRadius(16)
-                        .shadow(color: .black.opacity(0.4), radius: 15)
-                    
-                    VStack(spacing: 4) {
-                        Text("scan_to_upload".localized)
-                            .font(.headline)
-                            .foregroundColor(.appText)
-                        Text("http://\(viewModel.serverIP):8080")
-                            .font(.caption2)
-                            .foregroundColor(.appSubText)
-                    }
-                }
-                .padding(20)
-                .background(Color.white.opacity(0.05))
-                .cornerRadius(24)
-            }
         }
     }
     
     private var tvOSBottomActions: some View {
         HStack(spacing: 40) {
-            Button(action: { viewModel.toggleVPN() }) {
-                HStack {
-                    Image(systemName: viewModel.isVPNEnabled ? "stop.fill" : "play.fill")
-                    Text(viewModel.isVPNEnabled ? "stop_service".localized : "start_service".localized)
+            Spacer()
+            
+            if viewModel.isVPNEnabled {
+                Button(action: { viewModel.toggleVPN() }) {
+                    HStack {
+                        Image(systemName: "stop.fill")
+                        Text("stop_service".localized)
+                    }
+                    .padding(.horizontal, 30)
+                    .padding(.vertical, 15)
                 }
-                .padding(.horizontal, 30)
-                .padding(.vertical, 15)
+                .buttonStyle(.borderedProminent)
+                .tint(.red)
+                .disabled(viewModel.hostsFiles.isEmpty)
+            } else {
+                Button(action: { viewModel.toggleVPN() }) {
+                    HStack {
+                        Image(systemName: "play.fill")
+                        Text("start_service".localized)
+                    }
+                    .padding(.horizontal, 30)
+                    .padding(.vertical, 15)
+                }
+                .buttonStyle(.bordered)
+                .tint(.primary)
+                .disabled(viewModel.hostsFiles.isEmpty)
             }
-            .buttonStyle(.borderedProminent)
-            .tint(viewModel.isVPNEnabled ? .red : .green)
-            .disabled(viewModel.hostsFiles.isEmpty) // Disable if no configs
             
             Button(action: { showingAddAlert = true }) {
                 Label("add".localized, systemImage: "plus")
@@ -305,6 +268,7 @@ struct HostsListView: View {
             Spacer()
         }
         .padding(.top, 20)
+        .focusSection()
     }
     
     private func hostRow(_ file: HostsFile) -> some View {

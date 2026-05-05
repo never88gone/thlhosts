@@ -50,3 +50,9 @@ import Foundation
         return bundle.localizedString(forKey: key, value: nil, table: nil)
     }
 }
+
+extension String {
+    var localized: String {
+        return HSBHostsLanguageManager.shared.localizedString(self)
+    }
+}

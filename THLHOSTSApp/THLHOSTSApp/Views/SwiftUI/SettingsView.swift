@@ -37,7 +37,9 @@ struct SettingsView: View {
                     HSBHostsLanguageManager.shared.setLanguage(newValue)
                 }
             }
+            #if os(iOS) || os(macOS)
             .listRowBackground(Color.appSecondary)
+            #endif
             
             #if os(tvOS)
             Section(header: Text("vpn_usage_title".localized).foregroundColor(.appSubText)) {
@@ -45,7 +47,9 @@ struct SettingsView: View {
                     .font(.caption)
                     .foregroundColor(.appSubText)
             }
+            #if os(iOS) || os(macOS)
             .listRowBackground(Color.appSecondary)
+            #endif
             #endif
             
             Section(header: Text("about".localized).foregroundColor(.appSubText)) {
@@ -73,7 +77,9 @@ struct SettingsView: View {
                 }
                 #endif
             }
+            #if os(iOS) || os(macOS)
             .listRowBackground(Color.appSecondary)
+            #endif
             
             Section {
                 HStack {
@@ -141,31 +147,100 @@ struct AboutDetailView: View {
 
 struct ContactView: View {
     var body: some View {
-        List {
-            Section(header: Text("contact_desc".localized)) {
-                Link(destination: URL(string: "https://github.com/never88gone")!) {
-                    HStack {
-                        Label("github".localized, systemImage: "link")
-                        Spacer()
-                        Text("never88gone")
-                            .foregroundColor(.secondary)
-                    }
+        ScrollView {
+            VStack(spacing: 30) {
+                Image(systemName: "envelope.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 80, height: 80)
+                    .foregroundColor(.appCTA)
+                    .padding(.top, 40)
+                    
+                Text("contact_us".localized)
+                    .font(.system(size: 50, weight: .bold))
+                    
+                Text("contact_desc".localized)
+                    .font(.title3)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+                    
+                VStack(spacing: 20) {
+                    ContactCard(
+                        icon: "link",
+                        title: "github".localized,
+                        subtitle: "never88gone",
+                        url: "https://github.com/never88gone"
+                    )
+                    
+                    ContactCard(
+                        icon: "paperplane.fill",
+                        title: "telegram".localized,
+                        subtitle: "@tanghulutvos",
+                        url: "https://t.me/tanghulutvos"
+                    )
                 }
+                .padding(.horizontal, 40)
+                .padding(.top, 20)
                 
-                HStack {
-                    Label("telegram".localized, systemImage: "paperplane")
-                    Spacer()
-                    Text("@tanghulutvos")
-                        .foregroundColor(.secondary)
-                }
+                Spacer()
             }
+            .frame(maxWidth: .infinity)
         }
         .navigationTitle("contact_us".localized)
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
-        .scrollContentBackground(.hidden)
         .background(Color.appBackground.ignoresSafeArea())
         #endif
+    }
+}
+
+struct ContactCard: View {
+    let icon: String
+    let title: String
+    let subtitle: String
+    let url: String
+    
+    var body: some View {
+        Button(action: {
+            if let targetURL = URL(string: url) {
+                #if os(iOS)
+                UIApplication.shared.open(targetURL)
+                #endif
+            }
+        }) {
+            HStack(spacing: 20) {
+                Image(systemName: icon)
+                    .font(.system(size: 30))
+                    .foregroundColor(.appCTA)
+                    .frame(width: 40)
+                    
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title)
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    Text(subtitle)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.secondary.opacity(0.5))
+            }
+            .padding()
+            #if os(tvOS)
+            .padding(.vertical, 8)
+            #endif
+            .background(Color.white.opacity(0.05))
+            .cornerRadius(16)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
     }
 }
 

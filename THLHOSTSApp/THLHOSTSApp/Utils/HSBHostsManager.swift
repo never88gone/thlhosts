@@ -297,6 +297,7 @@ import SwiftUI
     }
     
     private func handleUpload(_ req: HttpRequest) -> HttpResponse {
+        let target = req.queryParams.first(where: { $0.0 == "target" })?.1
         let parts = req.parseMultiPartFormData()
         for part in parts {
             let disposition = part.headers["Content-Disposition"] ?? part.headers["content-disposition"]
@@ -316,16 +317,17 @@ import SwiftUI
             
             // Allow .hosts, .txt, or no extension
             if let fn = filename, !part.body.isEmpty {
-                // Ensure it ends with .hosts if user didn't specify extension relevantly?
-                // Actually, let's keep original name but standardizing could be good.
-                // But user wants "hosts文件", usually just "hosts" or "example.hosts"
-                return saveHostsFile(data: Data(part.body), filename: fn)
+                // If target is provided from query params, force use it as filename
+                let finalFilename = target ?? fn
+                return saveHostsFile(data: Data(part.body), filename: finalFilename)
             }
         }
         return .badRequest(.text("Invalid file upload"))
     }
+    
     private func saveHostsFile(data: Data, filename: String) -> HttpResponse {
-        let actualFilename = activeHost ?? filename
+        // Remove activeHost fallback so it strictly uses the provided filename (target or fn)
+        let actualFilename = filename
         let destURL = hostsDirectory.appendingPathComponent(actualFilename)
         
         NSLog("HSBHostsManager: Saving file to \(destURL.path)")

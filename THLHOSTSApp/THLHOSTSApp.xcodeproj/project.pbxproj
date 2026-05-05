@@ -43,7 +43,6 @@
 		9675E1FC20855F6500A4A84A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9675E1FB20855F6500A4A84A /* Foundation.framework */; };
 		9675E1FF20857AEF00A4A84A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9675E1FE20857AEF00A4A84A /* UIKit.framework */; };
 		9825049CA0299A3F9AB40C75 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F80F908C2C5BC59F37F5187 /* SettingsView.swift */; };
-		A3E2DA27FCE1589285B6CCBE /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493871870C62E46D94C1C254 /* L10n.swift */; };
 		AA0000000000000HSBLANGBD /* HSBHostsLanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000000000000HSBLANGMAN /* HSBHostsLanguageManager.swift */; };
 		B33A877F22DD2D4971857846 /* GlassBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF36B7D9DB17672F1FBD29D /* GlassBackground.swift */; };
 		B35DCFE1400DA43B90773716 /* HSBHostsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3D9136418A6054BB5DAD0D /* HSBHostsManager.swift */; };
@@ -119,7 +118,6 @@
 		38C116332F2DA0EA001F800C /* THLHOSTSApp.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = THLHOSTSApp.pch; sourceTree = "<group>"; };
 		38C116342F2DA0EA001F800C /* THLHOSTSApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "THLHOSTSApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		478EAE1909F7DE4B90C39231 /* HostsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HostsViewModel.swift; sourceTree = "<group>"; };
-		493871870C62E46D94C1C254 /* L10n.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
 		4C47B1AB27F6EB1F783F586D /* HostsListView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HostsListView.swift; sourceTree = "<group>"; };
 		5D0B7EB5F373374F55971E27 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		5E3D9136418A6054BB5DAD0D /* HSBHostsManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HSBHostsManager.swift; sourceTree = "<group>"; };
@@ -259,7 +257,6 @@
 				CDFBABEADACC19FA16204BDF /* AppColors.swift */,
 				FFF752F695CF809FE6D675BD /* DeviceHelper.swift */,
 				DA30FE92F03191D32CAFE2D8 /* ThemeManager.swift */,
-				493871870C62E46D94C1C254 /* L10n.swift */,
 				5E3D9136418A6054BB5DAD0D /* HSBHostsManager.swift */,
 			);
 			path = Utils;
@@ -425,15 +422,15 @@
 				LastUpgradeCheck = 1420;
 				ORGANIZATIONNAME = myit2017;
 				TargetAttributes = {
+					1468A3F9A868B54C83E93BFF = {
+						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = 876385K952;
+						ProvisioningStyle = Manual;
+					};
 					B002B8611BAE420500C744AF = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = 876385K952;
 						LastSwiftMigration = 1640;
-						ProvisioningStyle = Manual;
-					};
-					1468A3F9A868B54C83E93BFF = {
-						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = 876385K952;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -612,7 +609,6 @@
 				332B78FDEB28FA7817B000A9 /* HostsViewModel.swift in Sources */,
 				03993B26CB7A74A0D0F03988 /* LogView.swift in Sources */,
 				D4DF6F6D334F1BC2600BD1C1 /* EmptyStateView.swift in Sources */,
-				A3E2DA27FCE1589285B6CCBE /* L10n.swift in Sources */,
 				09E192A123024827FEDADD3D /* HostsManager.swift in Sources */,
 				B35DCFE1400DA43B90773716 /* HSBHostsManager.swift in Sources */,
 			);

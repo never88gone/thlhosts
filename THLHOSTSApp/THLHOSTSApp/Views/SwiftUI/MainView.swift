@@ -95,7 +95,10 @@ struct MainView: View {
 struct HostsPickerView: View {
     @ObservedObject var viewModel: HostsViewModel
     @Environment(\.dismiss) var dismiss
-    @State private var focusedFileInPicker: HostsFile?
+    @State private var focusedFileIdInPicker: UUID?
+    @State private var showingURLAlert = false
+    @State private var updateURL = ""
+    @FocusState private var isContentFocused: Bool
     
     var body: some View {
         HStack(spacing: 0) {
@@ -136,7 +139,7 @@ struct HostsPickerView: View {
                             .buttonStyle(.bordered)
                             .onFocusChange { focused in
                                 if focused {
-                                    focusedFileInPicker = file
+                                    focusedFileIdInPicker = file.id
                                 }
                             }
                         }
@@ -147,10 +150,13 @@ struct HostsPickerView: View {
             }
             .frame(width: 700)
             .background(Color.black.opacity(0.15))
+            .focusSection()
             
             // Right: Content Preview
             VStack(alignment: .leading, spacing: 30) {
-                if let file = focusedFileInPicker ?? viewModel.activeHostsFile ?? viewModel.hostsFiles.first {
+                let fileToDisplay = viewModel.hostsFiles.first(where: { $0.id == focusedFileIdInPicker }) ?? viewModel.activeHostsFile ?? viewModel.hostsFiles.first
+                
+                if let file = fileToDisplay {
                     VStack(alignment: .leading, spacing: 12) {
                         Text(file.name)
                             .font(.system(size: 50, weight: .bold))
@@ -170,12 +176,66 @@ struct HostsPickerView: View {
                             .lineSpacing(8)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(40)
+                            #if os(tvOS)
+                            .focusable(true)
+                            .focused($isContentFocused)
+                            #endif
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.white.opacity(isContentFocused ? 0.15 : 0.05))
+                    .cornerRadius(20)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(isContentFocused ? Color.white : Color.white.opacity(0.1), lineWidth: isContentFocused ? 4 : 1)
+                    )
+                    #if os(tvOS)
+                    .scaleEffect(isContentFocused ? 1.02 : 1.0)
+                    .animation(.interactiveSpring(), value: isContentFocused)
+                    #endif
+                    
+                    // Bottom actions and QR code
+                    HStack(alignment: .center, spacing: 40) {
+                        Button(action: {
+                            updateURL = file.sourceURL ?? ""
+                            showingURLAlert = true
+                        }) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "link")
+                                Text("update_from_url".localized)
+                            }
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 16)
+                        }
+                        #if os(tvOS)
+                        .buttonStyle(.borderedProminent)
+                        #else
+                        .buttonStyle(.bordered)
+                        #endif
+                        
+                        Spacer()
+                        
+                        if let encodedName = file.name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                           let qrImage = generateQRCode(from: "http://\(viewModel.serverIP):8080/?target=\(encodedName)") {
+                            HStack(spacing: 16) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("scan_to_upload".localized)
+                                        .font(.headline)
+                                        .foregroundColor(.appText)
+                                    Text("http://\(viewModel.serverIP):8080")
+                                        .font(.caption)
+                                        .foregroundColor(.appSubText)
+                                }
+                                Image(uiImage: qrImage)
+                                    .interpolation(.none)
+                                    .resizable()
+                                    .frame(width: 150, height: 150)
+                                    .background(Color.white)
+                                    .cornerRadius(12)
+                            }
+                            .padding(16)
                             .background(Color.white.opacity(0.05))
-                            .cornerRadius(20)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
-                            )
+                            .cornerRadius(16)
+                        }
                     }
                 } else {
                     Spacer()
@@ -194,12 +254,49 @@ struct HostsPickerView: View {
             .padding(80)
             .frame(maxWidth: .infinity)
             .background(Color.appBackground)
+            .focusSection()
         }
         .ignoresSafeArea()
         .navigationBarHidden(true)
         .onAppear {
-            focusedFileInPicker = viewModel.activeHostsFile ?? viewModel.hostsFiles.first
+            focusedFileIdInPicker = viewModel.activeHostsFile?.id ?? viewModel.hostsFiles.first?.id
         }
+        .alert("update_from_url".localized, isPresented: $showingURLAlert) {
+            TextField("url_placeholder".localized, text: $updateURL)
+            Button("cancel".localized, role: .cancel) { updateURL = "" }
+            Button("done".localized) {
+                if !updateURL.isEmpty {
+                    let file = viewModel.hostsFiles.first(where: { $0.id == focusedFileIdInPicker }) ?? viewModel.activeHostsFile ?? viewModel.hostsFiles.first
+                    if let file = file {
+                        viewModel.fetchHostsFromURL(url: updateURL, for: file) { success in
+                            if success {
+                                viewModel.updateSourceURL(for: file, url: updateURL)
+                            }
+                        }
+                    }
+                    updateURL = ""
+                }
+            }
+        } message: {
+            Text("enter_url_update_guide".localized)
+        }
+    }
+    
+    private func generateQRCode(from string: String) -> UIImage? {
+        let context = CIContext()
+        let filter = CIFilter(name: "CIQRCodeGenerator")
+        let data = string.data(using: .ascii)
+        filter?.setValue(data, forKey: "inputMessage")
+        filter?.setValue("M", forKey: "inputCorrectionLevel")
+
+        if let outputImage = filter?.outputImage {
+            let transform = CGAffineTransform(scaleX: 10, y: 10)
+            let scaledImage = outputImage.transformed(by: transform)
+            if let cgImage = context.createCGImage(scaledImage, from: scaledImage.extent) {
+                return UIImage(cgImage: cgImage)
+            }
+        }
+        return nil
     }
 }
 
