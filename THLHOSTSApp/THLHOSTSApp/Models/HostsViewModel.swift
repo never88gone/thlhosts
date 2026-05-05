@@ -177,17 +177,17 @@ class HostsViewModel: ObservableObject {
         
         isVPNEnabled.toggle()
         
-        // If turning OFF, disable all hosts configurations
-        if !isVPNEnabled {
-            for i in 0..<hostsFiles.count {
-                hostsFiles[i].isEnabled = false
+        if isVPNEnabled {
+            // 开启服务时，将选中的配置重新赋值给 activeHost 以触发 VPN 启动
+            if let activeFile = activeFiles.first {
+                HSBHostsManager.shared.activeHost = activeFile.name
             }
-            HostsStorage.shared.save(hostsFiles)
+        } else {
+            // 关闭服务时只停止 VPN 引擎，不清除选中状态，方便下次快速恢复
             HSBHostsManager.shared.activeHost = nil
-            HSBLogger.shared.log("主开关已关闭，已重置所有子配置状态", level: .info)
+            HSBLogger.shared.log("主开关已关闭（选中状态已保留，下次开启可直接恢复）", level: .info)
         }
         
-        HSBHostsManager.shared.isVPNEnabled = isVPNEnabled
         HSBLogger.shared.log(isVPNEnabled ? "VPN 服务已启动" : "VPN 服务已停止", level: .info)
     }
     
