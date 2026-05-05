@@ -26,3 +26,6 @@ Pods/
 
 # Logs
 *.log
+
+# Agent
+.agent/
