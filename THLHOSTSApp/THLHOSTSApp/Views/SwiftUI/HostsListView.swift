@@ -172,6 +172,7 @@ struct HostsListView: View {
                             Label("delete".localized, systemImage: "trash")
                         }
                     }
+                    #if !os(tvOS)
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         Button(role: .destructive) {
                             withAnimation { viewModel.deleteHosts(file) }
@@ -179,6 +180,7 @@ struct HostsListView: View {
                             Label("delete".localized, systemImage: "trash")
                         }
                     }
+                    #endif
                 #endif
             }
         }
