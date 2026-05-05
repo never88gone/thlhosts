@@ -33,6 +33,11 @@ struct MainView: View {
         } message: {
             Text(viewModel.errorMessage)
         }
+        .alert("status".localized, isPresented: $viewModel.showingSuccessAlert) {
+            Button("ok".localized, role: .cancel) { }
+        } message: {
+            Text(viewModel.successMessage)
+        }
     }
     
     // MARK: - Layouts

@@ -210,9 +210,25 @@ import SwiftUI
     private func startVPN(hostsContent: String) {
         guard let manager = vpnManager else { return }
         
-        // Update configuration
+        // 1. 如果 VPN 已经在运行，尝试发送消息进行热更新
+        if manager.connection.status == .connected {
+            if let session = manager.connection as? NETunnelProviderSession,
+               let data = hostsContent.data(using: .utf8) {
+                do {
+                    try session.sendProviderMessage(data) { response in
+                        NSLog("HSBHostsManager: VPN Hot-update success")
+                    }
+                } catch {
+                    NSLog("HSBHostsManager: Failed to send provider message: \(error)")
+                }
+            }
+        }
+        
+        // 2. 同时持久化配置到 Preferences
         if let proto = manager.protocolConfiguration as? NETunnelProviderProtocol {
-            proto.providerConfiguration?["hosts"] = hostsContent as NSObject
+            var config = proto.providerConfiguration ?? [:]
+            config["hosts"] = hostsContent as NSObject
+            proto.providerConfiguration = config
         }
         
         manager.saveToPreferences { [weak self] error in
@@ -227,11 +243,14 @@ import SwiftUI
                     return
                 }
                 
-                do {
-                    try manager.connection.startVPNTunnel()
-                    NSLog("HSBHostsManager: VPN tunnel started")
-                } catch {
-                    NSLog("HSBHostsManager: Failed to start VPN: \(error)")
+                // 如果 VPN 没运行，则启动它
+                if manager.connection.status != .connected && manager.connection.status != .connecting {
+                    do {
+                        try manager.connection.startVPNTunnel()
+                        NSLog("HSBHostsManager: VPN tunnel started")
+                    } catch {
+                        NSLog("HSBHostsManager: Failed to start VPN: \(error)")
+                    }
                 }
             }
         }

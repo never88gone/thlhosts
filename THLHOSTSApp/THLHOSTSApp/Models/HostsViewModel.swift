@@ -173,6 +173,9 @@ class HostsViewModel: ObservableObject {
         }
     }
     
+    @Published var showingSuccessAlert: Bool = false
+    @Published var successMessage: String = ""
+
     func toggleVPN() {
         let activeFiles = hostsFiles.filter { $0.isEnabled }
         if activeFiles.isEmpty && !isVPNEnabled {
@@ -196,6 +199,9 @@ class HostsViewModel: ObservableObject {
             if let activeFile = activeFiles.first {
                 HSBHostsManager.shared.activeHost = activeFile.name
             }
+            // 提醒用户飞行模式
+            self.successMessage = "vpn_start_tip".localized
+            self.showingSuccessAlert = true
         } else {
             // 关闭服务时只停止 VPN 引擎，不清除选中状态，方便下次快速恢复
             HSBHostsManager.shared.activeHost = nil

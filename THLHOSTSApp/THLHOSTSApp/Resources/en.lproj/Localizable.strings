@@ -67,3 +67,4 @@
 "telegram" = "Telegram";
 "github" = "GitHub";
 "clear" = "Clear";
+"vpn_start_tip" = "Service started. If redirection fails, try toggling Flight Mode on and off to clear the system DNS cache.";

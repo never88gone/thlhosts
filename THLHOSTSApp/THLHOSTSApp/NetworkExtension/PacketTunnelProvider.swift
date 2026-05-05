@@ -22,9 +22,10 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         // 强制系统将 DNS 请求发给我们的虚拟 IP
         let dnsSettings = NEDNSSettings(servers: ["10.0.0.1"])
         dnsSettings.matchDomains = [""] // 拦截所有域名的解析
+        dnsSettings.matchDomainsNoSearch = true // 禁用搜索域，强制所有查询走这里
         settings.dnsSettings = dnsSettings
         
-        // 关键路由配置：仅把发往 10.0.0.1 的流量吸入隧道，防止全局断网
+        // 关键路由配置：仅把发往 10.0.0.1 的流量吸入隧道
         let ipv4Settings = NEIPv4Settings(addresses: ["10.0.0.2"], subnetMasks: ["255.255.255.255"])
         ipv4Settings.includedRoutes = [NEIPv4Route(destinationAddress: "10.0.0.1", subnetMask: "255.255.255.255")]
         settings.ipv4Settings = ipv4Settings
@@ -40,6 +41,15 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         }
     }
     
+    override func handleAppMessage(_ messageData: Data, completionHandler: ((Data?) -> Void)? = nil) {
+        if let hostsString = String(data: messageData, encoding: .utf8) {
+            parseHosts(hostsString)
+            completionHandler?("OK".data(using: .utf8))
+        } else {
+            completionHandler?(nil)
+        }
+    }
+    
     override func stopTunnel(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
         isTunnelRunning = false
         completionHandler()
@@ -51,8 +61,10 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         hostsDict.removeAll()
         let lines = text.components(separatedBy: .newlines)
         for line in lines {
-            let cleanLine = line.components(separatedBy: "#").first!.trimmingCharacters(in: .whitespaces)
+            // 过滤掉注释，并处理 \r\n 等空白符
+            let cleanLine = line.components(separatedBy: "#").first?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
             if cleanLine.isEmpty { continue }
+            
             let parts = cleanLine.components(separatedBy: .whitespaces).filter { !$0.isEmpty }
             if parts.count >= 2 {
                 let ip = parts[0]
@@ -131,16 +143,54 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         if domain.hasSuffix(".") { domain.removeLast() }
         let qDomain = domain.lowercased()
         
+        // 读取 QTYPE (2字节)
+        guard i + 2 <= payload.count else { 
+            NSLog("PacketTunnelProvider: [错误] DNS 报文过短，无法读取 QTYPE")
+            return 
+        }
+        let qType = UInt16(payload[i]) << 8 | UInt16(payload[i+1])
+        
         // 匹配 Hosts
         if let targetIP = hostsDict[qDomain] {
-            NSLog("PacketTunnelProvider: 命中 Hosts! \(qDomain) -> \(targetIP)")
-            if let response = buildDNSResponse(query: payload, ipString: targetIP) {
-                injectPacket(payload: response, srcIP: dstIP, srcPort: dstPort, dstIP: srcIP, dstPort: srcPort)
+            if qType == 1 { // A 记录查询 (IPv4)
+                NSLog("PacketTunnelProvider: [拦截] 命中 A 记录! \(qDomain) -> \(targetIP)")
+                if let response = buildDNSResponse(query: payload, ipString: targetIP) {
+                    injectPacket(payload: response, srcIP: dstIP, srcPort: dstPort, dstIP: srcIP, dstPort: srcPort)
+                }
+            } else if qType == 28 { // AAAA 记录查询 (IPv6)
+                // 命中 Hosts 但查询的是 IPv6。返回空的成功响应 (NODATA)，
+                // 这样浏览器会立即降级使用我们提供的 IPv4 结果。
+                NSLog("PacketTunnelProvider: [拦截] 命中 AAAA (清除 IPv6 记录强制降级): \(qDomain)")
+                if let response = buildEmptyResponse(query: payload) {
+                    injectPacket(payload: response, srcIP: dstIP, srcPort: dstPort, dstIP: srcIP, dstPort: srcPort)
+                }
+            } else {
+                NSLog("PacketTunnelProvider: [忽略] 命中域名但 QTYPE=\(qType) 不处理，转发中: \(qDomain)")
+                forwardDNSQuery(payload: payload, srcIP: srcIP, srcPort: srcPort, dstIP: dstIP, dstPort: dstPort)
             }
         } else {
             // 未命中，使用真实 DNS 转发
+            if !qDomain.isEmpty {
+                NSLog("PacketTunnelProvider: [转发] \(qDomain) (Type: \(qType)) -> \(upstreamDNS)")
+            }
             forwardDNSQuery(payload: payload, srcIP: srcIP, srcPort: srcPort, dstIP: dstIP, dstPort: dstPort)
         }
+    }
+    
+    private func buildEmptyResponse(query: Data) -> Data? {
+        guard query.count >= 12 else { return nil }
+        var response = query
+        // Flags: QR=1, RCODE=0 (Success, but no records)
+        response[2] = 0x81
+        response[3] = 0x80
+        // ANCOUNT, NSCOUNT, ARCOUNT 全设为 0
+        response[6] = 0x00
+        response[7] = 0x00
+        response[8] = 0x00
+        response[9] = 0x00
+        response[10] = 0x00
+        response[11] = 0x00
+        return response
     }
     
     private func forwardDNSQuery(payload: Data, srcIP: Data, srcPort: UInt16, dstIP: Data, dstPort: UInt16) {

@@ -105,39 +105,22 @@ struct HostsListView: View {
     }
     
     private var mainList: some View {
-        List {
+        Group {
             #if os(iOS)
-            Section {
-                Toggle("master_switch".localized, isOn: Binding(
-                    get: { viewModel.isVPNEnabled },
-                    set: { _ in viewModel.toggleVPN() }
-                ))
-                    .toggleStyle(SwitchToggleStyle(tint: .appCTA))
-                    .foregroundColor(.appText)
-                    .listRowBackground(Color.appSecondary)
-            } header: {
-                Text("app_name".localized)
-                    .font(.subheadline.bold())
-                    .foregroundColor(.appCTA)
-                    .textCase(nil)
-            }
-            #endif
-
-            Section(header: Text("configurations".localized)
-                        .font(.caption.weight(.semibold))
-                        .foregroundColor(.appSubText)
-                        .textCase(nil)
-            ) {
-                ForEach(viewModel.hostsFiles) { file in
-                    #if os(iOS)
-                    iOSRow(file)
-                    #else
-                    hostRow(file)
-                        .listRowBackground(Color.appSecondary)
-                        .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                    #endif
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                List {
+                    allSections
+                }
+            } else {
+                List(selection: $viewModel.selectedFile) {
+                    allSections
                 }
             }
+            #else
+            List(selection: $viewModel.selectedFile) {
+                allSections
+            }
+            #endif
         }
         #if os(tvOS)
         .listStyle(PlainListStyle())
@@ -148,6 +131,57 @@ struct HostsListView: View {
         .toolbarBackground(Color.appBackground, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         #endif
+    }
+
+    @ViewBuilder
+    private var allSections: some View {
+        #if os(iOS)
+        Section {
+            Toggle("master_switch".localized, isOn: Binding(
+                get: { viewModel.isVPNEnabled },
+                set: { _ in viewModel.toggleVPN() }
+            ))
+                .toggleStyle(SwitchToggleStyle(tint: .appCTA))
+                .foregroundColor(.appText)
+                .listRowBackground(Color.appSecondary)
+        } header: {
+            Text("app_name".localized)
+                .font(.subheadline.bold())
+                .foregroundColor(.appCTA)
+                .textCase(nil)
+        }
+        #endif
+
+        Section(header: Text("configurations".localized)
+                    .font(.caption.weight(.semibold))
+                    .foregroundColor(.appSubText)
+                    .textCase(nil)
+        ) {
+            ForEach(viewModel.hostsFiles) { file in
+                #if os(iOS)
+                iOSRow(file)
+                #else
+                hostRow(file)
+                    .tag(file)
+                    .listRowBackground(Color.appSecondary)
+                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                    .contextMenu {
+                        Button(role: .destructive) {
+                            withAnimation { viewModel.deleteHosts(file) }
+                        } label: {
+                            Label("delete".localized, systemImage: "trash")
+                        }
+                    }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button(role: .destructive) {
+                            withAnimation { viewModel.deleteHosts(file) }
+                        } label: {
+                            Label("delete".localized, systemImage: "trash")
+                        }
+                    }
+                #endif
+            }
+        }
     }
 
     #if os(iOS)
@@ -178,6 +212,14 @@ struct HostsListView: View {
                 : Color.appSecondary)
             .listRowSeparatorTint(Color.appDivider)
             .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+            .tag(file)
+            .contextMenu {
+                Button(role: .destructive) {
+                    withAnimation { viewModel.deleteHosts(file) }
+                } label: {
+                    Label("delete".localized, systemImage: "trash")
+                }
+            }
             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                 Button(role: .destructive) {
                     withAnimation { viewModel.deleteHosts(file) }

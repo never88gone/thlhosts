@@ -69,3 +69,4 @@
 "telegram" = "Telegram";
 "github" = "GitHub";
 "clear" = "清除";
+"vpn_start_tip" = "服务已启动。如果拦截未生效，请尝试开启并关闭一次飞行模式以刷新系统 DNS 缓存。";
